@@ -1,0 +1,30 @@
+@import "../../../../twitter/bootstrap/less/list-group";
+.list-group-item {
+  background: transparent;
+  border: 1px solid #121212;
+}
+.list-group-item a {
+  display: block;
+}
+.list-group-item:hover,
+.list-group-item.active {
+  background: @brand-primary;
+  h1,h2,h3,h4,h5,h6 {
+    color: #000;
+  }
+}
+.list-group-item:hover a,
+.list-group-item.active a {
+  color: #000;
+  text-decoration: none;
+}
+.list-group-item-danger {
+  background: @darkError;
+  color: inherit;
+  .list-group-item-heading {
+    color: #000;
+  }
+  &:hover {
+    background: @brand-danger;
+  }
+}

@@ -1,0 +1,64 @@
+@import "../../../../twitter/bootstrap/less/type";
+a {
+    color: @brand-primary;
+    &:visited {
+        color: darken(@brand-primary, 15%);
+    }
+    &:hover {
+        color: lighten(saturate(@brand-primary, 10%), 30%) !important;
+    }
+}
+.boardLink {
+    text-align: left !important;
+    vertical-align: middle !important;
+    a {
+        font-weight: bold;
+        font-size: 110%;
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+h1,h2,h3,h4,h5,h6 {
+    color: @brand-primary;
+}
+.text-primary {
+    color: @brand-primary;
+}
+.text-info {
+  color: @brand-info !important;
+}
+.text-success {
+  color: @brand-success !important;
+}
+.text-warning {
+  color: @brand-warning !important;
+}
+.text-error {
+  color: @brand-danger !important;
+}
+.help-primary {
+  color: @brand-primary;
+}
+.text-disabled {
+  color: #aaa !important;
+}
+.text-middle {
+  vertical-align: middle !important;
+}
+.text-left {
+  text-align: left !important;
+}
+.text-center {
+  text-align: center !important;
+}
+.text-right {
+  text-align: right !important;
+}
+.hide {
+    display: none;
+}
+.page-header {
+    border-bottom: 1px solid #eeeeee;
+}

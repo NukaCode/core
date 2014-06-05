@@ -1,0 +1,54 @@
+.placeholder(@color: @ds_inputPlaceholder) {
+  :-moz-placeholder {
+    color: @color;
+  }
+  ::-webkit-input-placeholder {
+    color: @color;
+  }
+}
+.controls(@color) {
+  input, select, textarea {
+    color: @color;
+    border-color: @color;
+    .inset-panel-dark();
+  }
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: @color;
+    .box-shadow(0 0 6px @color);
+  }
+  .control-label,
+  .help-block,
+  .help-inline {
+    color: @color;
+  }
+
+}.well {
+  .inset-panel-dark;
+  border: 0;
+}
+.darkwell {
+  .inset-panel-dark;
+  border: 0;
+}
+.inset-panel-dark {
+  .box-shadow(~"rgba(255,255,255, .1) 0 1px 0, rgba(0,0,0, .8) 0 1px 7px 0px inset");
+  background: darken(#2f2f2f, 6);
+  background-color: rgba(0,0,0, .3);
+}
+.horizontal-rule-dark {
+  .box-shadow(rgba(255,255,255, .07) 0 1px 0);
+  border-bottom: 1px solid #121212; }
+
+.horizontal-rule-top-dark {
+  .box-shadow(rgba(255,255,255, .07) 0 1px 0 inset);
+  border-top: 1px solid #121212; }
+
+.vertical-rule-dark {
+  .box-shadow(rgba(255,255,255, .07) 1px 0 0);
+  border-right: 1px solid #121212; }
+
+.vertical-rule-left-dark {
+  .box-shadow(rgba(255,255,255, .07) 1px 0 0 inset);
+  border-left: 1px solid #121212; }

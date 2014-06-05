@@ -1,0 +1,131 @@
+@import "../../../../twitter/bootstrap/less/tables";
+
+table {
+    & > caption {
+        color: @brand-primary;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }
+}
+.table-striped tbody > tr:nth-child(odd) > td {
+    background-color: #e5e5e5;
+}
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th {
+  background-color: #666666;
+}
+.table.table-inner th, .table.table-inner td {
+    border-top: none;
+}
+.table {
+  .text-center {
+    td {
+      text-align: center !important;
+    }
+  }
+  &.table-inner {
+      padding: 0;
+      margin: 0;
+  }
+  & > tbody {
+    & > tr {
+      & > .danger {
+        background-color: @darkError;
+        & :hover {
+          background-color: lighten(@darkError, 20%);
+        }
+      }
+      & > .info {
+        background-color: @brand-info;
+        & :hover {
+          background-color: lighten(@brand-info, 20%);
+        }
+      }
+      & > .success {
+        background-color: @brand-success;
+        & :hover {
+          background-color: lighten(@brand-success, 20%);
+        }
+      }
+      & > .warning {
+        background-color: @brand-warning;
+        & :hover {
+          background-color: lighten(@brand-warning, 20%);
+        }
+      }
+      & > .primary {
+        background-color: @brand-primary;
+        & :hover {
+          background-color: lighten(@brand-primary, 20%);
+        }
+      }
+    }
+  }
+  thead {
+    & > tr {
+        & > th {
+            border-bottom: 2px solid #121212;
+        }
+    }
+  }
+  tbody {
+    tr {
+      & > td {
+        border-top: 1px solid #121212;
+      }
+      &.error {
+        & > td {
+          background-color: @darkError;
+        }
+        &:hover {
+          & > td {
+            background-color: lighten(@darkError, 20%);
+          }
+        }
+      }
+      &.info {
+        & > td {
+          background-color: @brand-info;
+        }
+        &:hover {
+          & > td {
+            background-color: lighten(@brand-info, 20%);
+          }
+        }
+      }
+      &.success {
+        & > td {
+          background-color: @brand-success;
+        }
+        &:hover {
+          & > td {
+            background-color: lighten(@brand-success, 20%);
+          }
+        }
+      }
+      &.warning {
+        & > td {
+          background-color: @brand-warning;
+        }
+        &:hover {
+          & > td {
+            background-color: lighten(@brand-warning, 20%);
+          }
+        }
+      }
+      &.primary {
+        & > td {
+          background-color: @brand-primary;
+        }
+        &:hover {
+          & > td {
+            background-color: lighten(@brand-primary, 20%);
+          }
+        }
+      }
+    }
+  }
+}
+td {
+  vertical-align: middle !important;
+}

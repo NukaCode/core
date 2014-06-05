@@ -1,0 +1,34 @@
+@import "../../../../twitter/bootstrap/less/pagination";
+.pagination {
+  margin: 0px;
+  padding: 0px;
+  & > li {
+    & > a {
+      background: @gray, 20%;
+      border-color: darken(@gray, 20%);
+      color: @brand-primary;
+      &:hover {
+        border-color:darken(@gray, 20%);
+      }
+    }
+  }
+  & > .active {
+    & > span {
+      border-color: darken(@gray, 20%);
+      &:hover {
+        background-color: @brand-primary;
+        border-color: darken(@gray, 20%);
+      }
+    }
+  }
+  & > .disabled {
+    & > span {
+      background-color: darken(@gray, 20%);
+      border-color: darken(@gray, 20%);
+      &:hover {
+        background-color: darken(@gray, 20%);
+        border-color: darken(@gray, 20%);
+      }
+    }
+  }
+}

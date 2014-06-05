@@ -1,0 +1,274 @@
+#utopian-navigation, #utopian-navigation ul {
+    font-size: 14px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#utopian-navigation {
+    a {
+        color: #808080;
+        display: block;
+        line-height: 1;
+        font-weight: bold;
+        padding: 10px 20px;
+        text-decoration: none;
+        &:hover {
+            color: #ffffff;
+        }
+    }
+    li {
+        float: left;
+        ul {
+            background: #666666;
+            background: -moz-radial-gradient(80% 0% 0deg, circle cover, #787878, #666666, #666666 90%);
+            background: -webkit-gradient(radial, 160 -100, 0, 160 -100, 200, from(#8a8a8a), to(#666666));
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.6);
+            -moz-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.6);
+            -webkit-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.6);
+            left: -9999px;
+            position: absolute;
+            width: 190px;
+            z-index: 1000;
+            a {
+                border-top: 1px solid #838383;
+                border-right: 1px solid #7b7b7b;
+                border-bottom: 1px solid #484848;
+                border-left: 1px solid #4c4c4c;
+                color: #a4a4a4;
+                font-weight: normal;
+                padding: 9px 19px;
+                text-shadow: #4d4d4d -1px -1px 0;
+                width: 150px;
+                box-sizing: content-box !important;
+            }
+            ul {
+                margin: -34px 0 0 190px;
+            }
+        }
+    }
+    & > li {
+        &.dropdown {
+            & > a {
+                background: url('@{menu-directory}/arrow-down-gray.gif') no-repeat center right;
+                padding-right: 35px;
+            }
+            &:hover {
+                & > a {
+                    background: #666666 url('@{menu-directory}/arrow-down-white.gif') no-repeat center right;
+                    background-image: url('@{menu-directory}/arrow-down-white.gif'), -moz-radial-gradient(80% 0% 0deg, circle cover, #787878, #666666, #666666 90%);
+                    background-image: url('@{menu-directory}/arrow-down-white.gif'), -webkit-gradient(radial, 160 -100, 0, 160 -100, 200, from(#8a8a8a), to(#666666));
+                    border-top: 1px solid #8d8d8d;
+                    border-right: 1px solid #7b7b7b;
+                    border-bottom: 1px solid #484848;
+                    border-left: 1px solid #4c4c4c;
+                    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.6);
+                    -moz-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.6);
+                    -webkit-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.6);
+                    color: #ffffff;
+                    padding: 9px 34px 9px 19px;
+                    text-shadow: #595959 -1px -1px 0;
+                }
+            }
+            li {
+                &.dropdown {
+                    & > a {
+                        background: url('@{menu-directory}/arrow-right-gray.gif') no-repeat center right;
+                    }
+                }
+            }
+        }
+    }
+    &.subMenu {
+        li {
+            float: left;
+            &:last-of-type {
+                float: left;
+            }
+        }
+    }
+    &.vertical {
+        width: 190px;
+        a {
+            width: 150px;
+        }
+        li {
+            ul {
+                margin: -34px 0 0 190px;
+            }
+        }
+        & > li {
+            &.dropdown {
+                & > a {
+                    background: url('@{menu-directory}/arrow-right-gray.gif') no-repeat center right;
+                    width: 135px;
+                }
+                &:hover {
+                    & > a {
+                        background: #666666 url('@{menu-directory}/arrow-right-white.gif') no-repeat center right;
+                        background-image: url('@{menu-directory}/arrow-right-white.gif'), -moz-radial-gradient(80% 0% 0deg, circle cover, #787878, #666666, #666666 90%);
+                        background-image: url('@{menu-directory}/arrow-right-white.gif'), -webkit-gradient(radial, 160 -100, 0, 160 -100, 200, from(#8a8a8a), to(#666666));
+                    }
+                }
+            }
+        }
+        &.black {
+            & > li {
+                &.dropdown {
+                    &:hover {
+                        & > a {
+                            background: #000000 url('@{menu-directory}/arrow-right-white.gif') no-repeat center right;
+                            background-image: url('@{menu-directory}/arrow-right-white.gif'), -moz-radial-gradient(90% 0% 0deg, circle cover, #191919, #000000, #000000 150%);
+                            background-image: url('@{menu-directory}/arrow-right-white.gif'), -webkit-gradient(radial, 160 -100, 0, 160 -100, 200, from(#4d4d4d), to(#000000));
+                        }
+                    }
+                }
+            }
+        }
+        &.white {
+            & > li {
+                &.dropdown {
+                    &:hover {
+                        & > a {
+                            background: #ffffff url('@{menu-directory}/arrow-right-black.gif') no-repeat center right;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &.black {
+        li {
+            ul {
+                background: #000000;
+                background: -moz-radial-gradient(90% -20% 0deg, circle cover, #252525, #000000, #000000 150%);
+                background: -webkit-gradient(radial, 160 -100, 0, 160 -100, 200, from(#444444), to(#000000));
+                a {
+                    border-top-color: #1c1c1c;
+                    border-right-color: #1a1a1a;
+                    border-bottom-color: #000000;
+                    border-left-color: #000000;
+                    color: #c9c9c9;
+                    text-shadow: #000000 -1px -1px 0;
+                }
+            }
+        }
+        & > li {
+            &.dropdown {
+                &:hover {
+                    & > a {
+                        background: #000000 url('@{menu-directory}/arrow-down-white.gif') no-repeat center right;
+                        background-image: url('@{menu-directory}/arrow-down-white.gif'), -moz-radial-gradient(90% -20% 0deg, circle cover, #191919, #000000, #000000 150%);
+                        background-image: url('@{menu-directory}/arrow-down-white.gif'), -webkit-gradient(radial, 160 -100, 0, 160 -100, 200, from(#444444), to(#000000));
+                        border-top-color: #1c1c1c;
+                        border-right-color: #1a1a1a;
+                        border-bottom-color: #000000;
+                        border-left-color: #000000;
+                        color: #ffffff;
+                        text-shadow: none;
+                    }
+                }
+                li {
+                    &.dropdown {
+                        & > a {
+                            background: url('@{menu-directory}/arrow-right-darkgray.gif') no-repeat center right;
+                            text-shadow: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &.white {
+        li {
+            ul {
+                background: #ffffff;
+                a {
+                    border-top-color: #ffffff;
+                    border-right-color: #e1e1e1;
+                    border-bottom-color: #dddddd;
+                    border-left-color: #ffffff;
+                    color: #999999;
+                    text-shadow: #ffffff 1px 1px 0;
+                }
+            }
+        }
+        & > li {
+            &.dropdown {
+                &:hover {
+                    & > a {
+                        background: #ffffff url('@{menu-directory}/arrow-down-black.gif') no-repeat center right;
+                        border-top-color: #ffffff;
+                        border-right-color: #e1e1e1;
+                        border-bottom-color: #dddddd;
+                        border-left-color: #ffffff;
+                        color: #000000;
+                        text-shadow: none;
+                    }
+                }
+                li {
+                    &.dropdown {
+                        & > a {
+                            background: url('@{menu-directory}/arrow-right-darkgray.gif') no-repeat center right;
+                            text-shadow: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+#utopian-navigation li ul a:hover, #utopian-navigation > li.dropdown li.dropdown > a:hover, #utopian-navigation > li.dropdown li.dropdown:hover > a {
+    background: #0099ff;
+    background: -moz-linear-gradient(100% 100% 90deg, #017bcd, #33adff);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#33adff), to(#017bcd));
+    border-top: 0;
+    color: #ffffff;
+    font-weight: bold;
+    padding-top: 10px;
+    text-shadow: #1c567c -1px -1px 0;
+}
+#utopian-navigation > li.dropdown li.dropdown > a:hover, #utopian-navigation > li.dropdown li.dropdown:hover > a {
+    background: #0099ff url('@{menu-directory}/arrow-right-white.gif') no-repeat center right;
+    background-image: url('@{menu-directory}/arrow-right-white.gif'), -moz-linear-gradient(100% 100% 90deg, #017bcd, #33adff);
+    background-image: url('@{menu-directory}/arrow-right-white.gif'), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#33adff), to(#017bcd));
+}
+#utopian-navigation li:hover ul ul, #utopian-navigation li:hover ul ul ul {
+    left: -9999px;
+}
+#utopian-navigation li:hover ul, #utopian-navigation li li:hover ul, #utopian-navigation li li li:hover ul {
+    left: auto;
+}
+#utopian-navigation > li.active > a, #utopian-navigation > li.active > a:hover {
+    color: @menuColor;
+}
+#utopian-navigation.subMenu, #utopian-navigation.subMenu ul {
+    font-size: 10px;
+}
+#utopian-navigation.subMenu li:hover:last-of-type ul, #utopian-navigation.subMenu li:last-of-type li:hover ul, #utopian-navigation.subMenu li:last-of-type li li:hover ul {
+    left: auto;
+    right: auto;
+}
+#utopian-navigation.black li ul a:hover, #utopian-navigation.black > li.dropdown li.dropdown > a:hover, #utopian-navigation.black > li.dropdown li.dropdown:hover > a {
+    background: #181818;
+    background: -moz-linear-gradient(100% 100% 90deg, #181818, #252525);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#252525), to(#181818));
+    color: #ffffff;
+    font-weight: bold;
+}
+#utopian-navigation.black > li.dropdown li.dropdown > a:hover, #utopian-navigation.black > li.dropdown li.dropdown:hover > a {
+    background: #181818 url('@{menu-directory}/arrow-right-white.gif') no-repeat center right;
+    background-image: url('@{menu-directory}/arrow-right-white.gif'), -moz-linear-gradient(100% 100% 90deg, #181818, #252525);
+    background-image: url('@{menu-directory}/arrow-right-white.gif'), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#252525), to(#181818));
+}
+#utopian-navigation.white li ul a:hover, #utopian-navigation.white > li.dropdown li.dropdown > a:hover, #utopian-navigation.white > li.dropdown li.dropdown:hover > a {
+    background: #eaeaea;
+    background: -moz-linear-gradient(100% 100% 90deg, #eaeaea, #f9f9f9);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f9f9f9), to(#eaeaea));
+    color: #000000;
+    font-weight: bold;
+}
+#utopian-navigation.white > li.dropdown li.dropdown > a:hover, #utopian-navigation.white > li.dropdown li.dropdown:hover > a {
+    background: #eaeaea url('@{menu-directory}/arrow-right-black.gif') no-repeat center right;
+    background-image: url('@{menu-directory}/arrow-right-black.gif'), -moz-linear-gradient(100% 100% 90deg, #eaeaea, #f9f9f9);
+    background-image: url('@{menu-directory}/arrow-right-black.gif'), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f9f9f9), to(#eaeaea));
+}

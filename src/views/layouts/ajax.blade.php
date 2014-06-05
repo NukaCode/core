@@ -1,0 +1,8 @@
+@section('ajaxCss')
+@show
+@section('cssForm')
+@show
+
+@if (isset($content))
+	{{ $content }}
+@endif

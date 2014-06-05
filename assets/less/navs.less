@@ -1,0 +1,183 @@
+@import "../../../../twitter/bootstrap/less/navs";
+.nav-tabs {
+    border-bottom: 1px solid darken(@gray, 20%);
+    & > li {
+      & > a:hover {
+        border-color: transparent transparent darken(@gray, 20%) transparent;
+      }
+    }
+    & > li.active {
+      & > a, a:hover {
+        border-color: darken(@gray, 20%);
+        border-bottom-color: transparent;
+      }
+    }
+    &.nav-stacked {
+        background: #202020;
+        background-color: rgba(0, 0, 0, 0.3);
+        .border-radius(4px);
+        .box-shadow(~"rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.8) 0 1px 7px 0px inset");
+        li {
+            &.active {
+                a {
+                    background: @brand-primary;
+                    color: #000;
+                    font-weight: bold;
+                    margin: 0px 1px;
+                    border-left: 1px solid #000;
+                    border-right: 1px solid #000;
+                    .box-shadow(~"rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.8) 0 1px 7px 0px inset");
+                    &:hover {
+                        border-left: 1px solid #000;
+                        border-right: 1px solid #000;
+                    }
+                }
+            }
+            a {
+                border-left: 1px solid #000;
+                border-right: 1px solid #000;
+                &:hover {
+                    border-left: 1px solid #000;
+                    border-right: 1px solid #000;
+                }
+            }
+        }
+    }
+}
+.nav-stacked {
+    .nav-title {
+        background: @brand-primary;
+        color: #000;
+        position: relative;
+        top: 0px;
+        width: auto;
+        text-align: center;
+        font-weight: bold;
+        letter-spacing: 2px;
+        border: 2px solid #000;
+        display: block;
+        -webkit-border-top-left-radius: 4px;
+        -webkit-border-top-right-radius: 4px;
+        -moz-border-radius-topleft: 4px;
+        -moz-border-radius-topright: 4px;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        .box-shadow(~"rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.8) 0 1px 7px 0px inset");
+    }
+}
+.nav-tabs.nav-stacked > li > a, .nav-tabs.nav-stacked > li > a:hover {
+    border: none;
+}
+.nav-tabs.nav-stacked > li > a:hover, .nav-tabs.nav-stacked > li > a:focus {
+    border: 0;
+    border-right: 5px solid #000;
+    color: #fff;
+    font-weight: bold;
+}
+.nav-header {
+    color: saturate(@brand-primary, 50%);
+    background-color: rgba(0, 0, 0, .5);
+    .text-shadow(0 1px 0 @gray);
+}
+.tabs-below, .tabs-right, .tabs-left {
+  .nav-tabs {
+    border-bottom: 0;
+  }
+}
+
+.tab-content > .tab-pane,
+.pill-content > .pill-pane {
+  display: none;
+}
+
+.tab-content > .active,
+.pill-content > .active {
+  display: block;
+}
+
+.tabs-below {
+  > .nav-tabs {
+    border-top: 1px solid #ddd;
+
+    > li {
+      margin-top: -1px;
+      margin-bottom: 0;
+
+      > a {
+        -webkit-border-radius: 0 0 4px 4px;
+           -moz-border-radius: 0 0 4px 4px;
+                border-radius: 0 0 4px 4px;
+
+        &:hover, &:focus {
+          border-top-color: #ddd;
+          border-bottom-color: transparent;
+        }
+      }
+    }
+    > .active a {
+      &, &:hover, &:focus {
+        border-color: transparent #ddd #ddd #ddd;
+      }
+    }
+  }
+}
+
+.tabs-left, .tabs-right {
+  > .nav-tabs > li {
+    float: none;
+
+    > a {
+      min-width: 74px;
+      margin-right: 0;
+      margin-bottom: 3px;
+    }
+  }
+}
+
+.tabs-left > .nav-tabs {
+  float: left;
+  margin-right: 19px;
+  border-right: 1px solid #ddd;
+
+  > li > a {
+    margin-right: -1px;
+    -webkit-border-radius: 4px 0 0 4px;
+       -moz-border-radius: 4px 0 0 4px;
+            border-radius: 4px 0 0 4px;
+
+    &:hover, &:focus {
+      border-color: #eee #ddd #eee #eee;
+    }
+  }
+
+  > .active a {
+    &, &:hover, &:focus {
+      border-color: #ddd transparent #ddd #ddd;
+      *border-right-color: #fff;
+    }
+  }
+}
+
+.tabs-right > .nav-tabs {
+  float: right;
+  margin-left: 19px;
+  border-left: 1px solid darken(@gray, 20%);
+
+  > li > a {
+    margin-left: -1px;
+    -webkit-border-radius: 0 4px 4px 0;
+       -moz-border-radius: 0 4px 4px 0;
+            border-radius: 0 4px 4px 0;
+
+    &:hover, &:focus {
+      border-color: transparent transparent transparent darken(@gray, 20%);
+    }
+  }
+
+  > .active a {
+    &, &:hover, &:focus {
+      border-color: darken(@gray, 20%) darken(@gray, 20%) darken(@gray, 20%) transparent;
+      *border-left-color: #fff;
+    }
+  }
+}

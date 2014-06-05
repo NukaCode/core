@@ -1,0 +1,110 @@
+.nav-tabs .open .dropdown-toggle,
+.nav-pills .open .dropdown-toggle,
+.nav > .open.active > a:hover {
+  background-color: rgba(0, 0, 0, 0.25);
+  //border-color: @bg @bg transparent @bg;
+  border-color: transparent transparent #666 transparent;
+}
+.nav > .dropdown.active > a:hover {
+  color: #fff;
+}
+.nav-tabs .active .dropdown-toggle .caret,
+.nav-pills .active .dropdown-toggle .caret {
+  border-top-color: #fff;
+}
+.nav-tabs {
+  border-bottom: 1px solid #666;
+  &> .active > a,
+  &> .active > a:hover {
+    background-color: @bg;
+    color: #fff;
+    border-color: #666 #666 transparent #666;
+  }
+  &> li > a:hover {
+    border-color: @bg @bg #666 @bg;
+    background-color: rgba(0, 0, 0, 0.25);
+    color: lighten(@link-color, 10%);
+  }
+  &.nav-stacked {
+    &> li > a,
+    &> li > a:hover {
+      border-color: #666;
+    }
+  }
+}
+.well > .nav-tabs {
+  &> .active > a,
+  &> .active > a:hover {
+    background-color: #202020;
+  }
+}
+
+.nav-pills {
+  &> li > a:hover {
+    //background-color: darken(@bg, 5%);
+    background-color: rgba(0, 0, 0, 0.25);
+    color: lighten(@link-color, 10%);
+  }
+}
+.nav-list > li > a,
+.nav-list .nav-header {
+  text-shadow: 0 1px 0 #000;
+}
+.nav-list > li > a:hover {
+  background-color: rgba(0, 0, 0, 0.25);
+  color: lighten(@link-color, 10%);
+}
+.nav-list .active {
+  &> a:hover {
+    background-color: #0088cc;
+    color: white;
+  }
+}
+
+.tabs-below .nav-tabs { border-top: 1px solid #666; }
+.tabs-left .nav-tabs { border-right: 1px solid #666; }
+.tabs-right .nav-tabs { border-left: 1px solid #666; }
+
+.tabs-below .nav-tabs > li > a:hover {
+  border-top: 1px solid #666;
+}
+.tabs-left .nav-tabs > li > a:hover {
+  border-color: transparent #666 transparent transparent;
+}
+.tabs-right .nav-tabs > li > a:hover {
+  border-color: transparent transparent transparent #666;
+}
+
+.tabs-below .nav-tabs .active > a,
+.tabs-below .nav-tabs .active > a:hover {
+  border-color: transparent #666 #666 #666;
+}
+.tabs-left .nav-tabs .active > a,
+.tabs-left .nav-tabs .active > a:hover {
+  border-color: #666 transparent #666 #666;
+}
+.tabs-right .nav-tabs .active > a,
+.tabs-right .nav-tabs .active > a:hover {
+  border-color: #666 #666 #666 transparent;
+}
+
+.nav-list > li > a,
+.nav-list .nav-header {
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5); }
+
+.nav-tabs > li > a:hover {
+  border-color: transparent transparent #666 transparent;
+}
+.nav > .disabled > a:hover {
+  color: #999;
+}
+.nav-list .divider {
+  background-color: transparent;
+  .horizontal-rule-dark;
+}
+.nav-tabs.nav-stacked > li > a:hover, .nav-tabs.nav-stacked > li > a:focus {
+    border: 0;
+    border-right: 5px solid #000;
+    color: #000;
+    font-weight: bold;
+}

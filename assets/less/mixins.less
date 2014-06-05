@@ -1,0 +1,56 @@
+@import "../../../../twitter/bootstrap/less/mixins";
+
+.linear-gradient(@outerColor, @innerColor) {
+    .linear-gradient-left(@outerColor, @outerColor, 0%, @innerColor, 50%, @outerColor, 100%);
+}
+
+.btn-gradient(@firstColor, @secondColor) {
+    background-image: -moz-linear-gradient(top,@firstColor,@secondColor);
+    background-image: -ms-linear-gradient(top,@firstColor,@secondColor);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(@firstColor),to(@secondColor));
+    background-image: -webkit-linear-gradient(top,@firstColor,@secondColor);
+    background-image: -o-linear-gradient(top,@firstColor,@secondColor);
+    background-image: linear-gradient(top,@firstColor,@secondColor);
+}
+
+.highlightColor (@siteStyle) when (@siteStyle = dark) {
+    color: #fff;
+}
+
+.highlightColor (@siteStyle) when (@siteStyle = light) {
+    color: #000;
+}
+
+.altBackgroundColor (@siteStyle) when (@siteStyle = dark) {
+    background-color: #000;
+}
+
+.altBackgroundColor (@siteStyle) when (@siteStyle = light) {
+    background-color: #e5e5e5;
+}
+
+.wellBoxShadow (@siteStyle) when (@siteStyle = dark) {
+    .box-shadow(rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.8) 0 1px 7px 0px inset);
+    border-bottom: 2px solid #000;
+}
+.wellBoxShadow (@siteStyle) when (@siteStyle = light) {
+    -webkit-border-top-left-radius: 4px;
+    -webkit-border-top-right-radius: 4px;
+    -moz-border-radius-topleft: 4px;
+    -moz-border-radius-topright: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom: 2px solid #fff;
+}
+
+.wellFull (@siteStyle) when (@siteStyle = dark) {
+    .box-shadow(rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.8) 0 1px 7px 0px inset);
+    background: #202020;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 0;
+}
+
+.wellFull (@siteStyle) when (@siteStyle = light) {
+    background-color: #f5f5f5;
+    border: 0;
+}

@@ -1,0 +1,45 @@
+@import "../../../../twitter/bootstrap/less/panels";
+.panel-btn {
+  background: @brand-primary;
+  .box-shadow(~"rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.8) 0 1px 7px 0px inset");
+  float: right;
+  height: 39px;
+  position: relative;
+  top: -10px; right: -15px;
+  border-bottom: 1px solid #121212;
+  width: auto;
+  color: #000;
+}
+
+.panel-btn a {
+  color: #000;
+  height: 39px;
+  line-height: 39px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-bottom: 10px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.panel-btn-divider {
+  width: 1px;
+  min-height: 39px;
+  background: #000;
+  display: inline-block;
+  box-sizing: content-box;
+  & ~  a {
+    line-height: normal !important;
+  }
+}
+
+.panel-primary > .panel-heading {
+  .box-shadow(~"rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.8) 0 1px 7px 0px inset");
+  color: #000;
+  background-color: @brand-primary;
+  border-color: @brand-primary;
+  text-align: center;
+  font-weight: bold;
+  border-bottom: 1px solid #121212;
+  line-height: 20px;
+}

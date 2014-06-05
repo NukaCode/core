@@ -1,0 +1,23 @@
+@import "../../../../twitter/bootstrap/less/labels";
+.label,
+.badge {
+    padding: 1px 3px 2px;
+    font-size: 9.75px;
+    color: #ffffff;
+    .text-shadow(~"-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000");
+}
+.label-important {
+    background-color: #7d1b20 !important;
+}
+.label-enhancement {
+    background-color: @darkPrimary;
+}
+.label-question {
+    background-color: @brand-info;
+}
+.label-bug {
+    background-color: @brand-danger;
+}
+.label-duplicate, .label-invalid, .label-wontfix {
+    background-color: #aaa;
+}

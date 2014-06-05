@@ -1,0 +1,165 @@
+
+div.list-glow-sm {
+  div.list-glow-labels:first-child {
+    margin-left: 5px !important;
+  }
+  ul.list-glow-group li div.list-glow-group-item {
+    padding: 5px 0 5px 0px !important;
+  }
+}
+div.list-glow, div.list-glow-sm {
+  div.list-glow-labels {
+    font-weight: bold;
+    &:after, &:before {
+      content: " ";
+      display: table;
+    }
+    &:after {
+      clear: both;
+    }
+    &:first-child {
+      margin-left: 25px;
+    }
+  }
+  ul.no-header li:first-child div {
+    border-top: 0 !important;
+    margin-top: -1px;
+  }
+  ul.list-glow-group {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-weight: inherit;
+    font-style: inherit;
+    font-size: 100%;
+    font-family: inherit;
+    vertical-align: baseline;
+    display: block;
+    li {
+      position: relative;
+      height: auto;
+      padding: 0;
+      margin: 2px 0px 0px;
+      border: none;
+      border-left: 6px solid @gray;
+      vertical-align: baseline;
+      &.active {
+        div.list-glow-group-item {
+          & > div {
+            & > .badge {
+              background: saturate(lighten(@brand-primary, 15%), 40%);
+              box-shadow: 0 0 40px saturate(lighten(@brand-primary, 15%), 40%);
+            }
+          }
+        }
+      }
+      .transition-duration(0.3s);
+      a.block {
+        display: block;
+        text-decoration: none;
+      }
+      &:last-of-type {
+        -webkit-border-bottom-left-radius: 4px;
+        -moz-border-radius-bottomleft: 4px;
+        border-bottom-left-radius: 4px;
+      }
+      &:hover {
+        background: rgba(red(@gray), green(@gray), blue(@gray), .4);
+      }
+      &.announcement:before, &.wontFix:before {
+        content: '';
+        background: saturate(lighten(@brand-danger, 15%), 40%) !important;
+        position: absolute;
+        top: 0;
+        left: -6px;
+        width: 6px;
+        height: 100%;
+        box-shadow: 0 0 40px saturate(lighten(@brand-danger, 15%), 40%) !important;
+      }
+      &.sticky:before, &.inProgress:before {
+        content: '';
+        background: saturate(lighten(@brand-warning, 15%), 40%) !important;
+        position: absolute;
+        top: 0;
+        left: -6px;
+        width: 6px;
+        height: 100%;
+        box-shadow: 0 0 40px saturate(lighten(@brand-warning, 15%), 40%) !important;
+      }
+      &.application:before, &.open:before {
+        content: '';
+        background: saturate(lighten(@brand-info, 15%), 40%) !important;
+        position: absolute;
+        top: 0;
+        left: -6px;
+        width: 6px;
+        height: 100%;
+        box-shadow: 0 0 40px saturate(lighten(@brand-info, 15%), 40%) !important;
+      }
+      &.resolved:before, &.online:before {
+        content: '';
+        background: saturate(lighten(@brand-success, 15%), 40%) !important;
+        position: absolute;
+        top: 0;
+        left: -6px;
+        width: 6px;
+        height: 100%;
+        box-shadow: 0 0 40px saturate(lighten(@brand-success, 15%), 40%) !important;
+      }
+      &.unread:before, &.active:before {
+        content: '';
+        background: saturate(lighten(@brand-primary, 15%), 40%);
+        position: absolute;
+        top: 0;
+        left: -6px;
+        width: 6px;
+        height: 100%;
+        box-shadow: 0 0 40px saturate(lighten(@brand-primary, 15%), 40%);
+      }
+      &:hover:before {
+        content: '';
+        background: saturate(lighten(@brand-primary, 15%), 40%) !important;
+        position: absolute;
+        top: 0;
+        left: -6px;
+        width: 6px;
+        height: 100%;
+        box-shadow: 0 0 40px saturate(lighten(@brand-primary, 15%), 40%) !important;
+      }
+      div.list-glow-group-item {
+        padding: 13px 0 13px 20px;
+        width: 100%;
+        height: auto!important;
+        border-top: 1px solid lighten(@gray, 10%);
+        &:after, &:before {
+          content: " ";
+          display: table;
+        }
+        &:after {
+          clear: both;
+        }
+        & > div {
+          & > .badge {
+            float:right;
+            & + .badge {
+              margin-right: 5px;
+            }
+          }
+        }
+      }
+      div.list-glow-group-item-sm {
+        padding: 5px 0 5px 0px;
+      }
+    }
+  }
+  .trans-03s {
+    transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    -webkit-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    -webkit-perspective: 1000;
+    -webkit-backface-visibility: hidden;
+  }
+}
