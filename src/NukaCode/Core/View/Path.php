@@ -18,11 +18,17 @@ class Path {
 
     public function setUp($layout, $view = null)
     {
-        if ($view == null) $view = $this->findView();
+        if ($view == null) {
+            $view = $this->findView();
+        }
 
-        if (!$this->view->exists($view)) throw new \InvalidArgumentException("View [$view] not found.");
+        if (!$this->view->exists($view)) {
+            throw new \InvalidArgumentException("View [$view] not found.");
+        }
 
         $layout->content = $this->view->make($view);
+
+        return $this;
     }
 
     protected function findView()

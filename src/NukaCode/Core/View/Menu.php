@@ -36,7 +36,7 @@ class Menu {
             return $this;
         }
 
-        throw new \InvalidArgumentException("Unknown menu [$this->siteMenu] passed.");
+        throw new \InvalidArgumentException("Unknown menu [$menu] passed.");
     }
 
     public function twitter()
