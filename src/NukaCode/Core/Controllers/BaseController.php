@@ -64,4 +64,9 @@ class BaseController extends Controller {
     {
         $this->layout->content = null;
     }
+
+    public function missingMethod($parameters = array())
+    {
+        CoreView::missingMethod($parameters);
+    }
 }

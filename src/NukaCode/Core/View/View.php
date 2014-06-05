@@ -33,6 +33,13 @@ class View {
         return $this->layout->layout;
     }
 
+    public function missingMethod($parameters)
+    {
+        $this->viewPath->missingMethod($this->layout->layout, $parameters);
+
+        return $this;
+    }
+
     public function setViewPath($view)
     {
         $this->viewPath->setUp($this->layout->layout, $view);

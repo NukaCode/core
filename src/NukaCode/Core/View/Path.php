@@ -22,13 +22,27 @@ class Path {
             $view = $this->findView();
         }
 
-        if (!$this->view->exists($view)) {
-            throw new \InvalidArgumentException("View [$view] not found.");
+        if (stripos($view, 'missingmethod') === false) {
+            if (!$this->view->exists($view)) {
+                throw new \InvalidArgumentException("View [$view] not found.");
+            }
+
+            $layout->content = $this->view->make($view);
         }
 
-        $layout->content = $this->view->make($view);
-
         return $this;
+    }
+
+    public function missingMethod($layout, $parameters)
+    {
+        if (count($parameters) == 1) {
+            $view = $this->findView();
+            $view = str_ireplace('missingMethod', $parameters[0], $view);
+        } else {
+            $view = implode('.', $parameters);
+        }
+
+        return $this->setUp($layout, $view);
     }
 
     protected function findView()
@@ -56,7 +70,7 @@ class Path {
 
     protected function getActionName($action)
     {
-        $action = preg_replace(['/^get/', '/^post/'], '',  $action);
+        $action = preg_replace(['/^get/', '/^post/', '/^put/', '/^patch/', '/^delete/'], '',  $action);
         $action = strtolower($action);
 
         return $action;
