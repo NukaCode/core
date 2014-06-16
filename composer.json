@@ -27,10 +27,6 @@
         "watson/validating":        "0.7.8",
         "tlr/menu":                 "2.2.0"
     },
-    "require-dev": {
-        "way/generators":          "2.6.1",
-        "codeception/codeception": "2.0.0"
-    },
     "autoload":    {
         "classmap": [
             "src/database/migrations",
