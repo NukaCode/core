@@ -31,15 +31,18 @@ Route::get('logout', function () {
 /********************************************************************
  * General
  *******************************************************************/
-// Route::get('memberlist', ['as' => 'memberlist', 'uses' => 'NukaCode\Core\Controllers\UserController@getMemberlist']);
+Route::get('memberlist', ['as' => 'memberlist', 'uses' => 'NukaCode\Core\Controllers\UserController@getMemberlist']);
 Route::group(['before' => 'auth'], function () {
-    // Route::controller('user', 'NukaCode\Core\Controllers\UserController');
+     Route::controller('user', 'NukaCode\Core\Controllers\UserController');
 });
 
 /********************************************************************
  * Access to the dev panels
  *******************************************************************/
 Route::group(['prefix' => 'admin', 'before' => 'auth|permission:SITE_ADMIN'], function () {
-    // Route::controller('users', 'NukaCode\Core\Controllers\Admin\UserController');
-    // Route::controller('message', 'NukaCode\Messaging\Controllers\Admin\MessageController');
+    Route::controller('users', 'NukaCode\Core\Controllers\Admin\UserController');
+});
+
+Route::group(['before' => 'auth|permission:SITE_ADMIN'], function () {
+    Route::controller('admin', 'NukaCode\Core\Controllers\AdminController');
 });

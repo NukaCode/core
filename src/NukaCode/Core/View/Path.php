@@ -6,6 +6,8 @@ use ReflectionClass;
 
 class Path {
 
+    public $path;
+
     protected $route;
 
     protected $view;
@@ -18,26 +20,43 @@ class Path {
 
     public function setUp($layout, $view = null)
     {
+        $this->setPath($view);
+
+        $layout = $this->setContent($layout);
+
+        return $layout;
+    }
+
+    protected function setPath($view)
+    {
         if ($view == null) {
-            $view = $this->findView();
+            $view =  $this->findView();
         }
 
-        if (stripos($view, 'missingmethod') === false) {
-            if (!$this->view->exists($view)) {
-                throw new \InvalidArgumentException("View [$view] not found.");
+        $this->path = $view;
+    }
+
+    protected function setContent($layout)
+    {
+        if (stripos($this->path, 'missingmethod') === false) {
+            try {
+                $layout->content = $this->view->make($this->path);
+            } catch (\Exception $e) {
+                $layout->content = null;
             }
-
-            $layout->content = $this->view->make($view);
         }
 
-        return $this;
+        return $layout;
     }
 
     public function missingMethod($layout, $parameters)
     {
+        $view = $this->findView();
+
         if (count($parameters) == 1) {
-            $view = $this->findView();
             $view = str_ireplace('missingMethod', $parameters[0], $view);
+        } elseif ($parameters[0] == null && $parameters[1] == null) {
+            $view = str_ireplace('missingMethod', 'index', $view);
         } else {
             $view = implode('.', $parameters);
         }
@@ -60,10 +79,10 @@ class Path {
         return $view;
     }
 
-    protected function getMethodName($method)
+    protected function getMethodName($class)
     {
-        $method = (new ReflectionClass($method))->getShortName();
-        $method = strtolower(str_replace('Controller', '', $method));
+        $class = (new ReflectionClass($class))->getShortName();
+        $method = strtolower(str_replace('Controller', '', $class));
 
         return $method;
     }

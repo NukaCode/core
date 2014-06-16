@@ -36,6 +36,7 @@ class Layout {
     {
         $this->layout = $this->determineLayout();
         $this->setPageTitle();
+        $this->layout->content = null;
 
         return $this;
     }
@@ -48,7 +49,7 @@ class Layout {
         if ($area != null) {
             $this->layout->pageTitle = ucwords($area).$location;
         } else {
-            $this->layout->pageTitle = $this->config->get('app.siteName'). ($this->request->segment(1) != null ? ': '.ucwords($this->request->segment(1)) : '');
+            $this->layout->pageTitle = $this->config->get('core::siteName'). ($this->request->segment(1) != null ? ': '.ucwords($this->request->segment(1)) : '');
         }
     }
 

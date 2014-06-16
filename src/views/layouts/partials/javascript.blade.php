@@ -77,7 +77,7 @@ $(document).ready(function() {
 
     if (mainLogins == true) {
         Messenger().post({
-            message: 'Username or password incorrect.',
+            message: mainLogins,
             type: 'error',
             showCloseButton: true
         });

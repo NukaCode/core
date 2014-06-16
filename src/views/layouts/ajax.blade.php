@@ -6,3 +6,5 @@
 @if (isset($content))
 	{{ $content }}
 @endif
+
+@include('layouts.partials.javascript')

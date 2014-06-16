@@ -1,47 +1,40 @@
 <?php
 namespace NukaCode\Core\Models;
 
-use Laracasts\Presenter\PresentableTrait;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 use Auth;
 use Illuminate\Support\Facades\Hash;
+use NukaCode\Core\Models\Relationships\User as UserRelationshipsTrait;
 use Str;
 use Session;
-use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
-abstract class User extends BaseModel implements UserInterface, RemindableInterface
-{
+abstract class User extends BaseModel implements UserInterface, RemindableInterface {
     /********************************************************************
      * Traits
      *******************************************************************/
-    use PresentableTrait;
-    use SoftDeletingTrait;
+    use UserRelationshipsTrait;
 
     /********************************************************************
      * Declarations
      *******************************************************************/
+    protected        $presenter = 'NukaCode\Core\Presenters\UserPresenter';
 
-    /**
-     * Assign a presenter to use
-     *
-     * @var string
-     */
-    protected $presenter  = 'NukaCode\Core\Presenters\UserPresenter';
+    protected static $observer  = 'NukaCode\Core\Models\Observers\UserObserver';
 
     /**
      * Tell eloquent to set deleted_at as carbon
      *
      * @var array
      */
-    protected $dates      = ['deleted_at'];
+    protected $dates = ['deleted_at'];
 
     /**
      * Define the SQL table for this model
      *
      * @var string
      */
-    protected $table      = 'users';
+    protected $table = 'users';
 
     /**
      * Set the primary key since this table does not use id
@@ -55,7 +48,7 @@ abstract class User extends BaseModel implements UserInterface, RemindableInterf
      *
      * @var boolean
      */
-    public $incrementing  = false;
+    public $incrementing = false;
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -110,19 +103,14 @@ abstract class User extends BaseModel implements UserInterface, RemindableInterf
     }
 
     /********************************************************************
-     * Aware validation rules
-     *******************************************************************/
-    /**
      * Validation rules
-     *
-     * @static
-     * @var array $rules All rules this model must follow
-     */
-    public static $rules = array(
+     *******************************************************************/
+
+    protected $rules = [
         'username' => 'required|max:200',
         'password' => 'required|max:200',
         'email'    => 'required|email'
-    );
+    ];
 
     /********************************************************************
      * Scopes
@@ -149,20 +137,8 @@ abstract class User extends BaseModel implements UserInterface, RemindableInterf
     }
 
     /********************************************************************
-     * Relationships
+     * Model Events
      *******************************************************************/
-    public static $relationsData = array(
-        'roles'       => array('belongsToMany', 'User_Permission_Role',
-                                'table'      => 'role_users',
-                                'foreignKey' => 'user_id',
-                                'otherKey'   => 'role_id'),
-        'preferences' => array('belongsToMany', 'User_Preference',
-                                'table'      => 'preferences_users',
-                                'foreignKey' => 'user_id',
-                                'otherKey'   => 'preference_id',
-                                'pivotKeys'  => array('value'),
-                                'orderBy'    => array('id', 'asc')),
-    );
 
     /********************************************************************
      * Setter methods
@@ -191,6 +167,25 @@ abstract class User extends BaseModel implements UserInterface, RemindableInterf
     /********************************************************************
      * Extra Methods
      *******************************************************************/
+    public function verifyPassword($input)
+    {
+        // Verify all the needed data exists and is correct
+        if ($input['oldPassword'] == null || !Hash::check($input['oldPassword'], $this->password)) {
+            throw new \Exception('Please enter your current password');
+        }
+        if ($input['newPassword'] == null) {
+            throw new \Exception('Please enter your new password');
+        }
+        if ($input['newPasswordAgain'] == null) {
+            throw new \Exception('Please confirm your new password');
+        }
+        if ($input['newPassword'] != $input['newPasswordAgain']) {
+            throw new \Exception('Your new passwords did not match.');
+        }
+
+        return true;
+    }
+
     public function getPreferenceValueByKeyName($preferenceKeyName)
     {
         $preference = \User_Preference::where('keyName', $preferenceKeyName)->first();
@@ -260,7 +255,9 @@ abstract class User extends BaseModel implements UserInterface, RemindableInterf
         if ($value != $preference->value) {
             $preference->value = $value;
 
-            $preference->save();
+            if (! $preference->save() ) {
+                throw new \Exception($preference->getErrors());
+            }
         }
     }
 
@@ -277,7 +274,9 @@ abstract class User extends BaseModel implements UserInterface, RemindableInterf
     /**
      * Check if a user has a permission
      *
-     * @param $keyName The keyname of the action you are checking
+     * @param mixed   $actions  The key name(s) of the action you are checking.
+     * @param boolean $matchAll Whether to match just one action or all actions.
+     *
      * @return bool
      */
     public function checkPermission($actions, $matchAll = false)
@@ -306,7 +305,9 @@ abstract class User extends BaseModel implements UserInterface, RemindableInterf
             }
 
             if ($matchedActions) {
-                if (count($actions) == $matchedActions) return true;
+                if (count($actions) == $matchedActions) {
+                    return true;
+                }
             }
         }
 
@@ -326,6 +327,7 @@ abstract class User extends BaseModel implements UserInterface, RemindableInterf
     {
         $roles   = Role::where('group', '=', $group)->get('id');
         $roleIds = array_pluck($roles, 'id');
+
         return Role_User::where('user_id', '=', $this->id)->whereIn('role_id', $roleIds)->first();
     }
 
@@ -339,7 +341,7 @@ abstract class User extends BaseModel implements UserInterface, RemindableInterf
     public function getHighestRoleObject($group)
     {
         // Get all user/role xrefs for this user
-        $roles   = $this->roles;
+        $roles = $this->roles;
 
         // If the user does not have the developer role
         if (!$roles->contains(\BaseModel::ROLE_DEVELOPER)) {
@@ -409,7 +411,7 @@ abstract class User extends BaseModel implements UserInterface, RemindableInterf
     {
         // Delete any roles the user has for this group
         $roleIdsForGroup = User_Permission_Role::where('group', $group)->get()->id->toArray();
-        $existingRoles = User_Permission_Role_User::where('user_id', $this->id)->whereIn('role_id', $roleIdsForGroup)->get();
+        $existingRoles   = User_Permission_Role_User::where('user_id', $this->id)->whereIn('role_id', $roleIdsForGroup)->get();
 
         $existingRoles->delete();
 
@@ -464,7 +466,7 @@ abstract class User extends BaseModel implements UserInterface, RemindableInterf
     /**
      * Is the User a Role
      *
-     * @param  array|string  $roles A single role or an array of roles
+     * @param  array|string $roles A single role or an array of roles
      *
      * @return boolean
      */
@@ -481,7 +483,7 @@ abstract class User extends BaseModel implements UserInterface, RemindableInterf
     /**
      * Is the User a Role (any true)
      *
-     * @param  array|string  $roles A single role or an array of roles
+     * @param  array|string $roles A single role or an array of roles
      *
      * @return boolean
      */
@@ -489,7 +491,7 @@ abstract class User extends BaseModel implements UserInterface, RemindableInterf
     {
         if (Auth::check()) {
             // If any role is in the user's roles, pass
-            return (bool) array_intersect( (array) $roles, (array) Session::get('roles') );
+            return (bool)array_intersect((array)$roles, (array)Session::get('roles'));
         }
 
         return false;

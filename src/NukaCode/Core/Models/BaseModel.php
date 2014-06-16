@@ -1,13 +1,47 @@
 <?php namespace NukaCode\Core\Models;
 
-use NukaCode\Core\Database\Ardent\Ardent;
+use Laracasts\Presenter\PresentableTrait;
+use Watson\Validating\ValidatingTrait;
 use NukaCode\Core\Database\Collection as Utility_Collection;
 
 class BaseModel extends \Illuminate\Database\Eloquent\Model {
 
+    use ValidatingTrait;
+    use PresentableTrait;
+
+    /**
+     * Whether the model should inject it's identifier to the unique
+     * validation rules before attempting validation.
+     *
+     * @var boolean
+     */
+    protected $injectIdentifier = true;
+
+    /**
+     * Whether the model should throw a ValidationException if it
+     * fails validation.
+     *
+     * @var boolean
+     */
+    protected $throwValidationExceptions = false;
+
+    /**
+     * Assign a presenter to use
+     *
+     * @var string
+     */
+    protected $presenter = null;
+
+    /**
+     * Assign as observer to use
+     *
+     * @var string
+     */
+    protected static $observer = null;
+
     /**
      * Make sure the uniqueId is always unique.
-     * 
+     *
      * @param string $model The model to search for the uniqueId on.
      *
      * @return string
@@ -101,14 +135,17 @@ class BaseModel extends \Illuminate\Database\Eloquent\Model {
         parent::boot();
 
         // Get the possible class names.
-        $class        = get_called_class();
+        $class = get_called_class();
 
         // If the class uses uniqueIds, make sure itis truly unique.
         if (self::testClassForUniqueId($class) == true) {
-            $class::creating(function($object) use ($class)
-            {
+            $class::creating(function ($object) use ($class) {
                 $object->uniqueId = parent::findExistingReferences($class);
             });
+        }
+
+        if (static::$observer != null) {
+            $class::observe(new static::$observer);
         }
     }
 

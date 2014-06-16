@@ -43,8 +43,7 @@ class CoreServiceProvider extends ServiceProvider {
      */
     protected function shareWithApp()
     {
-        $this->app['core'] = $this->app->share(function($app)
-        {
+        $this->app['core'] = $this->app->share(function ($app) {
             return true;
         });
     }
@@ -56,7 +55,7 @@ class CoreServiceProvider extends ServiceProvider {
      */
     protected function loadConfig()
     {
-        $this->app['config']->package('nukacode/core', __DIR__.'/../../config');
+        $this->app['config']->package('nukacode/core', __DIR__ . '/../../config');
     }
 
     /**
@@ -66,7 +65,7 @@ class CoreServiceProvider extends ServiceProvider {
      */
     protected function registerViews()
     {
-        $this->app['view']->addLocation(__DIR__.'/../../views');
+        $this->app['view']->addLocation(__DIR__ . '/../../views');
     }
 
     /**
@@ -77,9 +76,21 @@ class CoreServiceProvider extends ServiceProvider {
     protected function registerAliases()
     {
         $aliases = [
-            'HTML'               => 'NukaCode\Core\Facades\Html\HTML',
-            'CoreView'           => 'NukaCode\Core\Facades\View\View',
-            'Utility_Collection' => 'NukaCode\Core\Database\Collection',
+            'HTML'                        => 'NukaCode\Core\Facades\Html\HTML',
+            'bForm'                       => 'NukaCode\Core\Facades\Html\bForm',
+            'CoreView'                    => 'NukaCode\Core\Facades\View\View',
+            'Ajax'                        => 'NukaCode\Core\Facades\Requests\Ajax',
+            // Utilities
+            'Utility_Collection'          => 'NukaCode\Core\Database\Collection',
+            // Models
+            'User_Preference'             => 'NukaCode\Core\Models\User\Preference',
+            'User_Preference_User'        => 'NukaCode\Core\Models\User\Preference\User',
+            'User_Permission_Action'      => 'NukaCode\Core\Models\User\Permission\Action',
+            'User_Permission_Action_Role' => 'NukaCode\Core\Models\User\Permission\Action\Role',
+            'User_Permission_Role'        => 'NukaCode\Core\Models\User\Permission\Role',
+            'User_Permission_Role_User'   => 'NukaCode\Core\Models\User\Permission\Role\User',
+            'Seed'                        => 'NukaCode\Core\Models\Seed',
+            'Migration'                   => 'NukaCode\Core\Models\Migration',
         ];
 
         $appAliases = \Config::get('core::nonCoreAliases');

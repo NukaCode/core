@@ -1,40 +1,49 @@
 {
-	"name": "syntax/coreOld",
-	"description": "A coreOld set of features for laravel sites.",
-	"license": "MIT",
-	"authors": [
-		{
-			"name": "Stygian",
-			"email": "stygian.warlock.v2@gmail.com"
-		},
-		{
-			"name": "Riddles",
-			"email": "riddles@dev-toolbox.com"
-		}
-	],
-	"require": {
-		"php": ">=5.3.0",
-		"illuminate/support": ">=4.1.28",
-		"laravel/framework": ">=4.1.28",
-		"intervention/image": ">=1.6.3",
-		"mccool/laravel-auto-presenter": ">=1.0.0",
-		"anlutro/curl": ">=0.6.0",
-		"vespakoen/menu": ">=2.0.15"
-	},
-	"autoload": {
-		"classmap": [
-			"src/database/migrations",
-			"src/database/seeds",
-			"src/views"
-		],
-		"files": ["src/macros/Form.php"],
-		"psr-4": {
-			"NukaCode\\Core\\": "src/NukaCode/Core"
-		}
-	},
-	"extra": {
-		"branch-alias": {
-			"dev-master": "1.0-dev"
-		}
-	}
+    "name":        "nukacode/core",
+    "description": "A core set of features for laravel sites.",
+    "license":     "MIT",
+    "authors":     [
+        {
+            "name":  "Stygian",
+            "email": "stygian.warlock.v2@gmail.com"
+        },
+        {
+            "name":  "Riddles",
+            "email": "riddles@dev-toolbox.com"
+        }
+    ],
+    "require":     {
+        "laravel/framework":        "4.2.x-dev",
+        "intervention/image":       "2.0.2",
+        "anlutro/curl":             "0.6.0",
+        "doctrine/dbal":            "2.4.2",
+        "components/jquery":        "1.11.0",
+        "components/jqueryui":      "1.10.4",
+        "twitter/bootstrap":        "3.1.1",
+        "jasny/bootstrap":          "3.1.3",
+        "fortawesome/font-awesome": "4.1.0",
+        "laracasts/Presenter":      "0.1.4",
+        "symfony/http-foundation":  "2.5",
+        "watson/validating":        "0.7.8",
+        "tlr/menu":                 "2.2.0"
+    },
+    "require-dev": {
+        "way/generators":          "2.6.1",
+        "codeception/codeception": "2.0.0"
+    },
+    "autoload":    {
+        "classmap": [
+            "src/database/migrations",
+            "src/database/seeds",
+            "src/views"
+        ],
+        "psr-4":    {
+            "NukaCode\\Core\\": "src/NukaCode/Core"
+        }
+    },
+    "extra":       {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
 }

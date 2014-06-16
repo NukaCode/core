@@ -1,6 +1,5 @@
 <?php namespace NukaCode\Core\View;
 
-use Menu\Menu as MainMenu;
 use Illuminate\Config\Repository;
 use Illuminate\Session\SessionManager;
 use Illuminate\View\Factory;
@@ -9,34 +8,34 @@ class Menu {
 
     public $viewMenu;
 
-    protected $menu;
-
     protected $session;
 
     protected $config;
 
-    public function __construct(MainMenu $menu, SessionManager $session, Repository $config, Factory $view)
+    public function __construct(SessionManager $session, Repository $config, Factory $view)
     {
-        $this->menu    = $menu;
         $this->session = $session;
         $this->config  = $config;
         $this->view    = $view;
     }
 
-    public function setUp()
+    public function setUp($menu)
     {
         // Handle the different menus
-        $menu = $this->session->has('activeUser') ? $this->session->get('activeUser')->getPreferenceValueByKeyName('SITE_MENU') : $this->config->get('core::menu');
+        $menuOption = $this->session->has('activeUser') ? $this->session->get('activeUser')->getPreferenceValueByKeyName('SITE_MENU') : $this->config->get('core::menu');
 
-        if (method_exists($this, $menu)) {
-            $this->{$menu}();
+        $menuViewPath = 'layouts.menus.'. $menuOption;
 
-            $this->view->share('menu', $menu);
-
-            return $this;
+        if (!$this->view->exists($menuViewPath)) {
+            throw new \InvalidArgumentException("Unknown menu [$menuOption] passed.");
         }
 
-        throw new \InvalidArgumentException("Unknown menu [$menu] passed.");
+        $this->viewMenu = $menu;
+        $this->viewMenu->setView($menuViewPath);
+
+        $this->view->share('menuItems', $this->viewMenu);
+
+        // ppd($this->viewMenu);
     }
 
     public function twitter()
@@ -64,27 +63,6 @@ class Menu {
                         $item->getContent()->value($item->getContent()->getValue() . ' <b class="caret"></b>');
                     }
                     $item->getChildren()->addClass('dropdown-menu');
-                }
-            });
-    }
-
-    public function utopian()
-    {
-        // Set the menu to utopian's style
-        MainMenu::handler('main')->id('utopian-navigation')->addClass('black utopian');
-        MainMenu::handler('mainRight')->id('utopian-navigation')->addClass('black utopian');
-
-        // Handle children
-        MainMenu::handler('main')->getItemsByContentType('Menu\Items\Contents\Link')
-            ->map(function ($item) {
-                if ($item->hasChildren()) {
-                    $item->addClass('dropdown');
-                }
-            });
-        MainMenu::handler('mainRight')->getItemsByContentType('Menu\Items\Contents\Link')
-            ->map(function ($item) {
-                if ($item->hasChildren()) {
-                    $item->addClass('dropdown');
                 }
             });
     }

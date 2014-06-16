@@ -1,12 +1,10 @@
 <?php namespace NukaCode\Core\View;
 
-use NukaCode\Core\View\Layout;
-use NukaCode\Core\View\Path;
-use NukaCode\Core\View\Menu;
+use Illuminate\View\Factory;
 
 class View {
 
-    public $layout;
+    public    $layout;
 
     protected $viewLayout;
 
@@ -14,18 +12,26 @@ class View {
 
     protected $viewMenu;
 
-    public function __construct(Layout $viewLayout, Path $viewPath, Menu $viewMenu)
+    protected $view;
+
+    public function __construct(Layout $viewLayout, Path $viewPath, Menu $viewMenu, Factory $view)
     {
         $this->viewLayout = $viewLayout;
-        $this->viewPath = $viewPath;
-        $this->viewMenu = $viewMenu;
+        $this->viewPath   = $viewPath;
+        $this->viewMenu   = $viewMenu;
+        $this->view       = $view;
     }
 
-    public function setUp()
+    public function setUp($menu)
     {
         $this->layout = $this->viewLayout->setUp();
         $this->viewPath->setUp($this->layout->layout);
-        $this->viewMenu->setUp();
+        $this->viewMenu->setUp($menu);
+    }
+
+    public function setMenu($menu)
+    {
+        $this->viewMenu->setUp($menu);
     }
 
     public function getLayout()
@@ -43,5 +49,19 @@ class View {
     public function setViewPath($view)
     {
         $this->viewPath->setUp($this->layout->layout, $view);
+
+        return $this;
+    }
+
+    public function addData($key, $value)
+    {
+        $this->view->share($key, $value);
+
+        return $this;
+    }
+
+    public function getPath()
+    {
+        return $this->viewPath->path;
     }
 }

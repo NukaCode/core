@@ -1,6 +1,6 @@
-<?php namespace NukaCode\Core\Services;
+<?php namespace NukaCode\Core\Console;
 
-class SSHCommands {
+class SSH {
 
     public function runCommands(array $commands)
     {
@@ -20,7 +20,7 @@ class SSHCommands {
                 $directory = 'app/assets/less';
                 break;
             case 'vendor':
-                $directory = 'vendor/nukacode/coreOld/assets/less';
+                $directory = 'vendor/nukacode/core/assets/less';
                 break;
             default:
                 throw new \NukaCode\Core\Exceptions\Theme\InvalidConfig($location);
@@ -54,37 +54,6 @@ class SSHCommands {
             'cd ' . base_path(),
             'composer require nukacode/' . $package . ':dev-master',
             'php artisan config:publish nukacode/' . $package
-        ];
-
-        $this->runCommands($commands);
-    }
-
-    public function publicPermissions()
-    {
-        $commands = [
-            'cd ' . base_path(),
-            'chmod 755 public',
-            'chmod 755 public/index.php'
-        ];
-
-        $this->runCommands($commands);
-    }
-
-    public function installGulpDependencies()
-    {
-        $commands = [
-            'cd ' . base_path(),
-            'npm install --save-dev gulp gulp-autoprefixer gulp-util gulp-notify gulp-minify-css gulp-uglify gulp-less gulp-rename gulp-concat'
-        ];
-
-        $this->runCommands($commands);
-    }
-
-    public function runGulpInstallTask()
-    {
-        $commands = [
-            'cd ' . base_path(),
-            'gulp install'
         ];
 
         $this->runCommands($commands);

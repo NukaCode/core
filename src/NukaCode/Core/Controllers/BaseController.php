@@ -4,7 +4,9 @@ use Illuminate\Routing\Controller;
 use Auth;
 use CoreView;
 use Session;
+use Str;
 use View;
+use Event;
 
 class BaseController extends Controller {
 
@@ -12,20 +14,22 @@ class BaseController extends Controller {
 
     protected $layout;
 
+    public    $menu;
+
     /**
      * Create a new Controller instance.
      * Assigns the active user
      */
     public function __construct()
     {
+        // Set up the active user
+        $this->setActiveUser();
+
         // Set up the menu
         $this->getMenu();
 
         // Set up the layout and the initial view
-        CoreView::setUp();
-
-        // Set up the actve user
-        $this->setActiveUser();
+        CoreView::setUp($this->menu);
     }
 
     /**
@@ -54,7 +58,56 @@ class BaseController extends Controller {
         View::share('activeUser', $this->activeUser);
     }
 
+    /********************************************************************
+     * Permissions
+     *******************************************************************/
+    public function hasRole($roles)
+    {
+        if (Auth::check()) {
+            if ($this->activeUser->is('DEVELOPER')) {
+                return true;
+            }
+            $access = $this->activeUser->is($roles);
+
+            if ($access === true) {
+                return true;
+            }
+        }
+        Session::put('pre_login_url', Request::path());
+
+        return false;
+    }
+
+    public function checkPermission($actionKeyName)
+    {
+        $check = $this->hasPermission($actionKeyName);
+
+        if ($check == false) {
+            $this->errorRedirect();
+        }
+    }
+
+    public function hasPermission($permissions)
+    {
+        if (Auth::check()) {
+            $access = $this->activeUser->checkPermission($permissions);
+
+            if ($access === true) {
+                return true;
+            }
+        }
+        Session::put('pre_login_url', Request::path());
+
+        return false;
+    }
+
     // Sugar Methods
+    // Views
+    public function setViewData($key, $value)
+    {
+        View::share($key, $value);
+    }
+
     public function setViewPath($view)
     {
         CoreView::setViewPath($view);
@@ -68,5 +121,37 @@ class BaseController extends Controller {
     public function missingMethod($parameters = array())
     {
         CoreView::missingMethod($parameters);
+    }
+
+    // Menus
+    protected function addItemToMenu($node, $title, $link, $index, $key)
+    {
+        $nodeKey = $key == null ? Str::camel($title) : $key;
+        $node->item($nodeKey, $title, $link, [], $index);
+    }
+
+    public function addMenuItem($title, $link, $index = null, $key = null)
+    {
+        $this->addItemToMenu($this->menu, $title, $link, $index, $key);
+    }
+
+    public function addSubMenuItem($parentKey, $title, $link, $index = null, $key = null)
+    {
+        $parent = $this->menu->item($parentKey);
+        $this->addItemToMenu($parent, $title, $link, $index, $key);
+    }
+
+    public function addRightMenuItem($title, $link, $index = null, $key = null)
+    {
+        $right = $this->menu->item('right');
+        $this->addItemToMenu($right, $title, $link, $index, $key);
+    }
+
+    public function addRightSubMenuItem($parentKey, $title, $link, $index = null, $key = null)
+    {
+        $right  = $this->menu->item('right');
+        $parent = $right->item($parentKey);
+
+        $this->addItemToMenu($parent, $title, $link, $index, $key);
     }
 }
