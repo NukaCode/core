@@ -1,5 +1,7 @@
 <?php namespace NukaCode\Core;
 
+use Artisan;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider {
@@ -34,6 +36,7 @@ class CoreServiceProvider extends ServiceProvider {
         $this->loadConfig();
         $this->registerViews();
         $this->registerAliases();
+        $this->registerArtisan();
     }
 
     /**
@@ -105,6 +108,25 @@ class CoreServiceProvider extends ServiceProvider {
                 $loader->alias($alias, $class);
             }
         }
+    }
+
+    public function registerArtisan()
+    {
+        $this->app->bind('nukacode::command.version.core', function ($app) {
+            return $app->make('NukaCode\Core\Commands\VersionCommand');
+        });
+        $this->app->bind('nukacode::command.theme', function ($app) {
+            return $app->make('NukaCode\Core\Commands\ThemeCommand');
+        });
+        $this->app->bind('nukacode::command.database', function ($app) {
+            return $app->make('NukaCode\Core\Commands\DatabaseCommand');
+        });
+
+        $this->commands([
+            'nukacode::command.version.core',
+            'nukacode::command.theme',
+            'nukacode::command.database',
+        ]);
     }
 
     /**

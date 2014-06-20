@@ -37,12 +37,18 @@ Route::group(['before' => 'auth'], function () {
 });
 
 /********************************************************************
+ * Data Tables
+ *******************************************************************/
+Route::group(['prefix' => 'datatable', 'before' => 'auth'], function () {
+    Route::get('users', ['as' => 'datatable.users',  'uses' => 'NukaCode\Core\Controllers\UserController@getDatatable']);
+});
+
+/********************************************************************
  * Access to the dev panels
  *******************************************************************/
 Route::group(['prefix' => 'admin', 'before' => 'auth|permission:SITE_ADMIN'], function () {
-    Route::controller('users', 'NukaCode\Core\Controllers\Admin\UserController');
+    Route::controller('user', 'NukaCode\Core\Controllers\Admin\UserController');
+    Route::controller('site', 'NukaCode\Core\Controllers\Admin\SiteController');
 });
 
-Route::group(['before' => 'auth|permission:SITE_ADMIN'], function () {
-    Route::controller('admin', 'NukaCode\Core\Controllers\AdminController');
-});
+Route::get('admin', ['before' => 'auth|permission:SITE_ADMIN', 'uses' => 'NukaCode\Core\Controllers\AdminController@getIndex']);

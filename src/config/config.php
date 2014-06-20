@@ -9,7 +9,7 @@ return array(
 	|
 	| The current version of NukaCode\Core the site is using
 	*/
-	'version' => '2.0.0',
+	'version' => '1.0.0',
 
     /*
     |--------------------------------------------------------------------------
@@ -23,23 +23,6 @@ return array(
 
     'siteName' => 'YOUR_SITE',
     'siteIcon' => null,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Site Theme
-    |--------------------------------------------------------------------------
-    |
-    | The site theme is used to overload the coreOld changes to bootstrap.
-    | The available themes are located in nukacode/coreOld/assets/less/themes.
-    | You can also make your own in app/assets/less/themes.  Dark is provided
-    | as an example.  Use 'default' if you want to use the base style.  Set
-    | src to local to use files in app or vendor to use the files from coreOld.
-    |
-    */
-    'theme'     => [
-        'style' => 'dark',
-        'src'   => 'vendor'
-    ],
 
 	/*
 	|--------------------------------------------------------------------------

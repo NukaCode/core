@@ -8,9 +8,11 @@
             <h3><i class="fa fa-2x {{ $icon }}"></i></h3>
         </div>
     </div>
-    <div class="row bar">
-        <div class="col-md-12">
-            <a href="{{ $editLink or 'javascript:void(0);' }}">{{ $editText or 'Customize' }}</a>
+    @if (!isset($editText) || $editText != null)
+        <div class="row bar">
+            <div class="col-md-12">
+                <a href="{{ $editLink or 'javascript:void(0);' }}">{{ $editText or 'Customize' }}</a>
+            </div>
         </div>
-    </div>
+    @endif
 </div>

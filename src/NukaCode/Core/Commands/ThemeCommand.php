@@ -3,6 +3,7 @@
 use Illuminate\Config\Repository;
 use Illuminate\Console\Command;
 use NukaCode\Core\Console\SSH;
+use NukaCode\Core\Console\Theme;
 
 class ThemeCommand extends Command {
 
@@ -34,6 +35,8 @@ class ThemeCommand extends Command {
      */
     protected $ssh;
 
+    protected $theme;
+
     /**
      * The config repo
      *
@@ -44,12 +47,13 @@ class ThemeCommand extends Command {
     /**
      * Create a new command instance.
      */
-    public function __construct(SSH $ssh, Repository $config)
+    public function __construct(SSH $ssh, Repository $config, Theme $theme)
     {
         parent::__construct();
 
         $this->ssh    = $ssh;
         $this->config = $config;
+        $this->theme  = $theme;
         $this->stream = fopen('php://output', 'w');
     }
 
@@ -62,10 +66,11 @@ class ThemeCommand extends Command {
     {
         $this->comment('Creating your theme...');
 
-        $theme    = $this->config->get('core::theme.style');
-        $location = $this->config->get('core::theme.src');
+        $theme    = $this->config->get('core::theme.theme.style');
+        $location = $this->config->get('core::theme.theme.src');
 
-        $this->ssh->generateTheme($theme, $location);
+        $commands = $this->theme->generateTheme($theme, $location);
+        $this->ssh->runCommands($commands);
 
         $this->comment('Finished creating theme.');
     }

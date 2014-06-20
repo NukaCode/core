@@ -6,6 +6,7 @@ use NukaCode\Core\Repositories\Contracts\UserRepositoryInterface;
 use NukaCode\Core\Requests\Ajax;
 use NukaCode\Core\Servicing\LeftTab;
 use NukaCode\Core\View\View;
+use Datatable;
 
 class UserController extends \BaseController {
 
@@ -39,6 +40,18 @@ class UserController extends \BaseController {
         $this->input    = $input;
         $this->ajax     = $ajax;
         $this->coreView = $coreView;
+    }
+
+    public function getDatatable()
+    {
+        $dataTable = Datatable::
+            collection(\User::all(array('username', 'email')))
+                ->showColumns('username', 'email')
+                ->searchColumns('username')
+                ->orderColumns('username', 'email')
+            ->make();
+
+        return $dataTable;
     }
 
     public function getMemberlist()

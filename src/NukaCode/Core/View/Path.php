@@ -76,6 +76,13 @@ class Path {
 
         $view          = $method .'.'. $action;
 
+        // Check for a route prefix
+        $prefix = $this->route->getCurrentRoute()->getPrefix();
+
+        if (! is_null($prefix)) {
+            $view = $prefix .'.'. $view;
+        }
+
         return $view;
     }
 

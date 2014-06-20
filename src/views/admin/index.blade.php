@@ -85,7 +85,7 @@
     <div class="row">
         <div class="col-md-2">
             <ul class="list-group">
-                <li class="list-group-item active"><a class="ajaxLink" id="site" data-location="admin/site">Site</a></li>
+                <li class="list-group-item"><a class="ajaxLink" id="site" data-location="admin/site">Site</a></li>
                 <li class="list-group-item"><a class="ajaxLink" id="users" data-location="admin/user">Users</a></li>
             </ul>
         </div>
