@@ -30,7 +30,7 @@ class HtmlBuilder extends BaseHtmlBuilder {
 
 	public function editButton ($url, $btnClass = 'primary')
 	{
-		return $this->ink($url, 'Edit', array('class' => 'btn btn-xs btn-'. $btnClass));
+		return $this->link($url, 'Edit', array('class' => 'btn btn-xs btn-'. $btnClass));
 	}
 
 	public function deleteButton ($url, $btnClass = 'danger')

@@ -1,5 +1,4 @@
-<?php
-namespace NukaCode\Core\Models;
+<?php namespace NukaCode\Core\Models;
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;

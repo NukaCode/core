@@ -2,16 +2,17 @@
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Validation\Factory;
+use NukaCode\Core\Filesystem\Core;
 
-class Package {
+class Package extends Core {
 
-    private $file;
+    protected $file;
 
-    private $validator;
+    protected $validator;
 
-    private $config;
+    protected $config;
 
-    private $rules = [
+    protected $rules = [
         'packageName' => 'required',
         'version'     => 'required',
         'color'       => 'required',
@@ -63,18 +64,5 @@ class Package {
 
         $this->file->delete($this->config);
         $this->file->put($this->config, implode($lines));
-    }
-
-    protected function verifyCommand($package)
-    {
-        $validator = $this->validator->make((array)$package, $this->rules);
-
-        if ($validator->fails()) {
-            $messages = $validator->messages();
-
-            foreach ($messages->all() as $message) {
-                throw new \InvalidArgumentException($message);
-            }
-        }
     }
 }

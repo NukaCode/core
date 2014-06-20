@@ -4,8 +4,8 @@ use NukaCode\Core\Presenters\CorePresenter;
 
 class PreferencePresenter extends CorePresenter {
 
-	public function hidden()
-	{
-		return $this->hiddenFlag == 1 ? 'Hidden' : null;
-	}
+    public function hidden()
+    {
+        return $this->hiddenFlag == 1 ? 'Hidden' : null;
+    }
 }

@@ -4,35 +4,35 @@ use Laracasts\Presenter\Presenter;
 
 class CorePresenter extends Presenter {
 
-	/**
-	 * Make the last active date easier to read
-	 *
-	 * @return string
-	 */
-	public function createdAtReadable()
-	{
-		return $this->created_at->format('F jS, Y \a\t h:ia');
-	}
+    /**
+     * Make the last active date easier to read
+     *
+     * @return string
+     */
+    public function createdAtReadable()
+    {
+        return $this->created_at->format('F jS, Y \a\t h:ia');
+    }
 
-	/**
-	 * Strip slashes from any name
-	 *
-	 * @return string
-	 */
-	public function name()
-	{
-		return stripslashes($this->name);
-	}
+    /**
+     * Strip slashes from any name
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return stripslashes($this->name);
+    }
 
-	public function hidden()
-	{
-		return $this->hiddenFlag == 1 ? 'Hidden' : null;
-	}
+    public function hidden()
+    {
+        return $this->hiddenFlag == 1 ? 'Hidden' : null;
+    }
 
-	public function active()
-	{
-		return $this->hiddenFlag == 1 ? 'Hidden' : null;
-	}
+    public function active()
+    {
+        return $this->hiddenFlag == 1 ? 'Hidden' : null;
+    }
 
     /**
      * Allow for property-style retrieval

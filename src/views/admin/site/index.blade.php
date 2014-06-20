@@ -15,24 +15,24 @@
             </div>
         </div>
     </div>
-    @foreach ($packages as $package => $details)
-        <div class="col-md-2 box box-{{ $details['color'] }}">
-            <div class="row">
-                <div class="col-md-8">
-                    <h3>{{ $details['version'] }}</h3>
-                    <h4 class="title">{{ $package }}</h4>
-                </div>
-                <div class="col-md-4">
-                    <h3><i class="fa fa-2x {{ $details['icon'] }}"></i></h3>
-                </div>
+    <div class="col-md-2 box box-laravel">
+        <div class="row">
+            <div class="col-md-8">
+                <h3>{{ $laravelVersion }}</h3>
+                <h4 class="title">Laravel</h4>
             </div>
-            <div class="row bar">
-                <div class="col-md-12">
-                    <a href="http://packagist.org/packages/nukacode/{{ $package }}" target="_blank">Packagist</a>
-                </div>
+            <div class="col-md-4">
+                <h3><i class="fa fa-2x fa-code"></i></h3>
             </div>
         </div>
-    @endforeach
+        <div class="row bar">
+            <div class="col-md-12">
+                <a href="http://packagist.org/packages/laravel/framework" target="_blank">Packagist</a>
+                &nbsp;|&nbsp;
+                <a href="http://laravel.com/docs" target="_blank">Documentation</a>
+            </div>
+        </div>
+    </div>
 </div>
 <hr />
 <div class="row">

@@ -36,7 +36,7 @@ class CoreServiceProvider extends ServiceProvider {
         $this->loadConfig();
         $this->registerViews();
         $this->registerAliases();
-        $this->registerArtisan();
+        $this->registerArtisanCommands();
     }
 
     /**
@@ -79,6 +79,7 @@ class CoreServiceProvider extends ServiceProvider {
     protected function registerAliases()
     {
         $aliases = [
+            // Facades
             'HTML'                        => 'NukaCode\Core\Facades\Html\HTML',
             'bForm'                       => 'NukaCode\Core\Facades\Html\bForm',
             'CoreView'                    => 'NukaCode\Core\Facades\View\View',
@@ -110,7 +111,7 @@ class CoreServiceProvider extends ServiceProvider {
         }
     }
 
-    public function registerArtisan()
+    public function registerArtisanCommands()
     {
         $this->app->bind('nukacode::command.version.core', function ($app) {
             return $app->make('NukaCode\Core\Commands\VersionCommand');

@@ -2,8 +2,8 @@
 
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Redirector;
 use Illuminate\Session\SessionManager;
+use NukaCode\Core\Repositories\Contracts\UserRepositoryInterface;
 
 class SessionController extends \BaseController {
 
@@ -13,27 +13,18 @@ class SessionController extends \BaseController {
     private $auth;
 
     /**
-     * @var \Illuminate\Http\Request
-     */
-    private $input;
-
-    /**
-     * @var \Illuminate\Routing\Redirector
-     */
-    private $redirect;
-
-    /**
      * @var \Illuminate\Session\SessionManager
      */
     private $session;
 
-    public function __construct(AuthManager $auth, Request $input, Redirector $redirect, SessionManager $session)
+    private $user;
+
+    public function __construct(AuthManager $auth, SessionManager $session, UserRepositoryInterface $user)
     {
         parent::__construct();
         $this->auth     = $auth;
-        $this->input    = $input;
-        $this->redirect = $redirect;
         $this->session  = $session;
+        $this->user     = $user;
     }
 
     public function getLogin() {}
@@ -58,22 +49,22 @@ class SessionController extends \BaseController {
 
     public function postRegister()
     {
-        $input = e_array(Input::all());
+        $input = e_array($this->input->all());
 
         if ($input != null) {
-            $user            = new User;
-            $user->username  = $input['username'];
-            $user->password  = $input['password'];
-            $user->email     = $input['email'];
-            $user->status_id = 1;
+            $result = $this->user->create($input);
 
-            $this->checkErrorsSave($user);
+            if ($result !== true) {
+                $this->redirect->to('/register')->with('errors', $result);
+            }
 
             // Assign the guest role
-            $user->roles()->attach(BaseModel::ROLE_GUEST);
+            $this->user->entity->roles()->attach($this->config->get('core::roles.guest'));
         }
 
-        return $this->redirect('/');
+        $this->auth->login($this->user->entity);
+
+        return $this->redirect->to('/');
     }
 
     public function getCollapse($target)

@@ -51,7 +51,9 @@ class UserRepository extends CoreRepository implements UserRepositoryInterface {
 
         $this->entity = $user;
 
-        $this->save();
+        $result = $this->save();
+
+        return $result;
     }
 
     /**

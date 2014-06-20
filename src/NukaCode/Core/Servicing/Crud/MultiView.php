@@ -4,50 +4,50 @@ use HTML;
 
 class MultiView {
 
-	public $crud;
+    public $crud;
 
-	public $rootColumn;
+    public $rootColumn;
 
-	public $multiColumn;
+    public $multiColumn;
 
-	public function __construct($crud)
-	{
-		$this->crud = $crud;
-		$this->rootColumn = new \stdClass();
-		$this->multiColumn = new \stdClass();
-	}
+    public function __construct($crud)
+    {
+        $this->crud = $crud;
+        $this->rootColumn = new \stdClass();
+        $this->multiColumn = new \stdClass();
+    }
 
-	public function addRootColumn($title, $collection, $name, $field, $selectArray)
-	{
-		$this->rootColumn->title = $title;
-		$this->rootColumn->collection = $collection;
-		$this->rootColumn->name = $name;
-		$this->rootColumn->field = $field;
+    public function addRootColumn($title, $collection, $name, $field, $selectArray)
+    {
+        $this->rootColumn->title = $title;
+        $this->rootColumn->collection = $collection;
+        $this->rootColumn->name = $name;
+        $this->rootColumn->field = $field;
 
-		$this->crud->addFormField($field, 'select', $selectArray);
+        $this->crud->addFormField($field, 'select', $selectArray);
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function addMultiColumn($title, $property, $name, $field, $selectArray)
-	{
-		$this->multiColumn->title = $title;
-		$this->multiColumn->property = $property;
-		$this->multiColumn->name = $name;
-		$this->multiColumn->field = $field;
+    public function addMultiColumn($title, $property, $name, $field, $selectArray)
+    {
+        $this->multiColumn->title = $title;
+        $this->multiColumn->property = $property;
+        $this->multiColumn->name = $name;
+        $this->multiColumn->field = $field;
 
-		$this->crud->addFormField($field, 'multiselect', $selectArray);
+        $this->crud->addFormField($field, 'multiselect', $selectArray);
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function finish()
-	{
-		$crud = $this->crud;
-		unset($this->crud);
+    public function finish()
+    {
+        $crud = $this->crud;
+        unset($this->crud);
 
-		$crud->multiView = $this;
+        $crud->multiView = $this;
 
-		return $crud;
-	}
+        return $crud;
+    }
 }

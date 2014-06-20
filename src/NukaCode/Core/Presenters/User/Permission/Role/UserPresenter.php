@@ -4,13 +4,13 @@ use NukaCode\Core\Presenters\CorePresenter;
 
 class UserPresenter extends CorePresenter {
 
-	public function username()
-	{
-		return ucwords($this->user->username);
-	}
+    public function username()
+    {
+        return ucwords($this->user->username);
+    }
 
-	public function roleName()
-	{
-		return ucwords($this->role->name);
-	}
+    public function roleName()
+    {
+        return ucwords($this->role->name);
+    }
 }

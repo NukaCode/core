@@ -1,12 +1,9 @@
 <?php namespace NukaCode\Core\Controllers;
 
-use Illuminate\Http\Request;
-use Input;
 use NukaCode\Core\Repositories\Contracts\UserRepositoryInterface;
 use NukaCode\Core\Requests\Ajax;
 use NukaCode\Core\Servicing\LeftTab;
 use NukaCode\Core\View\View;
-use Datatable;
 
 class UserController extends \BaseController {
 
@@ -18,11 +15,6 @@ class UserController extends \BaseController {
     private $leftTab;
 
     /**
-     * @var \Illuminate\Http\Request
-     */
-    private $input;
-
-    /**
      * @var \NukaCode\Core\Requests\Ajax
      */
     private $ajax;
@@ -32,12 +24,11 @@ class UserController extends \BaseController {
      */
     private $coreView;
 
-    public function __construct(UserRepositoryInterface $user, LeftTab $leftTab, Request $input, Ajax $ajax, View $coreView)
+    public function __construct(UserRepositoryInterface $user, LeftTab $leftTab, Ajax $ajax, View $coreView)
     {
         parent::__construct();
         $this->user     = $user;
         $this->leftTab  = $leftTab;
-        $this->input    = $input;
         $this->ajax     = $ajax;
         $this->coreView = $coreView;
     }

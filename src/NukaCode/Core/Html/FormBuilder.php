@@ -1,9 +1,19 @@
 <?php namespace NukaCode\Core\Html;
 
-use HTML;
-use Form;
+use Illuminate\Html\HtmlBuilder;
+use Illuminate\Html\FormBuilder as BaseFormBuilder;
+use Illuminate\Http\Request;
+use Illuminate\View\Factory;
 
 class FormBuilder {
+
+	protected $html;
+
+	protected $form;
+
+	protected $request;
+
+	protected $view;
 
 	public $labelSize = 2;
 
@@ -19,6 +29,14 @@ class FormBuilder {
 		'horizontal' => 'form-horizontal',
 	];
 
+	public function __construct(HtmlBuilder $html, BaseFormBuilder $form, Request $request, Factory $view)
+	{
+		$this->html    = $html;
+		$this->form    = $form;
+		$this->request = $request;
+		$this->view    = $view;
+	}
+
 	public function get()
 	{
 		return $this;
@@ -27,7 +45,7 @@ class FormBuilder {
 	public function setType($type)
 	{
 		if (!array_key_exists($type, $this->allowedTypes)) {
-			throw new Exception('Form type not allowed.');
+			throw new \InvalidArgumentException('Form type not allowed.');
 		}
 
 		$this->type = $type;
@@ -67,7 +85,7 @@ class FormBuilder {
 			}
 		}
 
-		return Form::open($options);
+		return $this->form->open($options);
 	}
 
 	public function ajaxForm($formId, $message)
@@ -81,11 +99,11 @@ class FormBuilder {
 
 	protected function addToSection($section, $data)
 	{
-		if (!array_key_exists($section .'Form', \View::getSections())) {
+		if (!array_key_exists($section .'Form', $this->view->getSections())) {
 			$data = "@parent ". $data;
 		}
 
-		\View::inject($section .'Form', $data);
+		$this->view->inject($section .'Form', $data);
 	}
 
 	protected function setAjaxFormRequirements($message)
@@ -93,7 +111,7 @@ class FormBuilder {
 		$this->addToSection('js', '
 <script>
 	$(\'#'. $this->formId .'\').AjaxSubmit({
-		path:\'/'. \Request::path() .'\',
+		path:\'/'. $this->request->path() .'\',
 		successMessage:\''. $message .'\'
 	});
 </script>
@@ -102,7 +120,7 @@ class FormBuilder {
 
 	public function close()
 	{
-		return Form::close();
+		return $this->form->close();
 	}
 
 	public function setUpLabel($name, $text)
@@ -131,7 +149,7 @@ class FormBuilder {
 		// Set up the attributes
 		$attributes = $this->verifyAttributes('text', $attributes);
 
-		return Form::hidden($name, $value, $attributes);
+		return $this->form->hidden($name, $value, $attributes);
 	}
 
 	public function date($name, $value, $attributes = array(), $label = null)
@@ -140,7 +158,7 @@ class FormBuilder {
 		$attributes = $this->verifyAttributes('date', $attributes);
 
 		// Create the default input
-		$input = Form::input('date', $name, $value, $attributes);
+		$input = $this->form->input('date', $name, $value, $attributes);
 
 		return $this->createOutput($name, $label, $input);
 	}
@@ -151,7 +169,7 @@ class FormBuilder {
 		$attributes = $this->verifyAttributes('text', $attributes);
 
 		// Create the default input
-		$input = Form::text($name, $value, $attributes);
+		$input = $this->form->text($name, $value, $attributes);
 
 		return $this->createOutput($name, $label, $input);
 	}
@@ -162,7 +180,7 @@ class FormBuilder {
 		$attributes = $this->verifyAttributes('textarea', $attributes);
 
 		// Create the default input
-		$input = Form::textarea($name, $value, $attributes);
+		$input = $this->form->textarea($name, $value, $attributes);
 
 		return $this->createOutput($name, $label, $input);
 	}
@@ -173,7 +191,7 @@ class FormBuilder {
 		$attributes = $this->verifyAttributes('email', $attributes);
 
 		// Create the default input
-		$input = Form::email($name, $value, $attributes);
+		$input = $this->form->email($name, $value, $attributes);
 
 		return $this->createOutput($name, $label, $input);
 	}
@@ -184,7 +202,7 @@ class FormBuilder {
 		$attributes = $this->verifyAttributes('password', $attributes);
 
 		// Create the default input
-		$input = Form::password($name, $attributes);
+		$input = $this->form->password($name, $attributes);
 
 		return $this->createOutput($name, $label, $input);
 	}
@@ -194,7 +212,7 @@ class FormBuilder {
 		return '
 		<div class="checkbox">
 			<label>'.
-				Form::checkbox($name, $value, $checked, $attributes) .' '. $label
+				$this->form->checkbox($name, $value, $checked, $attributes) .' '. $label
 			.'</label>
 		</div>
 		';
@@ -203,7 +221,7 @@ class FormBuilder {
 	public function checkbox($name, $value, $checked = false, $attributes = array(), $label = null)
 	{
 		// Create the default input
-		$input = Form::checkbox($name, $value, $checked);
+		$input = $this->form->checkbox($name, $value, $checked);
 
 		switch ($this->type) {
 			case 'horizontal':
@@ -227,7 +245,7 @@ class FormBuilder {
 		$attributes = $this->verifyAttributes('select', $attributes);
 
 		// Create the default input
-		$input = Form::select($name, $optionsArray, $selected, $attributes);
+		$input = $this->form->select($name, $optionsArray, $selected, $attributes);
 
 		return $this->createOutput($name, $label, $input);
 	}
@@ -241,7 +259,7 @@ class FormBuilder {
 		$label = $this->setUpLabel($name, $label);
 
 		// Create the default input
-		$input = Form::text($name, $value, $attributes);
+		$input = $this->form->text($name, $value, $attributes);
 
 		$this->setColorRequirements();
 
@@ -264,8 +282,8 @@ class FormBuilder {
 		static $exists = false;
 
 		if (!$exists) {
-			$this->addToSection('css', HTML::style('vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css'));
-			$this->addToSection('jsInclude', HTML::script('vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js'));
+			$this->addToSection('css', $this->html->style('vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css'));
+			$this->addToSection('jsInclude', $this->html->script('vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js'));
 			$this->addToSection('onReadyJs', '
 $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 	$(\'#colorPreview\'+ $(this).attr(\'name\')).css(\'background-color\', ev.color.toHex());
@@ -287,7 +305,7 @@ $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 		$label = $this->setUpLabel($name, $label);
 
 		// Create the default input
-		$input = Form::file($name);
+		$input = $this->form->file($name);
 
 		$this->setImageRequirements();
 
@@ -322,8 +340,8 @@ $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 		static $exists = false;
 
 		if (!$exists) {
-			$this->addToSection('jsInclude', HTML::script('vendor/jansyBootstrap/dist/extend/js/jasny-bootstrap.min.js'));
-			$this->addToSection('css', HTML::style('vendor/jansyBootstrap/dist/extend/css/jasny-bootstrap.min.css'));
+			$this->addToSection('jsInclude', $this->html->script('vendor/jansyBootstrap/dist/extend/js/jasny-bootstrap.min.js'));
+			$this->addToSection('css', $this->html->style('vendor/jansyBootstrap/dist/extend/css/jasny-bootstrap.min.css'));
 
 			$exists = true;
 		}
@@ -337,7 +355,7 @@ $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 
 		return '<div class="form-group">'.
 			$this->getSubmitWrapperOpen() .
-				Form::submit($value, $parameters) .
+				$this->form->submit($value, $parameters) .
 			$this->getInputWrapperClose()
 		.'</div>';
 	}
@@ -353,7 +371,7 @@ $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 
 		return '<div class="form-group">'.
 			$this->getSubmitWrapperOpen() .
-				Form::submit($value, $parameters) .
+				$this->form->submit($value, $parameters) .
 			$this->getInputWrapperClose()
 		.'</div>';
 	}
@@ -363,8 +381,8 @@ $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 		return '<div class="form-group">'.
 			$this->getSubmitWrapperOpen()
 				.'<div class="btn-group">'.
-					Form::submit($submitValue, $submitParameters).
-					Form::reset($resetValue, $resetParameters)
+					$this->form->submit($submitValue, $submitParameters).
+					$this->form->reset($resetValue, $resetParameters)
 				.'</div>'.
 			$this->getInputWrapperClose()
 		.'</div>';

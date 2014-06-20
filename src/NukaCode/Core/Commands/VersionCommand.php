@@ -19,7 +19,7 @@ class VersionCommand extends Command {
      */
     protected $description = 'Update your app\'s version information for core';
 
-    // public $packageName = 'core';
+    public $packageName = 'core';
 
     public $version     = '1.0.0';
 

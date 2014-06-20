@@ -37,9 +37,13 @@ abstract class CoreRepository {
             foreach ($this->entity->getErrors()->all() as $key => $message) {
                 $this->ajax->addError($key, $message);
             }
+
+            return $this->entity->getErrors()->all();
         } else {
             $this->ajax->setStatus('success');
         }
+
+        return true;
     }
 
     /**

@@ -21,27 +21,12 @@ class ThemeCommand extends Command {
      */
     protected $description = 'Compile your theme based on your configuration.';
 
-    /**
-     * The output stream for any artisan commands
-     *
-     * @var string
-     */
     protected $stream;
 
-    /**
-     * The ssh commands instance to run against
-     *
-     * @var string
-     */
     protected $ssh;
 
     protected $theme;
 
-    /**
-     * The config repo
-     *
-     * @var Repository
-     */
     protected $config;
 
     /**

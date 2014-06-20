@@ -4,8 +4,8 @@ use NukaCode\Core\Presenters\CorePresenter;
 
 class RolePresenter extends CorePresenter {
 
-	public function fullname()
-	{
-		return $this->group .' - '. $this->name;
-	}
+    public function fullname()
+    {
+        return $this->group .' - '. $this->name;
+    }
 }

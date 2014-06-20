@@ -1,5 +1,4 @@
-<?php 
-namespace NukaCode\Core\Models\Relationships;
+<?php namespace NukaCode\Core\Models\Relationships;
 
 trait User {
 

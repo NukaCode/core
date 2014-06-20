@@ -1,13 +1,10 @@
 <?php namespace NukaCode\Core\Console;
 
 use Illuminate\Remote\RemoteManager;
-use NukaCode\Core\Exceptions\Theme\NoCommandsProvided;
+use NukaCode\Core\Exceptions\SSH\NoCommandsProvided;
 
 class SSH {
 
-    /**
-     * @var \Illuminate\Remote\RemoteManager
-     */
     private $ssh;
 
     public function __construct(RemoteManager $ssh)
