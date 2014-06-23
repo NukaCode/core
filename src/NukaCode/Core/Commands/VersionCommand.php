@@ -21,7 +21,7 @@ class VersionCommand extends Command {
 
     public $packageName = 'core';
 
-    public $version     = '1.0.0';
+    public $version     = '1.0.1';
 
     public $color       = 'inverse';
 
