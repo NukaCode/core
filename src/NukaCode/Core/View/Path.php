@@ -64,41 +64,67 @@ class Path {
         return $this->setUp($layout, $view);
     }
 
+    /**
+     * @return string
+     */
     protected function findView()
     {
         // Get the overall route name (SomeController@someMethod)
         // Break it up into it's component parts
-        $route         = $this->route->currentRouteAction();
-        $routeParts    = explode('@', $route);
+        $route      = $this->route->currentRouteAction();
+        $routeParts = explode('@', $route);
 
-        $method        = $this->getMethodName($routeParts[0]);
-        $action        = $this->getActionName($routeParts[1]);
+        $method = $this->getMethodName($routeParts[0]);
+        $action = $this->getActionName($routeParts[1]);
+        $prefix = $this->getPrefixName($method);
 
-        $view          = $method .'.'. $action;
+        $view = $method . '.' . $action;
 
-        // Check for a route prefix
-        $prefix = $this->route->getCurrentRoute()->getPrefix();
-
-        if (! is_null($prefix)) {
-            $view = $prefix .'.'. $view;
+        if (!is_null($prefix)) {
+            if ($this->view->exists($prefix . '.' . $view)) {
+                $view = $prefix . '.' . $view;
+            }
         }
 
         return $view;
     }
 
+    /**
+     * @param string $class
+     *
+     * @return string
+     */
     protected function getMethodName($class)
     {
-        $class = (new ReflectionClass($class))->getShortName();
+        $class  = (new ReflectionClass($class))->getShortName();
         $method = strtolower(str_replace('Controller', '', $class));
 
         return $method;
     }
 
+    /**
+     * @param string $action
+     *
+     * @return string
+     */
     protected function getActionName($action)
     {
-        $action = preg_replace(['/^get/', '/^post/', '/^put/', '/^patch/', '/^delete/'], '',  $action);
+        $action = preg_replace(['/^get/', '/^post/', '/^put/', '/^patch/', '/^delete/'], '', $action);
         $action = strtolower($action);
 
         return $action;
+    }
+
+    /**
+     * @param string $method
+     *
+     * @return string
+     */
+    protected function getPrefixName($method)
+    {
+        $prefix = $this->route->getCurrentRoute()->getPrefix();
+        $prefix = str_replace([$method . '.', '.' . $method], '', str_replace('/', '.', $prefix));
+
+        return $prefix;
     }
 }

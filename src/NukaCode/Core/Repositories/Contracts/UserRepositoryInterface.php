@@ -17,5 +17,7 @@ interface UserRepositoryInterface {
 
     public function update($data);
 
+    public function setRoles($roleIds);
+
     public function updatePassword($data);
 } 

@@ -11,7 +11,9 @@ class Action extends \BaseModel {
     /********************************************************************
      * Declarations
      *******************************************************************/
-    protected $table = 'actions';
+    protected $table     = 'actions';
+
+    protected $presenter = 'NukaCode\Core\Presenters\User\Permission\ActionPresenter';
 
     /********************************************************************
      * Validation rules

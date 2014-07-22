@@ -1,6 +1,8 @@
 <?php namespace NukaCode\Core\Repositories;
 
 
+use NukaCode\Core\Database\Collection;
+
 abstract class CoreRepository {
 
     protected $model;
@@ -10,6 +12,12 @@ abstract class CoreRepository {
     public function find($id)
     {
         $this->entity = $this->model->find($id);
+        return $this->entity;
+    }
+
+    public function findFirst($id)
+    {
+        $this->entity = $this->model->findOrFail($id)->first();
         return $this->entity;
     }
 
@@ -46,6 +54,27 @@ abstract class CoreRepository {
         return true;
     }
 
+    protected function arrayOrEntity($key, $array)
+    {
+        if (array_key_exists($key, $array)) {
+            return $array[$key];
+        }
+
+        return $this->entity->{$key};
+    }
+
+    public function delete()
+    {
+        $this->entity->delete();
+    }
+
+    protected function checkEntity()
+    {
+        if ($this->entity == null) {
+            throw new \InvalidArgumentException('No model selected.  Use find or set to set the model.');
+        }
+    }
+
     /**
      * @param string $name
      * @param array $arguments
@@ -64,5 +93,12 @@ abstract class CoreRepository {
         }
 
         throw new \Exception('Method '. $name .' not found.');
+    }
+
+    protected function requireSingle()
+    {
+        if ($this->entity instanceof Collection) {
+            throw new \InvalidArgumentException('The entity is currently set as a collection.  Please specify a single model to edit.');
+        }
     }
 } 

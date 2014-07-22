@@ -2,6 +2,7 @@
 
 use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\Session;
+use NukaCode\Core\Database\Collection;
 use NukaCode\Core\Repositories\Contracts\UserRepositoryInterface;
 use NukaCode\Core\Requests\Ajax;
 use NukaCode\Core\Servicing\Crud;
@@ -62,35 +63,54 @@ class UserRepository extends CoreRepository implements UserRepositoryInterface {
     public function update($input)
     {
         $this->checkEntity();
+        $this->requireSingle();
 
         $input = e_array($input);
 
         if ($input != null) {
-            $this->entity->displayName = $input['displayName'];
-            $this->entity->firstName   = $input['firstName'];
-            $this->entity->lastName    = $input['lastName'];
-            $this->entity->email       = $input['email'];
-            $this->entity->location    = $input['location'];
-            $this->entity->url         = $input['url'];
+            $this->entity->displayName = $this->arrayOrEntity('displayName', $input);
+            $this->entity->firstName   = $this->arrayOrEntity('firstName', $input);
+            $this->entity->lastName    = $this->arrayOrEntity('lastName', $input);
+            $this->entity->email       = $this->arrayOrEntity('email', $input);
+            $this->entity->location    = $this->arrayOrEntity('location', $input);
+            $this->entity->url         = $this->arrayOrEntity('url', $input);
 
             $this->save();
         }
     }
 
-    public function delete()
+    public function setRoles($roleIds = array())
     {
-        $this->entity->delete();
+        $this->checkEntity();
+        $this->requireSingle();
+
+        try {
+            $this->entity->roles()->detach();
+
+            if (count($roleIds) > 0) {
+                $this->entity->roles()->attach($roleIds);
+            }
+
+            $this->save();
+        } catch (\Exception $e) {
+            $this->ajax->setStatus('error');
+            $this->ajax->addError('roles', $e->getMessage());
+
+            return false;
+        }
     }
 
     public function updatePassword($input)
     {
         $this->checkEntity();
+        $this->requireSingle();
 
         $input = e_array($input);
 
         try {
             $this->entity->verifyPassword($input);
         } catch (\Exception $e) {
+            $this->ajax->setStatus('error');
             $this->ajax->addError('password', $e->getMessage());
 
             return false;
@@ -131,4 +151,5 @@ class UserRepository extends CoreRepository implements UserRepositoryInterface {
             $this->entity = Session::get('activeUser');
         }
     }
+
 }

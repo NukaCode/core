@@ -15,6 +15,19 @@
     </div>
 </div>
 
+<script>
+    @section('onReadyJs')
+        $('#remoteModal').on('click', '.closeModal', function (e) {
+            var area = $(e.target).data('area');
+
+            $('#remoteModal').modal('hide');
+
+            $('#customizeArea').html('<i class="fa fa-spinner fa-spin"></i>');
+            $('#customizeArea').load('/admin/user/'+ area +'-customize');
+        });
+    @stop
+</script>
+
 @section('js')
     <script>
         var url   = location.href;
@@ -41,7 +54,7 @@
         });
 
         function collapse (target) {
-            $('#'+ target).toggle();
+            $('.'+ target).toggle();
         }
     </script>
 @stop

@@ -48,7 +48,7 @@ class View {
 
     public function setViewPath($view)
     {
-        $this->viewPath->setUp($this->layout->layout, $view);
+        $this->layout->layout = $this->viewPath->setUp($this->layout->layout, $view);
 
         return $this;
     }

@@ -2,10 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
-use NukaCode\Core\Repositories\Contracts\UserRepositoryInterface;
 
 use NukaCode\Core\Repositories\User\Permission\Role;
-use NukaCode\Core\Requests\Ajax;
 use NukaCode\Core\Servicing\Crud;
 use NukaCode\Core\Servicing\LeftTab;
 use Session;
@@ -22,9 +20,9 @@ class UserController extends \BaseController {
     public function getIndex()
     {
         $users       = \User::orderByNameAsc()->paginate(10);
-        $roles       = \User_Permission_Role::orderByNameAsc()->get();
-        $actions     = \User_Permission_Action::orderByNameAsc()->get();
-        $preferences = \User_Preference::orderByNameAsc()->get();
+        $roles       = \User_Permission_Role::orderByNameAsc()->paginate(10);
+        $actions     = \User_Permission_Action::orderByNameAsc()->paginate(10);
+        $preferences = \User_Preference::orderByNameAsc()->paginate(10);
 
         $this->setViewData('users', $users);
         $this->setViewData('roles', $roles);
@@ -32,8 +30,35 @@ class UserController extends \BaseController {
         $this->setViewData('preferences', $preferences);
     }
 
-    public function getUserEdit($id)
+    public function getUserCustomize()
     {
-        ppd(\User::find($id));
+        $users = \User::orderByNameAsc()->paginate(10);
+
+        $this->setViewPath('admin.user.customize.user.table');
+        $this->setViewData('users', $users);
+    }
+
+    public function getRoleCustomize()
+    {
+        $roles = \User_Permission_Role::orderByPriority()->paginate(10);
+
+        $this->setViewPath('admin.user.customize.role.table');
+        $this->setViewData('roles', $roles);
+    }
+
+    public function getActionCustomize()
+    {
+        $actions = \User_Permission_Action::orderByNameAsc()->paginate(10);
+
+        $this->setViewPath('admin.user.customize.action.table');
+        $this->setViewData('actions', $actions);
+    }
+
+    public function getPreferenceCustomize()
+    {
+        $preferences = \User_Preference::orderByNameAsc()->paginate(10);
+
+        $this->setViewPath('admin.user.customize.preference.table');
+        $this->setViewData('preferences', $preferences);
     }
 }

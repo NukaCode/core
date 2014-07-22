@@ -118,6 +118,15 @@ class UserPresenter extends CorePresenter {
         return \HTML::link('/user/view/'. $this->id, $this->username);
     }
 
+    public function roleList()
+    {
+        if ($this->roles->count() > 0) {
+            return implode('<br />', $this->roles->name->toArray());
+        }
+
+        return 'None';
+    }
+
     /**
      * Get the number of posts from this user
      *

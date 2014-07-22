@@ -11,7 +11,9 @@ class Role extends \BaseModel {
     /********************************************************************
      * Declarations
      *******************************************************************/
-    protected $table = 'roles';
+    protected $table     = 'roles';
+
+    protected $presenter = 'NukaCode\Core\Presenters\User\Permission\RolePresenter';
 
     /********************************************************************
      * Validation rules
@@ -20,6 +22,10 @@ class Role extends \BaseModel {
     /********************************************************************
      * Scopes
      *******************************************************************/
+    public function scopeOrderByPriority($query)
+    {
+        return $query->orderBy('group', 'asc')->orderBy('priority', 'asc');
+    }
 
     /********************************************************************
      * Model Events

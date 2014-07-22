@@ -11,6 +11,7 @@ class Preference extends \BaseModel {
     /********************************************************************
      * Declarations
      *******************************************************************/
+    protected        $presenter = 'NukaCode\Core\Presenters\User\PreferencePresenter';
 
     /**
      * Table declaration

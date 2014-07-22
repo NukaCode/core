@@ -1,6 +1,5 @@
 <?php namespace NukaCode\Core\Html;
 
-use Illuminate\Html\HtmlBuilder;
 use Illuminate\Html\FormBuilder as BaseFormBuilder;
 use Illuminate\Http\Request;
 use Illuminate\View\Factory;
@@ -387,6 +386,26 @@ $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 			$this->getInputWrapperClose()
 		.'</div>';
 	}
+
+    /**
+     * @param string $submitValue
+     * @param string $cancelValue
+     * @param array  $submitParameters
+     * @param array  $cancelParameters
+     *
+     * @return string
+     */
+    public function submitCancel($submitValue = 'Submit', $cancelValue = 'Cancel', $submitParameters = array('class' => 'btn btn-sm btn-primary'), $cancelParameters = array('class' => 'btn btn-sm btn-inverse'))
+    {
+        return '<div class="form-group">'.
+            $this->getSubmitWrapperOpen()
+                .'<div class="btn-group">'.
+                    $this->form->submit($submitValue, $submitParameters).
+                    '<a href="javascript: void(0);" '. $this->html->attributes($cancelParameters) .' data-dismiss="modal">'. $cancelValue .'</a>'
+                .'</div>'.
+            $this->getInputWrapperClose()
+        .'</div>';
+    }
 
 	protected function getSubmitWrapperOpen()
 	{

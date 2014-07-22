@@ -8,4 +8,13 @@ class RolePresenter extends CorePresenter {
     {
         return $this->group .' - '. $this->name;
     }
+
+    public function actionList()
+    {
+        if ($this->actions->count() > 0) {
+            return implode('<br />', $this->actions->name->toArray());
+        }
+
+        return 'None';
+    }
 }

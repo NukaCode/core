@@ -11,7 +11,6 @@
 $(document).ready(function() {
     bootbox.setDefaults({backdrop: false});
 
-    $("a[rel=popover]").popover();
     $("a.confirm-remove").click(function(e) {
         e.preventDefault();
         var location = $(this).attr('href');

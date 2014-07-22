@@ -21,7 +21,7 @@ class CorePresenter extends Presenter {
      */
     public function name()
     {
-        return stripslashes($this->name);
+        return stripslashes($this->entity->name);
     }
 
     public function hidden()
