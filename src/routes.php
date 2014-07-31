@@ -23,6 +23,10 @@ Route::post('login', [
 Route::get('logout', function () {
     Auth::logout();
 
+    if (Session::has('activeUser')) {
+        Session::forget('activeUser');
+    }
+
     return Redirect::to('/')->with('message', 'You have successfully logged out.');
 });
 

@@ -73,7 +73,7 @@ class BaseController extends Controller {
                 return true;
             }
         }
-        Session::put('pre_login_url', Request::path());
+        Session::put('pre_login_url', \Request::path());
 
         return false;
     }
@@ -96,7 +96,7 @@ class BaseController extends Controller {
                 return true;
             }
         }
-        Session::put('pre_login_url', Request::path());
+        Session::put('pre_login_url', \Request::path());
 
         return false;
     }
