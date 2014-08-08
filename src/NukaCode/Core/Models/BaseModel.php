@@ -3,7 +3,7 @@
 use Laracasts\Presenter\PresentableTrait;
 use Watson\Validating\ValidatingTrait;
 use NukaCode\Core\Database\Collection as Utility_Collection;
-use Str;
+use Illuminate\Support\Str;
 
 class BaseModel extends \Illuminate\Database\Eloquent\Model {
 

@@ -61,7 +61,7 @@ class SessionController extends \BaseController {
             }
 
             // Assign the guest role
-            $this->user->getEntity()->addRole(\Config::get('core::Roles.guest'));
+            $this->user->addRole(\Config::get('core::Roles.guest'));
         }
 
         $this->auth->login($this->user->getEntity());
