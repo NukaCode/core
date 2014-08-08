@@ -48,11 +48,17 @@ class UserRepository extends CoreRepository implements UserRepositoryInterface {
         $user->email     = $input['email'];
         $user->status_id = 1;
 
+        if (isset($input['firstName'])) {
+            $user->firstName = $input['firstName'];
+        }
+
+        if (isset($input['lastName'])) {
+            $user->lastName  = $input['lastName'];
+        }
+
         $this->entity = $user;
 
-        $result = $this->save();
-
-        return $result;
+        return $this->save();
     }
 
     /**
@@ -74,6 +80,40 @@ class UserRepository extends CoreRepository implements UserRepositoryInterface {
             $this->entity->url         = $this->arrayOrEntity('url', $input);
 
             $this->save();
+        }
+    }
+
+    public function addRole($roleId)
+    {
+        $this->checkEntity();
+        $this->requireSingle();
+
+        try {
+            $this->entity->roles()->attach($roleId);
+
+            $this->save();
+        } catch (\Exception $e) {
+            $this->ajax->setStatus('error');
+            $this->ajax->addError('role', $e->getMessage());
+
+            return false;
+        }
+    }
+
+    public function removeRole($roleId)
+    {
+        $this->checkEntity();
+        $this->requireSingle();
+
+        try {
+            $this->entity->roles()->detach($roleId);
+
+            $this->save();
+        } catch (\Exception $e) {
+            $this->ajax->setStatus('error');
+            $this->ajax->addError('role', $e->getMessage());
+
+            return false;
         }
     }
 

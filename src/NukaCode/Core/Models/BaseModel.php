@@ -3,6 +3,7 @@
 use Laracasts\Presenter\PresentableTrait;
 use Watson\Validating\ValidatingTrait;
 use NukaCode\Core\Database\Collection as Utility_Collection;
+use Str;
 
 class BaseModel extends \Illuminate\Database\Eloquent\Model {
 
@@ -52,7 +53,7 @@ class BaseModel extends \Illuminate\Database\Eloquent\Model {
 
         while ($invalid == true) {
             // Create a new random string.
-            $uniqueString = \Str::random(10);
+            $uniqueString = Str::random(10);
 
             // Look for any instances of that string on the model.
             $existingReferences = $model::where('uniqueId', $uniqueString)->count();
