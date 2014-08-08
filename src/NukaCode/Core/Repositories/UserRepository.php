@@ -46,8 +46,6 @@ class UserRepository extends CoreRepository implements UserRepositoryInterface {
         $user            = new \User;
         $user->username  = $input['username'];
         $user->email     = $input['email'];
-        $user->firstName = $input['firstName'];
-        $user->lastName  = $input['lastName'];
         $user->status_id = 1;
 
         $this->entity = $user;

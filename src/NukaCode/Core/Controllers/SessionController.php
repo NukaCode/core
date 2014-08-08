@@ -47,6 +47,8 @@ class SessionController extends \BaseController {
         }
     }
 
+    public function getRegister() {}
+
     public function postRegister()
     {
         $input = e_array($this->input->all());
@@ -59,10 +61,10 @@ class SessionController extends \BaseController {
             }
 
             // Assign the guest role
-            $this->user->entity->roles()->attach($this->config->get('core::roles.guest'));
+            $this->user->getEntity()->roles()->attach(\Config::get('core::Roles.guest'));
         }
 
-        $this->auth->login($this->user->entity);
+        $this->auth->login($this->user->getEntity());
 
         return $this->redirect->to('/');
     }

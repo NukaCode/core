@@ -52,7 +52,7 @@ class BaseModel extends \Illuminate\Database\Eloquent\Model {
 
         while ($invalid == true) {
             // Create a new random string.
-            $uniqueString = Str::random(10);
+            $uniqueString = \Str::random(10);
 
             // Look for any instances of that string on the model.
             $existingReferences = $model::where('uniqueId', $uniqueString)->count();

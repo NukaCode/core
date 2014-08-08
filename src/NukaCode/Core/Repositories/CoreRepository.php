@@ -21,6 +21,11 @@ abstract class CoreRepository {
         return $this->entity;
     }
 
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
     public function orderByName()
     {
         return $this->model->orderByNameAsc()->get();
