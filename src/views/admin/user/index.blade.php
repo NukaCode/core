@@ -43,5 +43,9 @@
             });
             $("html, body").animate({ scrollTop: 0 }, "slow");
         });
+
+        function collapse (target) {
+            $('.'+ target).toggle();
+        }
     </script>
 @stop
