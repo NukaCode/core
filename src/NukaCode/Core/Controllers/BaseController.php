@@ -3,10 +3,12 @@
 use Illuminate\Routing\Controller;
 use Auth;
 use CoreView;
+use Illuminate\Support\Facades\Log;
 use Session;
 use Str;
 use View;
 use Event;
+use Request;
 
 class BaseController extends Controller {
 
@@ -73,7 +75,7 @@ class BaseController extends Controller {
                 return true;
             }
         }
-        Session::put('pre_login_url', \Request::path());
+        Session::put('pre_login_url', Request::path());
 
         return false;
     }
@@ -96,16 +98,30 @@ class BaseController extends Controller {
                 return true;
             }
         }
-        Session::put('pre_login_url', \Request::path());
+        Session::put('pre_login_url', Request::path());
 
         return false;
     }
 
     // Sugar Methods
     // Views
-    public function setViewData($key, $value)
+    public function setViewData($key, $value = null)
     {
-        View::share($key, $value);
+        if ($value == null) {
+            if (! is_array($key)) {
+                Log::error('Invalid data passed to setViewData');
+                Log::error('Key: '. print_r($key, 1));
+                Log::error('Value: '. print_r($value, 1));
+
+                throw new \InvalidArgumentException('Invalid argument passed to NukaCode\Core\Controllers\BaseController::setViewData.');
+            }
+
+            foreach ($key as $name => $data) {
+                View::share($name, $data);
+            }
+        } else {
+            View::share($key, $value);
+        }
     }
 
     public function setViewPath($view)

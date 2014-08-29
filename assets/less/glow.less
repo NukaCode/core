@@ -88,6 +88,16 @@ div.list-glow, div.list-glow-sm {
         height: 100%;
         box-shadow: 0 0 40px saturate(lighten(@brand-warning, 15%), 40%) !important;
       }
+      &.locked:before {
+        content: '';
+        background: #000 !important;
+        position: absolute;
+        top: 0;
+        left: -6px;
+        width: 6px;
+        height: 100%;
+        box-shadow: 0 0 40px #000 !important;
+      }
       &.application:before, &.open:before {
         content: '';
         background: saturate(lighten(@brand-info, 15%), 40%) !important;

@@ -21,11 +21,6 @@ abstract class CoreRepository {
         return $this->entity;
     }
 
-    public function getEntity()
-    {
-        return $this->entity;
-    }
-
     public function orderByName()
     {
         return $this->model->orderByNameAsc()->get();
@@ -46,14 +41,18 @@ abstract class CoreRepository {
         }
 
         if (! $this->entity->save()) {
-            // Messages from validation need to be easily readable.
-            foreach ($this->entity->getErrors()->all() as $key => $message) {
-                $this->ajax->addError($key, $message);
+            if (isset($this->ajax)) {
+                // Messages from validation need to be easily readable.
+                foreach ($this->entity->getErrors()->all() as $key => $message) {
+                    $this->ajax->addError($key, $message);
+                }
             }
 
             return $this->entity->getErrors()->all();
         } else {
-            $this->ajax->setStatus('success');
+            if (isset($this->ajax)) {
+                $this->ajax->setStatus('success');
+            }
         }
 
         return true;
