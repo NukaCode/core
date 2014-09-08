@@ -3,67 +3,70 @@
 use Illuminate\Config\Repository;
 use Illuminate\Session\SessionManager;
 use Illuminate\View\Factory;
+use NukaCode\Core\Database\Collection;
 
 class Menu {
 
-    public $viewMenu;
+	public    $viewMenu;
 
-    protected $session;
+	protected $session;
 
-    protected $config;
+	protected $config;
 
-    public function __construct(SessionManager $session, Repository $config, Factory $view)
-    {
-        $this->session = $session;
-        $this->config  = $config;
-        $this->view    = $view;
-    }
+	public    $menus;
 
-    public function setUp($menu)
-    {
-        // Handle the different menus
-        $menuOption = $this->session->has('activeUser') ? $this->session->get('activeUser')->getPreferenceValueByKeyName('SITE_MENU') : $this->config->get('core::menu');
+	public function __construct(SessionManager $session, Repository $config, Factory $view)
+	{
+		$this->session = $session;
+		$this->config  = $config;
+		$this->view    = $view;
 
-        $menuViewPath = 'layouts.menus.'. $menuOption;
+		$this->menus = new Collection();
+	}
 
-        if (!$this->view->exists($menuViewPath)) {
-            throw new \InvalidArgumentException("Unknown menu [$menuOption] passed.");
-        }
+	public function setUp($menu)
+	{
+		// Handle the different menus
+		$menuOption = $this->session->has('activeUser') ? $this->session->get('activeUser')->getPreferenceValueByKeyName('SITE_MENU') : $this->config->get('core::menu');
 
-        $this->viewMenu = $menu;
-        $this->viewMenu->setView($menuViewPath);
+		$menuViewPath = 'layouts.menus.' . $menuOption;
 
-        $this->view->share('menuItems', $this->viewMenu);
+		if (! $this->view->exists($menuViewPath)) {
+			throw new \InvalidArgumentException("Unknown menu [$menuOption] passed.");
+		}
 
-        // ppd($this->viewMenu);
-    }
+		$this->viewMenu = $menu;
+		$this->viewMenu->setView($menuViewPath);
 
-    public function twitter()
-    {
-        // Set the menu to twitter's style
-        MainMenu::handler('main')->addClass('nav navbar-nav');
-        MainMenu::handler('mainRight')->addClass('nav navbar-nav navbar-right');
+		$this->view->share('menuItems', $this->viewMenu);
+	}
 
-        // Handle children
-        MainMenu::handler('main')->getItemsByContentType('Menu\Items\Contents\Link')
-            ->map(function ($item) {
-                if ($item->hasChildren()) {
-                    $item->getContent()->addClass('dropdown-toggle')->dataToggle('dropdown');
-                    if (strpos($item->getContent(), 'class="caret"') === false) {
-                        $item->getContent()->value($item->getContent()->getValue() . ' <b class="caret"></b>');
-                    }
-                    $item->getChildren()->addClass('dropdown-menu');
-                }
-            });
-        MainMenu::handler('mainRight')->getItemsByContentType('Menu\Items\Contents\Link')
-            ->map(function ($item) {
-                if ($item->hasChildren()) {
-                    $item->getContent()->addClass('dropdown-toggle')->dataToggle('dropdown');
-                    if (strpos($item->getContent(), 'class="caret"') === false) {
-                        $item->getContent()->value($item->getContent()->getValue() . ' <b class="caret"></b>');
-                    }
-                    $item->getChildren()->addClass('dropdown-menu');
-                }
-            });
-    }
+	public function twitter()
+	{
+		// Set the menu to twitter's style
+		MainMenu::handler('main')->addClass('nav navbar-nav');
+		MainMenu::handler('mainRight')->addClass('nav navbar-nav navbar-right');
+
+		// Handle children
+		MainMenu::handler('main')->getItemsByContentType('Menu\Items\Contents\Link')
+				->map(function ($item) {
+					if ($item->hasChildren()) {
+						$item->getContent()->addClass('dropdown-toggle')->dataToggle('dropdown');
+						if (strpos($item->getContent(), 'class="caret"') === false) {
+							$item->getContent()->value($item->getContent()->getValue() . ' <b class="caret"></b>');
+						}
+						$item->getChildren()->addClass('dropdown-menu');
+					}
+				});
+		MainMenu::handler('mainRight')->getItemsByContentType('Menu\Items\Contents\Link')
+				->map(function ($item) {
+					if ($item->hasChildren()) {
+						$item->getContent()->addClass('dropdown-toggle')->dataToggle('dropdown');
+						if (strpos($item->getContent(), 'class="caret"') === false) {
+							$item->getContent()->value($item->getContent()->getValue() . ' <b class="caret"></b>');
+						}
+						$item->getChildren()->addClass('dropdown-menu');
+					}
+				});
+	}
 }

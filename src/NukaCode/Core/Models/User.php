@@ -8,7 +8,7 @@ use NukaCode\Core\Models\Relationships\User as UserRelationshipsTrait;
 use Str;
 use Session;
 
-abstract class User extends BaseModel implements UserInterface, RemindableInterface {
+abstract class User extends BaseModel {
     /********************************************************************
      * Traits
      *******************************************************************/

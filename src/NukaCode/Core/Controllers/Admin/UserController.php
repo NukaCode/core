@@ -17,7 +17,7 @@ use User_Preference;
 
 class UserController extends \BaseController {
 
-    public function getIndex()
+    public function index()
     {
         $users       = \User::orderByNameAsc()->paginate(10);
         $roles       = \User_Permission_Role::orderByNameAsc()->paginate(10);
@@ -30,7 +30,7 @@ class UserController extends \BaseController {
         $this->setViewData('preferences', $preferences);
     }
 
-    public function getUserCustomize()
+    public function userCustomize()
     {
         $users = \User::orderByNameAsc()->paginate(10);
 
@@ -38,7 +38,7 @@ class UserController extends \BaseController {
         $this->setViewData('users', $users);
     }
 
-    public function getRoleCustomize()
+    public function roleCustomize()
     {
         $roles = \User_Permission_Role::orderByPriority()->paginate(10);
 
@@ -46,7 +46,7 @@ class UserController extends \BaseController {
         $this->setViewData('roles', $roles);
     }
 
-    public function getActionCustomize()
+    public function actionCustomize()
     {
         $actions = \User_Permission_Action::orderByNameAsc()->paginate(10);
 
@@ -54,7 +54,7 @@ class UserController extends \BaseController {
         $this->setViewData('actions', $actions);
     }
 
-    public function getPreferenceCustomize()
+    public function preferenceCustomize()
     {
         $preferences = \User_Preference::orderByNameAsc()->paginate(10);
 

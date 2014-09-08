@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class BaseModel extends \Illuminate\Database\Eloquent\Model {
 
-    use ValidatingTrait;
+    //use ValidatingTrait;
     use PresentableTrait;
 
     /**

@@ -1,8 +1,16 @@
 <?php namespace NukaCode\Core\Html;
 
-use Illuminate\Html\HtmlServiceProvider as BaseHtmlServiceProvider;
+use Illuminate\Html\FormBuilder as BaseForm;
+use Illuminate\Support\ServiceProvider;
 
-class HtmlServiceProvider extends BaseHtmlServiceProvider {
+class HtmlServiceProvider extends ServiceProvider {
+
+	/**
+	 * Indicates if loading of the provider is deferred.
+	 *
+	 * @var bool
+	 */
+	protected $defer = false;
 
     /**
      * Register the service provider.
@@ -30,6 +38,21 @@ class HtmlServiceProvider extends BaseHtmlServiceProvider {
             return $app->make('NukaCode\Core\Html\HtmlBuilder');
         });
     }
+
+	/**
+	 * Register the form builder instance.
+	 *
+	 * @return void
+	 */
+	protected function registerFormBuilder()
+	{
+		$this->app->bindShared('form', function($app)
+		{
+			$form = new BaseForm($app['html'], $app['url'], $app['session.store']->getToken());
+
+			return $form->setSessionStore($app['session.store']);
+		});
+	}
 
     /**
      * Register the form builder instance.

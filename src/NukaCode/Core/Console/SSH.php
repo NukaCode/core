@@ -1,15 +1,16 @@
 <?php namespace NukaCode\Core\Console;
 
 use Illuminate\Remote\RemoteManager;
+use Illuminate\Support\Facades\App;
 use NukaCode\Core\Exceptions\SSH\NoCommandsProvided;
 
 class SSH {
 
     private $ssh;
 
-    public function __construct(RemoteManager $ssh)
+    public function __construct()
     {
-        $this->ssh = $ssh;
+        $this->ssh = App::make('Illuminate\Remote\RemoteManager');
     }
 
     public function runCommands(array $commands)

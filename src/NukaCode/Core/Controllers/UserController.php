@@ -1,5 +1,6 @@
 <?php namespace NukaCode\Core\Controllers;
 
+use NukaCode\Core\Http\Requests\ProfileRequest;
 use NukaCode\Core\Repositories\Contracts\UserRepositoryInterface;
 use NukaCode\Core\Requests\Ajax;
 use NukaCode\Core\Servicing\LeftTab;
@@ -33,7 +34,7 @@ class UserController extends \BaseController {
         $this->coreView = $coreView;
     }
 
-    public function getDatatable()
+    public function datatable()
     {
         $dataTable = Datatable::
             collection(\User::all(array('username', 'email')))
@@ -45,14 +46,14 @@ class UserController extends \BaseController {
         return $dataTable;
     }
 
-    public function getMemberlist()
+    public function memberlist()
     {
         $users = $this->user->orderByName();
 
         $this->setViewData('users', $users);
     }
 
-    public function getAccount()
+    public function account()
     {
         $this->leftTab
             ->addPanel()
@@ -66,7 +67,7 @@ class UserController extends \BaseController {
             ->make();
     }
 
-    public function getView($userId = null)
+    public function view($userId = null)
     {
         if ($userId == null) {
             $this->redirect('/');
@@ -77,17 +78,13 @@ class UserController extends \BaseController {
         $this->setViewData('user', $user);
     }
 
-    public function postProfile()
+    public function postProfile(ProfileRequest $request)
     {
         // Update the user
-        $this->user->update($this->input->all());
+        $this->user->update($request->all());
 
         // Send the response
         return $this->ajax->sendResponse();
-    }
-
-    public function getChangePassword()
-    {
     }
 
     public function postChangePassword()

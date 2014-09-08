@@ -52,7 +52,7 @@ class SiteController extends \BaseController {
         $this->config      = $config;
     }
 
-    public function getIndex()
+    public function index()
     {
         $laravelVersion = Application::VERSION;
         $packages = $this->config->get('packages.nukacode');

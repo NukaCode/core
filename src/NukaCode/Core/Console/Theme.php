@@ -14,7 +14,7 @@ class Theme {
     public function __construct()
     {
         $this->cssDirectory        = public_path('css/');
-        $this->localLessDirectory  = base_path('app/assets/less');
+        $this->localLessDirectory  = base_path('resources/assets/less');
         $this->vendorLessDirectory = base_path('vendor/nukacode/core/assets/less');
     }
 

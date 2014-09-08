@@ -1,6 +1,5 @@
 <?php namespace NukaCode\Core\Repositories;
 
-
 use NukaCode\Core\Database\Collection;
 
 abstract class CoreRepository {

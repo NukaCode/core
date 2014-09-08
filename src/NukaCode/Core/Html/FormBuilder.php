@@ -1,6 +1,8 @@
 <?php namespace NukaCode\Core\Html;
 
+use Illuminate\Foundation\Application;
 use Illuminate\Html\FormBuilder as BaseFormBuilder;
+use Illuminate\Routing\UrlGenerator;
 use Illuminate\Http\Request;
 use Illuminate\View\Factory;
 
@@ -14,26 +16,33 @@ class FormBuilder {
 
 	protected $view;
 
-	public $labelSize = 2;
+	protected $app;
 
-	public $inputSize = 10;
+	protected $url;
 
-	public $formId = null;
+	public    $labelSize    = 2;
 
-	public $type = 'horizontal';
+	public    $inputSize    = 10;
 
-	public $allowedTypes = [
+	public    $formId       = null;
+
+	public    $type         = 'horizontal';
+
+	public    $allowedTypes = [
 		'basic'      => null,
 		'inline'     => 'form-inline',
 		'horizontal' => 'form-horizontal',
 	];
 
-	public function __construct(HtmlBuilder $html, BaseFormBuilder $form, Request $request, Factory $view)
+	public function __construct(HtmlBuilder $html, Request $request, Factory $view, Application $app, UrlGenerator $url)
 	{
 		$this->html    = $html;
-		$this->form    = $form;
 		$this->request = $request;
 		$this->view    = $view;
+		$this->app     = $app;
+		$this->url     = $url;
+
+		$this->form = new BaseFormBuilder($this->html, $this->url, $this->app['session.store']->getToken());
 	}
 
 	public function get()
@@ -43,7 +52,7 @@ class FormBuilder {
 
 	public function setType($type)
 	{
-		if (!array_key_exists($type, $this->allowedTypes)) {
+		if (! array_key_exists($type, $this->allowedTypes)) {
 			throw new \InvalidArgumentException('Form type not allowed.');
 		}
 
@@ -64,22 +73,22 @@ class FormBuilder {
 		return $this;
 	}
 
-	public function open($files = true, $options = array())
+	public function open($files = true, $options = [])
 	{
 		$formClass = $this->allowedTypes[$this->type];
 
-		if (!isset($options['class'])) {
+		if (! isset($options['class'])) {
 			$options['class'] = $formClass;
 		} elseif (strpos($options['class'], $formClass) === false) {
-			$options['class'] = $options['class'] .' '. $formClass;
+			$options['class'] = $options['class'] . ' ' . $formClass;
 		}
 
-		if($this->formId != null) {
+		if ($this->formId != null) {
 			$options['id'] = $this->formId;
 		}
 
 		if ($files == true) {
-			if (!isset($options['files'])) {
+			if (! isset($options['files'])) {
 				$options['files'] = true;
 			}
 		}
@@ -98,20 +107,20 @@ class FormBuilder {
 
 	protected function addToSection($section, $data)
 	{
-		if (!array_key_exists($section .'Form', $this->view->getSections())) {
-			$data = "@parent ". $data;
+		if (! array_key_exists($section . 'Form', $this->view->getSections())) {
+			$data = "@parent " . $data;
 		}
 
-		$this->view->inject($section .'Form', $data);
+		$this->view->inject($section . 'Form', $data);
 	}
 
 	protected function setAjaxFormRequirements($message)
 	{
 		$this->addToSection('js', '
 <script>
-	$(\'#'. $this->formId .'\').AjaxSubmit({
-		path:\'/'. $this->request->path() .'\',
-		successMessage:\''. $message .'\'
+	$(\'#' . $this->formId . '\').AjaxSubmit({
+		path:\'/' . $this->request->path() . '\',
+		successMessage:\'' . $message . '\'
 	});
 </script>
 		');
@@ -128,22 +137,22 @@ class FormBuilder {
 			switch ($this->type) {
 				case 'basic':
 					$class = null;
-				break;
+					break;
 				case 'inline':
 					$class = ' class="sr-only"';
-				break;
+					break;
 				case 'horizontal':
-					$class = ' class="col-md-'. $this->labelSize .' control-label"';
-				break;
+					$class = ' class="col-md-' . $this->labelSize . ' control-label"';
+					break;
 			}
 
-			return '<label'. $class .'for="'. $name .'">'. $text .'</label>';
+			return '<label' . $class . 'for="' . $name . '">' . $text . '</label>';
 		}
 
 		return null;
 	}
 
-	public function hidden($name, $value, $attributes = array())
+	public function hidden($name, $value, $attributes = [])
 	{
 		// Set up the attributes
 		$attributes = $this->verifyAttributes('text', $attributes);
@@ -151,7 +160,7 @@ class FormBuilder {
 		return $this->form->hidden($name, $value, $attributes);
 	}
 
-	public function date($name, $value, $attributes = array(), $label = null)
+	public function date($name, $value, $attributes = [], $label = null)
 	{
 		// Set up the attributes
 		$attributes = $this->verifyAttributes('date', $attributes);
@@ -162,7 +171,7 @@ class FormBuilder {
 		return $this->createOutput($name, $label, $input);
 	}
 
-	public function text($name, $value, $attributes = array(), $label = null)
+	public function text($name, $value, $attributes = [], $label = null)
 	{
 		// Set up the attributes
 		$attributes = $this->verifyAttributes('text', $attributes);
@@ -173,7 +182,7 @@ class FormBuilder {
 		return $this->createOutput($name, $label, $input);
 	}
 
-	public function textarea($name, $value, $attributes = array(), $label = null)
+	public function textarea($name, $value, $attributes = [], $label = null)
 	{
 		// Set up the attributes
 		$attributes = $this->verifyAttributes('textarea', $attributes);
@@ -184,7 +193,7 @@ class FormBuilder {
 		return $this->createOutput($name, $label, $input);
 	}
 
-	public function email($name, $value, $attributes = array(), $label = null)
+	public function email($name, $value, $attributes = [], $label = null)
 	{
 		// Set up the attributes
 		$attributes = $this->verifyAttributes('email', $attributes);
@@ -195,7 +204,7 @@ class FormBuilder {
 		return $this->createOutput($name, $label, $input);
 	}
 
-	public function password($name, $attributes = array(), $label = null)
+	public function password($name, $attributes = [], $label = null)
 	{
 		// Set up the attributes
 		$attributes = $this->verifyAttributes('password', $attributes);
@@ -210,35 +219,32 @@ class FormBuilder {
 	{
 		return '
 		<div class="checkbox">
-			<label>'.
-				$this->form->checkbox($name, $value, $checked, $attributes) .' '. $label
-			.'</label>
+			<label>' .
+			   $this->form->checkbox($name, $value, $checked, $attributes) . ' ' . $label
+			   . '</label>
 		</div>
 		';
 	}
 
-	public function checkbox($name, $value, $checked = false, $attributes = array(), $label = null)
+	public function checkbox($name, $value, $checked = false, $attributes = [], $label = null)
 	{
-		// Create the default input
-		$input = $this->form->checkbox($name, $value, $checked);
-
 		switch ($this->type) {
 			case 'horizontal':
 				return '
 					<div class="form-group">
-						<div class="col-md-offset-'. $this->labelSize .' col-md-'. $this->inputSize .'">'.
-							$this->createCheckbox($name, $value, $checked, $attributes, $label)
-						.'</div>
+						<div class="col-md-offset-' . $this->labelSize . ' col-md-' . $this->inputSize . '">' .
+					   $this->createCheckbox($name, $value, $checked, $attributes, $label)
+					   . '</div>
 					</div>
 				';
-			break;
+				break;
 			default:
 				return $this->createCheckbox($name, $value, $checked, $attributes, $label);
-			break;
+				break;
 		}
 	}
 
-	public function select($name, $optionsArray, $selected, $attributes = array(), $label = null)
+	public function select($name, $optionsArray, $selected, $attributes = [], $label = null)
 	{
 		// Set up the attributes
 		$attributes = $this->verifyAttributes('select', $attributes);
@@ -249,7 +255,7 @@ class FormBuilder {
 		return $this->createOutput($name, $label, $input);
 	}
 
-	public function color($name, $value, $attributes = array(), $label = null)
+	public function color($name, $value, $attributes = [], $label = null)
 	{
 		// Set up the attributes
 		$attributes = $this->verifyAttributes('color', $attributes);
@@ -263,15 +269,15 @@ class FormBuilder {
 		$this->setColorRequirements();
 
 		$formInput = '
-		<div class="form-group">'.
-			$label .
-			$this->getInputWrapperOpen()
-				.'<div class="input-group">
-					<span class="input-group-addon" id="colorPreview'. $name .'" style="background-color: '. $value .';">&nbsp;</span>'.
-					$input
-				.'</div>'.
-			$this->getInputWrapperClose()
-		.'</div>';
+		<div class="form-group">' .
+					 $label .
+					 $this->getInputWrapperOpen()
+					 . '<div class="input-group">
+					<span class="input-group-addon" id="colorPreview' . $name . '" style="background-color: ' . $value . ';">&nbsp;</span>' .
+					 $input
+					 . '</div>' .
+					 $this->getInputWrapperClose()
+					 . '</div>';
 
 		return $formInput;
 	}
@@ -280,7 +286,7 @@ class FormBuilder {
 	{
 		static $exists = false;
 
-		if (!$exists) {
+		if (! $exists) {
 			$this->addToSection('css', $this->html->style('vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css'));
 			$this->addToSection('jsInclude', $this->html->script('vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js'));
 			$this->addToSection('onReadyJs', '
@@ -309,27 +315,27 @@ $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 		$this->setImageRequirements();
 
 		$formInput = '
-		<div class="form-group">'.
-			$label .
-			$this->getInputWrapperOpen()
-				.'<div>
+		<div class="form-group">' .
+					 $label .
+					 $this->getInputWrapperOpen()
+					 . '<div>
 					<div class="fileinput fileinput-new" data-provides="fileinput">
 						<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-							<img src="'. $existingImage .'" alt="...">
+							<img src="' . $existingImage . '" alt="...">
 						</div>
 						<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
 						<div>
 							<span class="btn btn-sm btn-primary btn-file">
 								<span class="fileinput-new">Select image</span>
-								<span class="fileinput-exists">Change</span>'.
-								$input
-							.'</span>
+								<span class="fileinput-exists">Change</span>' .
+					 $input
+					 . '</span>
 							<a href="javascript:void(0);" class="btn btn-sm btn-inverse fileinput-exists" data-dismiss="fileinput">Remove</a>
 						</div>
 					</div>
-				</div>'.
-			$this->getInputWrapperClose()
-		.'</div>';
+				</div>' .
+					 $this->getInputWrapperClose()
+					 . '</div>';
 
 		return $formInput;
 	}
@@ -338,7 +344,7 @@ $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 	{
 		static $exists = false;
 
-		if (!$exists) {
+		if (! $exists) {
 			$this->addToSection('jsInclude', $this->html->script('vendor/jansyBootstrap/dist/extend/js/jasny-bootstrap.min.js'));
 			$this->addToSection('css', $this->html->style('vendor/jansyBootstrap/dist/extend/css/jasny-bootstrap.min.css'));
 
@@ -348,71 +354,71 @@ $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 
 	public function submit($value = null, $parameters = array('class' => 'btn btn-sm btn-primary'))
 	{
-		if (!isset($parameters['class'])) {
+		if (! isset($parameters['class'])) {
 			$parameters['class'] = 'btn btn-sm btn-primary';
 		}
 
-		return '<div class="form-group">'.
-			$this->getSubmitWrapperOpen() .
-				$this->form->submit($value, $parameters) .
-			$this->getInputWrapperClose()
-		.'</div>';
+		return '<div class="form-group">' .
+			   $this->getSubmitWrapperOpen() .
+			   $this->form->submit($value, $parameters) .
+			   $this->getInputWrapperClose()
+			   . '</div>';
 	}
 
 	public function jsonSubmit($value = null, $parameters = array('class' => 'btn btn-sm btn-primary'))
 	{
-		if (!isset($parameters['id'])) {
+		if (! isset($parameters['id'])) {
 			$parameters['id'] = 'jsonSubmit';
 		}
-		if (!isset($parameters['class'])) {
+		if (! isset($parameters['class'])) {
 			$parameters['class'] = 'btn btn-sm btn-primary';
 		}
 
-		return '<div class="form-group">'.
-			$this->getSubmitWrapperOpen() .
-				$this->form->submit($value, $parameters) .
-			$this->getInputWrapperClose()
-		.'</div>';
+		return '<div class="form-group">' .
+			   $this->getSubmitWrapperOpen() .
+			   $this->form->submit($value, $parameters) .
+			   $this->getInputWrapperClose()
+			   . '</div>';
 	}
 
 	public function submitReset($submitValue = 'Submit', $resetValue = 'Reset', $submitParameters = array('class' => 'btn btn-sm btn-primary'), $resetParameters = array('class' => 'btn btn-sm btn-inverse'))
 	{
-		return '<div class="form-group">'.
-			$this->getSubmitWrapperOpen()
-				.'<div class="btn-group">'.
-					$this->form->submit($submitValue, $submitParameters).
-					$this->form->reset($resetValue, $resetParameters)
-				.'</div>'.
-			$this->getInputWrapperClose()
-		.'</div>';
+		return '<div class="form-group">' .
+			   $this->getSubmitWrapperOpen()
+			   . '<div class="btn-group">' .
+			   $this->form->submit($submitValue, $submitParameters) .
+			   $this->form->reset($resetValue, $resetParameters)
+			   . '</div>' .
+			   $this->getInputWrapperClose()
+			   . '</div>';
 	}
 
-    /**
-     * @param string $submitValue
-     * @param string $cancelValue
-     * @param array  $submitParameters
-     * @param array  $cancelParameters
-     *
-     * @return string
-     */
-    public function submitCancel($submitValue = 'Submit', $cancelValue = 'Cancel', $submitParameters = array('class' => 'btn btn-sm btn-primary'), $cancelParameters = array('class' => 'btn btn-sm btn-inverse'))
-    {
-        return '<div class="form-group">'.
-            $this->getSubmitWrapperOpen()
-                .'<div class="btn-group">'.
-                    $this->form->submit($submitValue, $submitParameters).
-                    '<a href="javascript: void(0);" '. $this->html->attributes($cancelParameters) .' data-dismiss="modal">'. $cancelValue .'</a>'
-                .'</div>'.
-            $this->getInputWrapperClose()
-        .'</div>';
-    }
+	/**
+	 * @param string $submitValue
+	 * @param string $cancelValue
+	 * @param array  $submitParameters
+	 * @param array  $cancelParameters
+	 *
+	 * @return string
+	 */
+	public function submitCancel($submitValue = 'Submit', $cancelValue = 'Cancel', $submitParameters = array('class' => 'btn btn-sm btn-primary'), $cancelParameters = array('class' => 'btn btn-sm btn-inverse'))
+	{
+		return '<div class="form-group">' .
+			   $this->getSubmitWrapperOpen()
+			   . '<div class="btn-group">' .
+			   $this->form->submit($submitValue, $submitParameters) .
+			   '<a href="javascript: void(0);" ' . $this->html->attributes($cancelParameters) . ' data-dismiss="modal">' . $cancelValue . '</a>'
+			   . '</div>' .
+			   $this->getInputWrapperClose()
+			   . '</div>';
+	}
 
 	protected function getSubmitWrapperOpen()
 	{
 		switch ($this->type) {
 			case 'horizontal':
-				return '<div class="col-md-offset-'. $this->labelSize .' col-md-'. $this->inputSize .'">';
-			break;
+				return '<div class="col-md-offset-' . $this->labelSize . ' col-md-' . $this->inputSize . '">';
+				break;
 		}
 
 		return null;
@@ -424,12 +430,12 @@ $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 		$label = $this->setUpLabel($name, $label);
 
 		$formInput = '
-		<div class="form-group">'.
-			$label .
-			$this->getInputWrapperOpen() .
-				$input .
-			$this->getInputWrapperClose()
-		.'</div>';
+		<div class="form-group">' .
+					 $label .
+					 $this->getInputWrapperOpen() .
+					 $input .
+					 $this->getInputWrapperClose()
+					 . '</div>';
 
 		return $formInput;
 	}
@@ -438,18 +444,18 @@ $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 	{
 		// Input specific attributes
 		if ($input == 'color') {
-			if (!isset($attributes['class'])) {
+			if (! isset($attributes['class'])) {
 				$attributes['class'] = 'colorpicker';
 			} elseif (strpos($attributes['class'], 'colorpicker') === false) {
-				$attributes['class'] = $attributes['class'] .' colorpicker';
+				$attributes['class'] = $attributes['class'] . ' colorpicker';
 			}
 		}
 
 		// All inputs
-		if (!isset($attributes['class'])) {
+		if (! isset($attributes['class'])) {
 			$attributes['class'] = 'form-control';
 		} elseif (strpos($attributes['class'], 'form-control') === false) {
-			$attributes['class'] = ' form-control '. $attributes['class'];
+			$attributes['class'] = ' form-control ' . $attributes['class'];
 		}
 
 		return $attributes;
@@ -459,8 +465,8 @@ $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 	{
 		switch ($this->type) {
 			case 'horizontal':
-				return '<div class="col-md-'. $this->inputSize .'">';
-			break;
+				return '<div class="col-md-' . $this->inputSize . '">';
+				break;
 		}
 
 		return null;
@@ -471,7 +477,7 @@ $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 		switch ($this->type) {
 			case 'horizontal':
 				return '</div>';
-			break;
+				break;
 		}
 
 		return null;

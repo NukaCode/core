@@ -69,7 +69,7 @@ class SessionController extends \BaseController {
         return $this->redirect->to('/');
     }
 
-    public function getCollapse($target)
+    public function collapse($target)
     {
         $this->skipView();
 

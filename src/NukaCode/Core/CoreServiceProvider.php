@@ -1,7 +1,7 @@
 <?php namespace NukaCode\Core;
 
-use Artisan;
-use Illuminate\Support\Facades\App;
+use Config;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider {
@@ -97,8 +97,8 @@ class CoreServiceProvider extends ServiceProvider {
             'Migration'                   => 'NukaCode\Core\Models\Migration',
         ];
 
-        $appAliases = \Config::get('core::nonCoreAliases');
-        $loader     = \Illuminate\Foundation\AliasLoader::getInstance();
+        $appAliases = Config::get('core::nonCoreAliases');
+        $loader     = AliasLoader::getInstance();
 
         foreach ($aliases as $alias => $class) {
             if (!is_null($appAliases)) {
@@ -109,25 +109,21 @@ class CoreServiceProvider extends ServiceProvider {
                 $loader->alias($alias, $class);
             }
         }
+
+
     }
 
     public function registerArtisanCommands()
     {
-        $this->app->bind('nukacode::command.version.core', function ($app) {
-            return $app->make('NukaCode\Core\Commands\VersionCommand');
-        });
-        $this->app->bind('nukacode::command.theme', function ($app) {
-            return $app->make('NukaCode\Core\Commands\ThemeCommand');
-        });
-        $this->app->bind('nukacode::command.database', function ($app) {
-            return $app->make('NukaCode\Core\Commands\DatabaseCommand');
-        });
+		$this->commands('NukaCode\Core\Commands\VersionCommand');
+		$this->commands('NukaCode\Core\Commands\ThemeCommand');
+		$this->commands('NukaCode\Core\Commands\DatabaseCommand');
 
-        $this->commands([
-            'nukacode::command.version.core',
-            'nukacode::command.theme',
-            'nukacode::command.database',
-        ]);
+        //$this->commands([
+        //    'nukacode::command.version.core',
+        //    'nukacode::command.theme',
+        //    'nukacode::command.database',
+        //]);
     }
 
     /**
