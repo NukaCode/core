@@ -1,4 +1,4 @@
-<?php namespace NukaCode\Core\Console;
+<?php namespace NukaCode\Core\Remote;
 
 use Illuminate\Remote\RemoteManager;
 use Illuminate\Support\Facades\App;

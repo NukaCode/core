@@ -1,4 +1,4 @@
-<?php namespace NukaCode\Core\Console;
+<?php namespace NukaCode\Core\Remote;
 
 use NukaCode\Core\Exceptions\Theme\InvalidConfig;
 use NukaCode\Core\Exceptions\Theme\InvalidSrc;

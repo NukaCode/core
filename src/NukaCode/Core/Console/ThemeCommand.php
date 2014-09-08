@@ -1,9 +1,9 @@
-<?php namespace NukaCode\Core\Commands;
+<?php namespace NukaCode\Core\Console;
 
 use Illuminate\Config\Repository;
 use Illuminate\Console\Command;
-use NukaCode\Core\Console\SSH;
-use NukaCode\Core\Console\Theme;
+use NukaCode\Core\Remote\SSH;
+use NukaCode\Core\Remote\Theme;
 
 class ThemeCommand extends Command {
 

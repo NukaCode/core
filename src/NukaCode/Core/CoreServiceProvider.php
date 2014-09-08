@@ -115,9 +115,10 @@ class CoreServiceProvider extends ServiceProvider {
 
     public function registerArtisanCommands()
     {
-		$this->commands('NukaCode\Core\Commands\VersionCommand');
-		$this->commands('NukaCode\Core\Commands\ThemeCommand');
-		$this->commands('NukaCode\Core\Commands\DatabaseCommand');
+		$this->commands('NukaCode\Core\Console\AppNameCommand');
+		$this->commands('NukaCode\Core\Console\VersionCommand');
+		$this->commands('NukaCode\Core\Console\ThemeCommand');
+		$this->commands('NukaCode\Core\Console\DatabaseCommand');
 
         //$this->commands([
         //    'nukacode::command.version.core',

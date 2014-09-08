@@ -1,4 +1,4 @@
-<?php namespace NukaCode\Core\Commands;
+<?php namespace NukaCode\Core\Console;
 
 use Illuminate\Console\Command;
 use NukaCode\Core\Filesystem\Config\Package;
