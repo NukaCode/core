@@ -3,25 +3,6 @@
 use Illuminate\Foundation\Console\AppNameCommand as LaravelAppNameCommand;
 
 class AppNameCommand extends LaravelAppNameCommand {
-	/**
-	 * Execute the console command.
-	 *
-	 * @return void
-	 */
-	public function fire()
-	{
-		$this->setAppDirectoryNamespace();
-
-		$this->replaceRouteNamespace();
-
-		$this->setConfigNamespaces();
-
-		$this->setComposerNamespace();
-
-		$this->info('Application namespace set!');
-
-		$this->composer->dumpAutoloads();
-	}
 
 	/**
 	 * Set the application provider namespaces.
@@ -30,17 +11,13 @@ class AppNameCommand extends LaravelAppNameCommand {
 	 */
 	protected function setAppConfigNamespaces()
 	{
-		$this->replaceIn(
-			$this->getConfigPath('app'), $this->root().'\\Providers', $this->argument('name').'\\Providers'
-		);
-
-		$this->replaceIn(
-			$this->getConfigPath('app'), $this->root().'\\Http\\Controllers\\', $this->argument('name').'\\Http\\Controllers\\'
-		);
+		parent::setAppConfigNamespaces();
 
 		$this->replaceIn(
 			$this->getConfigPath('app'), $this->root().'\\Models\\', $this->argument('name').'\\Models\\'
 		);
+
+		$this->setRouteNamespace();
 	}
 
 	/**
@@ -48,9 +25,10 @@ class AppNameCommand extends LaravelAppNameCommand {
 	 *
 	 * @param  string  $path;
 	 */
-	protected function replaceRouteNamespace()
+	protected function setRouteNamespace()
 	{
 		$path = $this->laravel['path'].'/Http/routes.php';
+
 		$this->replaceIn(
 			$path, '\'namespace\' => \''.$this->root().'\\Http\\Controllers', '\'namespace\' => \''.$this->argument('name').'\\Http\\Controllers'
 		);
