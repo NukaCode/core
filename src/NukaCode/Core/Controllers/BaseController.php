@@ -1,14 +1,7 @@
 <?php namespace NukaCode\Core\Controllers;
 
 use Illuminate\Routing\Controller;
-use Auth;
-use CoreView;
-use Illuminate\Support\Facades\Log;
-use Session;
-use Str;
-use View;
-use Event;
-use Request;
+use Auth, Blade, CoreView, Event, Log, Session, Str, Request, View;
 
 class BaseController extends Controller {
 
@@ -24,6 +17,11 @@ class BaseController extends Controller {
 	 */
 	public function __construct()
 	{
+		// Resetting blade syntax to original
+		Blade::setEchoFormat('%s');
+		Blade::setContentTags('{{', '}}');
+		Blade::setEscapedContentTags('{{{', '}}}');
+
 		// Set up the active user
 		$this->setActiveUser();
 

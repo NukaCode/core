@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Seeder;
+
 class PreferencesTableSeeder extends Seeder {
 
     public function run()

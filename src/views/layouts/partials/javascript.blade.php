@@ -5,8 +5,6 @@
 @section('jsIncludeForm')
 @show
 
-{{ HTML::script('//cdn.datatables.net/1.10.0/js/jquery.dataTables.min.js') }}
-
 <script>
 $(document).ready(function() {
     bootbox.setDefaults({backdrop: false});

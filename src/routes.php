@@ -99,6 +99,14 @@ Route::group(['namespace' => '\\NukaCode\Core\Controllers'], function () {
 			'as'   => 'user.password.change',
 			'uses' => 'UserController@postChangePassword'
 		]);
+		Route::get('/upload-avatar', [
+			'as'   => 'user.avatar.upload',
+			'uses' => 'UserController@getUploadAvatar'
+		]);
+		Route::post('/upload-avatar', [
+			'as'   => 'user.avatar.upload',
+			'uses' => 'UserController@postUploadAvatar'
+		]);
 	});
 
 	/********************************************************************

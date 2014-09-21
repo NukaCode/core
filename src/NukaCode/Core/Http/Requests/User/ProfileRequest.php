@@ -13,9 +13,8 @@ class ProfileRequest extends FormRequest {
 	public function rules()
 	{
 		return [
-			'username' => 'required|max:200',
-			'password' => 'required|max:200',
-			'email'    => 'required|email'
+			'email' => 'required|email',
+			'url'   => 'url'
 		];
 	}
 

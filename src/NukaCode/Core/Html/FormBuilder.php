@@ -313,29 +313,32 @@ $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 		$input = $this->form->file($name);
 
 		$this->setImageRequirements();
+		$inputOpen  = $this->getInputWrapperOpen();
+		$inputClose = $this->getInputWrapperClose();
 
-		$formInput = '
-		<div class="form-group">' .
-					 $label .
-					 $this->getInputWrapperOpen()
-					 . '<div>
-					<div class="fileinput fileinput-new" data-provides="fileinput">
-						<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-							<img src="' . $existingImage . '" alt="...">
-						</div>
-						<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
-						<div>
-							<span class="btn btn-sm btn-primary btn-file">
-								<span class="fileinput-new">Select image</span>
-								<span class="fileinput-exists">Change</span>' .
-					 $input
-					 . '</span>
-							<a href="javascript:void(0);" class="btn btn-sm btn-inverse fileinput-exists" data-dismiss="fileinput">Remove</a>
-						</div>
-					</div>
-				</div>' .
-					 $this->getInputWrapperClose()
-					 . '</div>';
+		$formInput = <<<EOT
+<div class="form-group">
+	$label
+	$inputOpen
+		<div>
+			<div class="fileinput fileinput-new text-center" data-provides="fileinput" style="width: 200px;">
+				<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+					<img src="$existingImage" alt="..." />
+				</div>
+				<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+				<div>
+					<span class="btn btn-sm btn-primary btn-block btn-file">
+						<span class="fileinput-new">Select image</span>
+						<span class="fileinput-exists">Change</span>
+						$input
+					</span>
+					<a href="javascript:void(0);" class="btn btn-sm btn-block btn-inverse fileinput-exists" data-dismiss="fileinput">Remove</a>
+				</div>
+			</div>
+		</div>
+	$inputClose
+</div>
+EOT;
 
 		return $formInput;
 	}
@@ -345,8 +348,8 @@ $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 		static $exists = false;
 
 		if (! $exists) {
-			$this->addToSection('jsInclude', $this->html->script('vendor/jansyBootstrap/dist/extend/js/jasny-bootstrap.min.js'));
-			$this->addToSection('css', $this->html->style('vendor/jansyBootstrap/dist/extend/css/jasny-bootstrap.min.css'));
+			$this->addToSection('jsInclude', $this->html->script('components/jasny-bootstrap/dist/js/jasny-bootstrap.min.js'));
+			$this->addToSection('css', $this->html->style('components/jasny-bootstrap/dist/css/jasny-bootstrap.min.css'));
 
 			$exists = true;
 		}

@@ -119,12 +119,6 @@ class CoreServiceProvider extends ServiceProvider {
 		$this->commands('NukaCode\Core\Console\VersionCommand');
 		$this->commands('NukaCode\Core\Console\ThemeCommand');
 		$this->commands('NukaCode\Core\Console\DatabaseCommand');
-
-        //$this->commands([
-        //    'nukacode::command.version.core',
-        //    'nukacode::command.theme',
-        //    'nukacode::command.database',
-        //]);
     }
 
     /**

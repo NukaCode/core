@@ -1,5 +1,6 @@
 <?php namespace NukaCode\Core\Controllers;
 
+use Illuminate\Support\Str;
 use NukaCode\Core\Http\Requests\ProfileRequest;
 use NukaCode\Core\Repositories\Contracts\UserRepositoryInterface;
 use NukaCode\Core\Requests\Ajax;
@@ -63,6 +64,7 @@ class UserController extends \BaseController {
                 ->addTab('Avatar', 'avatar')
                 ->addTab('Preferences', 'preferences')
                 ->addTab('Change Password', 'change-password')
+                ->addTab('Upload Avatar', 'upload-avatar')
                 ->buildPanel()
             ->make();
     }
@@ -134,5 +136,20 @@ class UserController extends \BaseController {
         $this->activeUser->setPreferenceValue($input['avatar_preference_id'], $input['avatar_preference']);
 
         return $this->ajax->setStatus('success')->sendResponse();
+    }
+
+    public function postUploadAvatar()
+    {
+        if($this->input->hasFile('avatar')) {
+			// Set avatar
+			$image       = $this->user->uploadAvatar($this->input->file('avatar'), $this->activeUser->username);
+			$imageErrors = $image->getErrors();
+
+			if (count($imageErrors) > 0) {
+				$this->addErrors($imageErrors);
+			}
+
+			return $this->redirect('/user/account#upload-avatar', 'Avatar uploaded');
+		}
     }
 }

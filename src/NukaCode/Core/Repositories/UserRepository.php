@@ -6,6 +6,7 @@ use NukaCode\Core\Database\Collection;
 use NukaCode\Core\Repositories\Contracts\UserRepositoryInterface;
 use NukaCode\Core\Requests\Ajax;
 use NukaCode\Core\Servicing\Crud;
+use NukaCode\Core\View\Image;
 
 class UserRepository extends CoreRepository implements UserRepositoryInterface {
 
@@ -159,6 +160,14 @@ class UserRepository extends CoreRepository implements UserRepositoryInterface {
 
         $this->save();
     }
+
+	public function uploadAvatar($avatar, $username)
+	{
+		$image = new Image;
+		$results = $image->addImage(public_path('img/avatars/User'), $avatar, \Str::studly($username));
+
+		return $results;
+	}
 
     public function crud()
     {

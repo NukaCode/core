@@ -18,7 +18,7 @@
          <div class="panel panel-default">
             <div class="panel-heading">Avatar</div>
             <div class="panel-body">
-                {{ HTML::image($activeUser->present()->avatar, null, array('class'=> 'media-object', 'style' => 'width: 150px;margin: 0 auto;')) }}
+                {{ HTML::image($activeUser->present()->avatar, null, array('class'=> 'media-object', 'style' => 'width: 100px;margin: 0 auto;')) }}
                 <div class="clearfix"></div>
             </div>
         </div>
@@ -27,7 +27,7 @@
          <div class="panel panel-default">
             <div class="panel-heading">Gravatar</div>
             <div class="panel-body">
-                {{ HTML::image($activeUser->present()->onlyGravatar, null, array('class'=> 'media-object', 'style' => 'width: 150px;margin: 0 auto;')) }}
+                {{ HTML::image($activeUser->present()->onlyGravatar, null, array('class'=> 'media-object', 'style' => 'width: 100px;margin: 0 auto;')) }}
                 <div class="clearfix"></div>
             </div>
         </div>
