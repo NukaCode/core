@@ -13,7 +13,7 @@ class CoreServiceProvider extends ServiceProvider {
 	 */
 	protected $defer = false;
 
-	const version = '1.0.0';
+	const version = '2.0.0';
 
 	/**
 	 * Bootstrap the application events.
