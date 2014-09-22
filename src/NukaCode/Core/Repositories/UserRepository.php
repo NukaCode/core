@@ -2,13 +2,16 @@
 
 use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\Session;
-use NukaCode\Core\Database\Collection;
+use Laracasts\Commander\Events\EventGenerator;
+use NukaCode\Core\Events\UserWasCreated;
 use NukaCode\Core\Repositories\Contracts\UserRepositoryInterface;
 use NukaCode\Core\Requests\Ajax;
 use NukaCode\Core\Servicing\Crud;
 use NukaCode\Core\View\Image;
 
 class UserRepository extends CoreRepository implements UserRepositoryInterface {
+
+	use EventGenerator;
 
     /**
      * @var \Illuminate\Events\Dispatcher
@@ -59,7 +62,14 @@ class UserRepository extends CoreRepository implements UserRepositoryInterface {
 
         $this->entity = $user;
 
-        return $this->save();
+		$result = $this->save();
+
+		if ($result) {
+			// Send out the event
+			$this->raise(new UserWasCreated($this->entity));
+		}
+
+        return $result;
     }
 
     /**
@@ -156,7 +166,7 @@ class UserRepository extends CoreRepository implements UserRepositoryInterface {
         }
 
         // Save the new password
-        $this->entity->password = $input['newPassword'];
+        $this->entity->password = $input['new_password'];
 
         $this->save();
     }

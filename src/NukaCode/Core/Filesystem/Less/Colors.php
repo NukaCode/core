@@ -26,7 +26,7 @@ class Colors extends Core {
     {
         $this->file      = $file;
         $this->validator = $validator;
-        $this->less      = app_path('assets/less/colors.less');
+        $this->less      = base_path('resources/assets/less/colors.less');
     }
 
     public function updateEntry($package)

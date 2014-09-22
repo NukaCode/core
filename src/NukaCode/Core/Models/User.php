@@ -102,16 +102,6 @@ abstract class User extends BaseModel {
     }
 
     /********************************************************************
-     * Validation rules
-     *******************************************************************/
-
-    protected $rules = [
-        'username' => 'required|max:200',
-        'password' => 'required|max:200',
-        'email'    => 'required|email'
-    ];
-
-    /********************************************************************
      * Scopes
      *******************************************************************/
 
@@ -169,17 +159,8 @@ abstract class User extends BaseModel {
     public function verifyPassword($input)
     {
         // Verify all the needed data exists and is correct
-        if ($input['oldPassword'] == null || !Hash::check($input['oldPassword'], $this->password)) {
+        if (! Hash::check($input['password'], $this->password)) {
             throw new \Exception('Please enter your current password');
-        }
-        if ($input['newPassword'] == null) {
-            throw new \Exception('Please enter your new password');
-        }
-        if ($input['newPasswordAgain'] == null) {
-            throw new \Exception('Please confirm your new password');
-        }
-        if ($input['newPassword'] != $input['newPasswordAgain']) {
-            throw new \Exception('Your new passwords did not match.');
         }
 
         return true;
@@ -280,7 +261,7 @@ abstract class User extends BaseModel {
      */
     public function checkPermission($actions, $matchAll = false)
     {
-        if (Auth::user()->roles->contains(\BaseModel::ROLE_DEVELOPER)) {
+        if (Auth::user()->roles->contains(getRoleId('developer'))) {
             return true;
         }
 
@@ -343,7 +324,7 @@ abstract class User extends BaseModel {
         $roles = $this->roles;
 
         // If the user does not have the developer role
-        if (!$roles->contains(\BaseModel::ROLE_DEVELOPER)) {
+        if (!$roles->contains(getRoleId('developer'))) {
 
             $roleIds = User_Permission_Role::where('group', '=', $group)->get()->id->toArray();
             // Make sure they have at least one role
@@ -363,7 +344,7 @@ abstract class User extends BaseModel {
         }
 
         // Otherwise, they are a guest
-        return User_Permission_Role::find(\BaseModel::ROLE_GUEST);
+        return User_Permission_Role::find(getRoleId('guest'));
     }
 
     /**

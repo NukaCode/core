@@ -1,11 +1,16 @@
 <?php namespace NukaCode\Core\Controllers;
 
 use Illuminate\Auth\AuthManager;
-use Illuminate\Http\Request;
 use Illuminate\Session\SessionManager;
+use Laracasts\Commander\CommanderTrait;
+use NukaCode\Core\Commands\Session\RegistrationCommand;
+use NukaCode\Core\Http\Requests\User\LoginRequest;
+use NukaCode\Core\Http\Requests\User\RegistrationRequest;
 use NukaCode\Core\Repositories\Contracts\UserRepositoryInterface;
 
 class SessionController extends \BaseController {
+
+	use CommanderTrait;
 
     /**
      * @var \Illuminate\Auth\Guard
@@ -29,42 +34,31 @@ class SessionController extends \BaseController {
 
     public function getLogin() {}
 
-    public function postLogin()
+    public function postLogin(LoginRequest $request)
     {
-        $input = e_array($this->input->all());
+		$userData = [
+			'username' => $request->get('username'),
+			'password' => $request->get('password')
+		];
 
-        if ($input != null) {
-            $userData = [
-                'username' => $input['username'],
-                'password' => $input['password']
-            ];
+		if ($this->auth->attempt($userData)) {
+			return $this->redirect->intended('/');
+		}
 
-            if ($this->auth->attempt($userData)) {
-                return $this->redirect->intended('/');
-            } else {
-                return $this->redirect->to('/login')->with('login_errors', 'Your username or password was incorrect.');
-            }
-        }
+		return $this->redirect->to('/login')->with('login_errors', 'Your username or password was incorrect.');
     }
 
     public function getRegister() {}
 
-    public function postRegister()
+    public function postRegister(RegistrationRequest $request)
     {
-        $input = e_array($this->input->all());
+		// New way
+		$result = $this->execute(RegistrationCommand::class, $request->only('username', 'password', 'email'));
 
-        if ($input != null) {
-            $result = $this->user->create($input);
-
-            if ($result !== true) {
-                $this->redirect->to('/register')->with('errors', $result);
-            }
-
-            // Assign the guest role
-            $this->user->addRole(\Config::get('core::Roles.guest'));
-        }
-
-        $this->auth->login($this->user->getEntity());
+		// Redirect on failure
+		if ($result !== true) {
+			return $this->redirect->to('/register')->with('errors', $result);
+		}
 
         return $this->redirect->to('/');
     }

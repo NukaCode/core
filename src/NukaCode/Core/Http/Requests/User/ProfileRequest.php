@@ -1,9 +1,9 @@
-<?php namespace NukaCode\Core\Http\Requests;
+<?php namespace NukaCode\Core\Http\Requests\User;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use NukaCode\Core\Http\Requests\BaseRequest;
 
-class ProfileRequest extends FormRequest {
+class ProfileRequest extends BaseRequest {
 
 	/**
 	 * Get the validation rules that apply to the request.

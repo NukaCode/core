@@ -287,8 +287,8 @@ class FormBuilder {
 		static $exists = false;
 
 		if (! $exists) {
-			$this->addToSection('css', $this->html->style('vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css'));
-			$this->addToSection('jsInclude', $this->html->script('vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js'));
+			$this->addToSection('css', $this->html->style('components/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css'));
+			$this->addToSection('jsInclude', $this->html->script('components/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js'));
 			$this->addToSection('onReadyJs', '
 $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 	$(\'#colorPreview\'+ $(this).attr(\'name\')).css(\'background-color\', ev.color.toHex());

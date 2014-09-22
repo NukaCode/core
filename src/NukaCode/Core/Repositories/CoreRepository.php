@@ -39,6 +39,10 @@ abstract class CoreRepository {
             throw new \InvalidArgumentException('No model to save.');
         }
 
+		if ($this->ajax->errorCount() > 0) {
+			return false;
+		}
+
         if (! $this->entity->save()) {
             if (isset($this->ajax)) {
                 // Messages from validation need to be easily readable.
@@ -68,6 +72,10 @@ abstract class CoreRepository {
 
     public function delete()
     {
+		if ($this->ajax->errorCount() > 0) {
+			return false;
+		}
+
         $this->entity->delete();
     }
 
@@ -77,6 +85,13 @@ abstract class CoreRepository {
             throw new \InvalidArgumentException('No model selected.  Use find or set to set the model.');
         }
     }
+
+	public function getEntity()
+	{
+		$this->checkEntity();
+
+		return $this->entity;
+	}
 
     /**
      * @param string $name

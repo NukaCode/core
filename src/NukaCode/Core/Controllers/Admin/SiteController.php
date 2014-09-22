@@ -2,8 +2,8 @@
 
 use Illuminate\Config\Repository;
 use Illuminate\Foundation\Application;
-use NukaCode\Core\Console\SSH;
-use NukaCode\Core\Console\Theme as ConsoleTheme;
+use NukaCode\Core\Remote\SSH;
+use NukaCode\Core\Remote\Theme as ConsoleTheme;
 use NukaCode\Core\Filesystem\Config\Theme as ConfigTheme;
 use NukaCode\Core\Filesystem\Less\Colors;
 use NukaCode\Core\Requests\Ajax;

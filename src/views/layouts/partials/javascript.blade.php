@@ -70,7 +70,7 @@ $(document).ready(function() {
         theme: 'future'
     }
 
-    var mainErrors = {{ (Session::get('errors') != null ? json_encode(implode('<br />', Session::get('errors'))) : 0) }};
+    var mainErrors = {{ (Session::get('errors') != null ? json_encode(implode('<br />', Session::get('errors')->all())) : 0) }};
     var mainStatus = {{ (Session::get('message') != null ? json_encode(Session::get('message')) : 0) }};
     var mainLogins = {{ (Session::get('login_errors') != null ? json_encode(Session::get('login_errors')) : 0) }};
 

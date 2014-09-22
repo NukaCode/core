@@ -27,7 +27,7 @@
         </div>
         <div class="row bar">
             <div class="col-md-12">
-                <a href="http://packagist.org/packages/laravel/framework" target="_blank">Packagist</a>
+                <a href="http://packagist.org/packages/laravel/framework#{{ $laravelVersion }}" target="_blank">Packagist</a>
                 &nbsp;|&nbsp;
                 <a href="http://laravel.com/docs" target="_blank">Documentation</a>
             </div>
@@ -110,7 +110,7 @@
                     <tr>
                         <td>Laravel</td>
                         <td style="width: 20%;">{{ $laravelVersion }}</td>
-                        <td style="width: 20%;" class="text-right">{{ HTML::link('http://packagist.org/packages/laravel/framework', 'View', ['target' => '_blank']) }}</td>
+                        <td style="width: 20%;" class="text-right">{{ HTML::link('http://packagist.org/packages/laravel/framework#'. $laravelVersion, 'View', ['target' => '_blank']) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -123,7 +123,7 @@
                         <tr>
                             <td>{{ Str::title($package) }}</td>
                             <td style="width: 20%;">{{ $details['version'] }}</td>
-                            <td style="width: 20%;" class="text-right">{{ HTML::link('http://packagist.org/packages/nukacode/'. $package, 'View', ['target' => '_blank']) }}</td>
+                            <td style="width: 20%;" class="text-right">{{ HTML::link('http://packagist.org/packages/nukacode/'. $package .'#'. $details['version'], 'View', ['target' => '_blank']) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
