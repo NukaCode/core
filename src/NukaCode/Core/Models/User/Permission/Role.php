@@ -34,6 +34,10 @@ class Role extends \BaseModel {
     /********************************************************************
      * Getter and Setter methods
      *******************************************************************/
+	public function getFullNameAttribute()
+	{
+		return $this->group .' '. $this->name;
+	}
 
     /********************************************************************
      * Extra Methods

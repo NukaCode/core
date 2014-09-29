@@ -26,7 +26,7 @@ class ActionController extends \BaseController {
     public function getIndex($id)
     {
         $action = $this->action->find($id);
-        $roles  = Role::orderByNameAsc()->get()->toSelectArray(false);
+        $roles  = Role::orderByNameAsc()->get()->toSelectArray(false, 'id', 'fullName');
 
         $this->setViewData('action', $action);
         $this->setViewData('roles', $roles);

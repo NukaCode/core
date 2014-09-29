@@ -1,5 +1,7 @@
 <?php namespace NukaCode\Core\Models\Relationships;
 
+use User_Permission_Role, User_Preference;
+
 trait User {
 
     public function roles()

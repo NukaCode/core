@@ -49,6 +49,7 @@ class UserRepository extends CoreRepository implements UserRepositoryInterface {
     {
         $user            = new \User;
         $user->username  = $input['username'];
+        $user->password  = $input['password'];
         $user->email     = $input['email'];
         $user->status_id = 1;
 
@@ -66,7 +67,7 @@ class UserRepository extends CoreRepository implements UserRepositoryInterface {
 
 		if ($result) {
 			// Send out the event
-			$this->raise(new UserWasCreated($this->entity));
+			$this->raise(new UserWasCreated($this->getEntity()));
 		}
 
         return $result;

@@ -24,6 +24,8 @@ class HtmlServiceProvider extends ServiceProvider {
         $this->registerFormBuilder();
 
         $this->registerBFormBuilder();
+
+		$this->registerBBCode();
     }
 
     /**
@@ -66,5 +68,18 @@ class HtmlServiceProvider extends ServiceProvider {
             return $app->make('NukaCode\Core\Html\FormBuilder');
         });
     }
+
+	/**
+	 * Register the BBCode instance.
+	 *
+	 * @return void
+	 */
+	protected function registerBBCode()
+	{
+		$this->app->bindShared('bbcode', function($app)
+		{
+			return $app->make('NukaCode\Core\Html\BBCode');
+		});
+	}
 
 }

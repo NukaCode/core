@@ -39,6 +39,20 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| Package menus
+	|--------------------------------------------------------------------------
+	|
+	| Add any package created menus you want to enable to this array.
+	| Each class listed MUST have a setMenu method which the MenuController will
+	| call.
+	|
+	*/
+	'menus' => [
+		'NukaCode\Forum\Services\Menu'
+	],
+
+	/*
+	|--------------------------------------------------------------------------
 	| Application Menu
 	|--------------------------------------------------------------------------
 	|

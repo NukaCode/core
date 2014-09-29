@@ -66,7 +66,7 @@ $(document).ready(function() {
     );
 
     Messenger.options = {
-        extraClasses: 'messenger-fixed {{ isset($activeUser) ? $activeUser->alertLocation : "messenger-on-top" }}',
+        extraClasses: 'messenger-fixed {{ isset($this->activeUser) ? $this->activeUser->alertLocation : "messenger-on-top" }}',
         theme: 'future'
     }
 

@@ -3,6 +3,7 @@
 use Config;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
+use NukaCode\Core\Database\Collection;
 
 class CoreServiceProvider extends ServiceProvider {
 
@@ -82,6 +83,7 @@ class CoreServiceProvider extends ServiceProvider {
 			// Facades
 			'HTML'                        => 'NukaCode\Core\Facades\Html\HTML',
 			'bForm'                       => 'NukaCode\Core\Facades\Html\bForm',
+			'BBCode'                      => 'NukaCode\Core\Facades\Html\BBCode',
 			'CoreView'                    => 'NukaCode\Core\Facades\View\View',
 			'Ajax'                        => 'NukaCode\Core\Facades\Requests\Ajax',
 			// Utilities

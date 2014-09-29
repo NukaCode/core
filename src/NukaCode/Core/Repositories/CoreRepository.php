@@ -35,28 +35,34 @@ abstract class CoreRepository {
      */
     public function save()
     {
-        if ($this->entity == null) {
+		$entity = $this->getEntity();
+
+        if ($entity == null) {
             throw new \InvalidArgumentException('No model to save.');
         }
 
-		if ($this->ajax->errorCount() > 0) {
+		if (isset($this->ajax) && $this->ajax->errorCount() > 0) {
 			return false;
 		}
 
-        if (! $this->entity->save()) {
+		$entity->save();
+
+        if (! $entity) {
             if (isset($this->ajax)) {
                 // Messages from validation need to be easily readable.
-                foreach ($this->entity->getErrors()->all() as $key => $message) {
+                foreach ($entity->getErrors()->all() as $key => $message) {
                     $this->ajax->addError($key, $message);
                 }
             }
 
-            return $this->entity->getErrors()->all();
+            return $entity->getErrors()->all();
         } else {
             if (isset($this->ajax)) {
                 $this->ajax->setStatus('success');
             }
         }
+
+		$this->entity = $entity;
 
         return true;
     }

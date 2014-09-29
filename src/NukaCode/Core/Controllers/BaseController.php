@@ -120,19 +120,44 @@ class BaseController extends Controller {
 		return false;
 	}
 
-	// Sugar Methods
-	// Views
+	/********************************************************************
+	 * Sugar
+	 *******************************************************************/
+
+	/********************************************************************
+	 * Redirecting
+	 ******************************************************************
+	 *
+	 * @param        $url
+	 * @param        $message
+	 * @param string $type
+	 *
+	 * @return
+	 */
+	public function redirect($url, $message, $type = 'message')
+	{
+		return $this->redirect->to($url)->with($type, $message);
+	}
+
+	/**
+	 * @param        $route
+	 * @param array  $parameters
+	 * @param        $message
+	 * @param string $type
+	 *
+	 * @return mixed
+	 */
+	public function redirectRoute($route, array $parameters, $message, $type = 'message')
+	{
+		return $this->redirect->route($route, $parameters)->with($type, $message);
+	}
+
+	/********************************************************************
+	 * Views
+	 *******************************************************************/
 	public function setViewData($key, $value = null)
 	{
-		if ($value == null) {
-			if (! is_array($key)) {
-				Log::error('Invalid data passed to setViewData');
-				Log::error('Key: ' . print_r($key, 1));
-				Log::error('Value: ' . print_r($value, 1));
-
-				throw new \InvalidArgumentException('Invalid argument passed to NukaCode\Core\Controllers\BaseController::setViewData.');
-			}
-
+		if (is_array($key)) {
 			foreach ($key as $name => $data) {
 				View::share($name, $data);
 			}
@@ -156,7 +181,9 @@ class BaseController extends Controller {
 		CoreView::missingMethod($parameters);
 	}
 
-	// Menus
+	/********************************************************************
+	 * Menus
+	 *******************************************************************/
 	protected function addItemToMenu($node, $title, $link, $index, $key)
 	{
 		$nodeKey = $key == null ? Str::camel($title) : $key;

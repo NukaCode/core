@@ -23,6 +23,13 @@ class HtmlBuilder extends BaseHtmlBuilder {
 		return '<a href="'.$url.'"'.static::attributes($attributes).'>'.$imagesrc.'</a>';
 	}
 
+	public function linkRouteImage($route, array $parameters, $imagesrc, $attributes = array(), $https = null)
+	{
+		$url = $this->url->route($route, $parameters, $https);
+
+		return '<a href="'.$url.'"'.static::attributes($attributes).'>'.$imagesrc.'</a>';
+	}
+
 	public function addButton($url, $iconClass = 'fa-plus')
 	{
 		return $this->linkIcon($url, 'fa '. $iconClass);
@@ -52,6 +59,13 @@ class HtmlBuilder extends BaseHtmlBuilder {
 	public function linkIcon($url, $iconClasses, $iconText = null, $attributes = array(), $https = null)
 	{
 		$url = $this->url->to($url, $https);
+
+		return '<a href="'.$url.'"'.static::attributes($attributes).'><i class="'.$iconClasses.'"></i> '. $iconText .'</a>';
+	}
+
+	public function linkRouteIcon($route, array $parameters, $iconClasses, $iconText = null, $attributes = array(), $https = null)
+	{
+		$url = $this->url->route($route, $parameters, $https);
 
 		return '<a href="'.$url.'"'.static::attributes($attributes).'><i class="'.$iconClasses.'"></i> '. $iconText .'</a>';
 	}

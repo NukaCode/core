@@ -1,7 +1,6 @@
 <?php
 
 Route::group(['namespace' => '\\NukaCode\Core\Controllers'], function () {
-//Route::group([], function () {
 	/********************************************************************
 	 * Sessions
 	 *******************************************************************/
