@@ -48,7 +48,6 @@ return array(
 	|
 	*/
 	'menus' => [
-		'NukaCode\Forum\Services\Menu'
 	],
 
 	/*
