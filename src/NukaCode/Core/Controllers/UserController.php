@@ -1,11 +1,10 @@
 <?php namespace NukaCode\Core\Controllers;
 
-use Illuminate\Support\Str;
 use NukaCode\Core\Http\Requests\User\PasswordRequest;
 use NukaCode\Core\Http\Requests\User\ProfileRequest;
 use NukaCode\Core\Repositories\Contracts\UserRepositoryInterface;
 use NukaCode\Core\Requests\Ajax;
-use NukaCode\Core\Servicing\LeftTab;
+use NukaCode\Core\Services\LeftTab;
 use NukaCode\Core\View\View;
 
 class UserController extends \BaseController {

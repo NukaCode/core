@@ -6,7 +6,7 @@ use Laracasts\Commander\Events\EventGenerator;
 use NukaCode\Core\Events\UserWasCreated;
 use NukaCode\Core\Repositories\Contracts\UserRepositoryInterface;
 use NukaCode\Core\Requests\Ajax;
-use NukaCode\Core\Servicing\Crud;
+use NukaCode\Core\Services\Crud;
 use NukaCode\Core\View\Image;
 
 class UserRepository extends CoreRepository implements UserRepositoryInterface {
@@ -24,7 +24,7 @@ class UserRepository extends CoreRepository implements UserRepositoryInterface {
     protected $ajax;
 
     /**
-     * @var \NukaCode\Core\Servicing\Crud
+     * @var \NukaCode\Core\Services\Crud
      */
     private $crud;
 

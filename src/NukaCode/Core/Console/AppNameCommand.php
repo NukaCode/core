@@ -14,7 +14,7 @@ class AppNameCommand extends LaravelAppNameCommand {
 		parent::setAppConfigNamespaces();
 
 		$this->replaceIn(
-			$this->getConfigPath('app'), $this->root().'\\Models\\', $this->argument('name').'\\Models\\'
+			$this->getConfigPath('app'), $this->currentRoot.'\\Models\\', $this->argument('name').'\\Models\\'
 		);
 
 		$this->setRouteNamespace();
@@ -30,7 +30,7 @@ class AppNameCommand extends LaravelAppNameCommand {
 		$path = $this->laravel['path'].'/Http/routes.php';
 
 		$this->replaceIn(
-			$path, '\'namespace\' => \''.$this->root().'\\Http\\Controllers', '\'namespace\' => \''.$this->argument('name').'\\Http\\Controllers'
+			$path, '\'namespace\' => \''.$this->currentRoot.'\\Http\\Controllers', '\'namespace\' => \''.$this->argument('name').'\\Http\\Controllers'
 		);
 	}
 

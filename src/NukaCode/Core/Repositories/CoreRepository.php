@@ -78,7 +78,9 @@ abstract class CoreRepository {
 
     public function delete()
     {
-		if ($this->ajax->errorCount() > 0) {
+		$this->checkEntity();
+
+		if (isset($this->ajax) && $this->ajax->errorCount() > 0) {
 			return false;
 		}
 

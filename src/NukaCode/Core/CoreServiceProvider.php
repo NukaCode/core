@@ -1,11 +1,15 @@
 <?php namespace NukaCode\Core;
 
 use Config;
+use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
+use NukaCode\Core\Console\AppNameCommand;
 use NukaCode\Core\Database\Collection;
 
 class CoreServiceProvider extends ServiceProvider {
+
+	use AppNamespaceDetectorTrait;
 
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -119,7 +123,7 @@ class CoreServiceProvider extends ServiceProvider {
 	{
 		$this->commands(
 			[
-				'NukaCode\Core\Console\AppNameCommand',
+				'NukaCode\Core\Console\AppNameCommand' => 'command.app.name',
 				'NukaCode\Core\Console\VersionCommand',
 				'NukaCode\Core\Console\ThemeCommand',
 				'NukaCode\Core\Console\DatabaseCommand',
