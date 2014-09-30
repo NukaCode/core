@@ -287,8 +287,8 @@ class FormBuilder {
 		static $exists = false;
 
 		if (! $exists) {
-			$this->addToSection('css', $this->html->style('components/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css'));
-			$this->addToSection('jsInclude', $this->html->script('components/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js'));
+			$this->addToSection('css', $this->html->style('vendor/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css'));
+			$this->addToSection('jsInclude', $this->html->script('vendor/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js'));
 			$this->addToSection('onReadyJs', '
 $(\'.colorpicker\').colorpicker().on(\'changeColor\', function(ev){
 	$(\'#colorPreview\'+ $(this).attr(\'name\')).css(\'background-color\', ev.color.toHex());
@@ -348,8 +348,8 @@ EOT;
 		static $exists = false;
 
 		if (! $exists) {
-			$this->addToSection('jsInclude', $this->html->script('components/jasny-bootstrap/dist/js/jasny-bootstrap.min.js'));
-			$this->addToSection('css', $this->html->style('components/jasny-bootstrap/dist/css/jasny-bootstrap.min.css'));
+			$this->addToSection('jsInclude', $this->html->script('vendor/jasny-bootstrap/dist/js/jasny-bootstrap.min.js'));
+			$this->addToSection('css', $this->html->style('vendor/jasny-bootstrap/dist/css/jasny-bootstrap.min.css'));
 
 			$exists = true;
 		}

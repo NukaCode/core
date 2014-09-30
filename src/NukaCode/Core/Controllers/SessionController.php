@@ -3,8 +3,8 @@
 use Illuminate\Auth\AuthManager;
 use Laracasts\Commander\CommanderTrait;
 use NukaCode\Core\Commands\Session\RegistrationCommand;
-use NukaCode\Core\Http\Requests\User\LoginRequest;
-use NukaCode\Core\Http\Requests\User\RegistrationRequest;
+use NukaCode\Core\Http\Requests\User\Login;
+use NukaCode\Core\Http\Requests\User\Registration;
 
 class SessionController extends \BaseController {
 
@@ -18,7 +18,7 @@ class SessionController extends \BaseController {
 	 *
 	 * @return mixed
 	 */
-	public function postLogin(AuthManager $auth, LoginRequest $request)
+	public function postLogin(AuthManager $auth, Login $request)
     {
 		// Set the auth data
 		$userData = [
@@ -42,7 +42,7 @@ class SessionController extends \BaseController {
 	 *
 	 * @return mixed
 	 */
-	public function postRegister(RegistrationRequest $request)
+	public function postRegister(Registration $request)
     {
 		// Run the registration command
 		$result = $this->execute(RegistrationCommand::class, $request->only('username', 'password', 'email'));

@@ -1,5 +1,6 @@
 <?php namespace NukaCode\Core\Controllers\Admin\Edit;
 
+use NukaCode\Core\Http\Requests\Admin\Edit\User;
 use NukaCode\Core\Models\User\Permission\Role;
 use NukaCode\Core\Repositories\Contracts\RoleRepositoryInterface;
 use NukaCode\Core\Repositories\Contracts\UserRepositoryInterface;
@@ -28,18 +29,17 @@ class UserController extends \BaseController {
 	public function getIndex(RoleRepositoryInterface $roleRepo, $id)
 	{
 		$user  = $this->userRepo->find($id);
-		$roles = $roleRepo->orderByName()->toSelectArray(false);
+		$roles = $roleRepo->orderByName()->toSelectArray(false, 'id', 'fullName');
 
 		$this->setViewData(compact('user', 'roles'));
 	}
 
-	// @todo Add request form
-	public function postIndex($id)
+	public function postIndex(User $request, $id)
 	{
 		// Update the user
-		$this->userRepo->findFirst($this->input->only('id'));
-		$this->userRepo->update($this->input->except('roles'));
-		$this->userRepo->setRoles($this->input->get('roles'));
+		$this->userRepo->findFirst($request->only('id'));
+		$this->userRepo->update($request->except('roles'));
+		$this->userRepo->setRoles($request->get('roles'));
 
 		// Send the response
 		return $this->ajax->sendResponse();

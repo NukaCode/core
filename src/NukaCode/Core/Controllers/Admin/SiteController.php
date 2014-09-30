@@ -11,54 +11,77 @@ use NukaCode\Core\Requests\Ajax;
 
 class SiteController extends \BaseController {
 
-	/**
-	 * @var \NukaCode\Core\Requests\Ajax
-	 */
-	private $ajax;
+    /**
+     * @var \NukaCode\Core\Console\SSH
+     */
+    private $ssh;
 
-	/**
-	 * @var \Illuminate\Config\Repository
-	 */
-	private $config;
+    /**
+     * @var \NukaCode\Core\Console\Theme
+     */
+    private $theme;
 
-	public function __construct(Ajax $ajax,
-								Repository $config)
-	{
-		parent::__construct();
+    /**
+     * @var \NukaCode\Core\Filesystem\Config\Theme
+     */
+    private $configTheme;
 
-		$this->ajax        = $ajax;
-		$this->config      = $config;
-	}
+    /**
+     * @var \NukaCode\Core\Filesystem\Less\Colors
+     */
+    private $colors;
 
-	public function index()
-	{
-		$laravelVersion = Application::VERSION;
-		$packages       = $this->config->get('packages.nukacode');
+    /**
+     * @var \NukaCode\Core\Requests\Ajax
+     */
+    private $ajax;
 
-		$this->setViewData(compact('laravelVersion', 'packages'));
-	}
+    /**
+     * @var \Illuminate\Config\Repository
+     */
+    private $config;
 
-	public function getTheme(Colors $colors)
-	{
-		$colors = $colors->getEntry();
+    public function __construct(SSH $ssh, ConsoleTheme $theme, ConfigTheme $configTheme, Colors $colors, Ajax $ajax, Repository $config)
+    {
+        parent::__construct();
 
-		$availableThemes = $this->config->get('core::theme.themes');
+        $this->ssh         = $ssh;
+        $this->theme       = $theme;
+        $this->configTheme = $configTheme;
+        $this->colors      = $colors;
+        $this->ajax        = $ajax;
+        $this->config      = $config;
+    }
 
-		$this->setViewData(compact('colors', 'availableThemes'));
-	}
+    public function index()
+    {
+        $laravelVersion = Application::VERSION;
+        $packages = $this->config->get('packages.nukacode');
 
-	public function postTheme(Theme $request, ConsoleTheme $theme, ConfigTheme $configTheme, Colors $colors, SSH $ssh)
-	{
+        $this->setViewData(compact('laravelVersion', 'packages'));
+    }
+
+    public function getTheme()
+    {
+        $colors = $this->colors->getEntry();
+
+        $availableThemes = $this->config->get('core::theme.themes');
+
+        $this->setViewData(compact('colors', 'availableThemes'));
+    }
+
+    public function postTheme(Theme $request)
+    {
 		// Update the colors less file
-		$colors->updateEntry($request->all());
+		$this->colors->updateEntry($request->all());
 
 		// Update the config file
-		$configTheme->updateEntry($request->all());
+		$this->configTheme->updateEntry($request->all());
 
 		// Generate the new theme css file
-		$commands = $theme->generateTheme($request->get('style'), $request->get('src'));
+		$commands = $this->theme->generateTheme($request->get('style'), $request->get('src'));
 		$this->ssh->runCommands($commands);
 
 		return $this->ajax->setStatus('success')->sendResponse();
-	}
+    }
 } 

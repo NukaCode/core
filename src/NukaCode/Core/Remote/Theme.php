@@ -34,7 +34,6 @@ class Theme {
 
         if ($theme == 'default') {
             $commands = [
-                'cd ' . base_path(),
                 'lessc ' . $directory . '/master.less ' . $this->cssDirectory . 'master.css',
                 'gulp css-mini'
             ];
@@ -44,9 +43,8 @@ class Theme {
             }
 
             $commands = [
-                'cd ' . base_path(),
                 'lessc ' . $directory . '/themes/' . $theme . '/master.less ' . $this->cssDirectory . 'master.css',
-                'gulp css-mini'
+                //'gulp css-mini'
             ];
         }
 

@@ -1,18 +1,21 @@
 <?php namespace NukaCode\Core\Remote;
 
-use Illuminate\Support\Facades\App;
 use NukaCode\Core\Exceptions\SSH\NoCommandsProvided;
 
 class SSH {
 
-    private $ssh;
-
     public function runCommands(array $commands)
     {
         if (count($commands) > 0) {
-            $commands = implode(';', $commands);
+			chdir(base_path());
 
-            passthru($commands);
+            $commands = implode('; ', $commands);
+
+            passthru($commands, $err);
+
+			if ($err != 0) {
+				throw new \Exception('Ssh failed with code '. $err .'.  Command: '. $commands);
+			}
         } else {
             throw new NoCommandsProvided();
         }

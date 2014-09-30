@@ -121,7 +121,7 @@ class UserPresenter extends CorePresenter {
     public function roleList()
     {
         if ($this->roles->count() > 0) {
-            return implode('<br />', $this->roles->name->toArray());
+            return implode('<br />', $this->roles()->orderBy('group')->orderBy('priority')->get()->fullName->toArray());
         }
 
         return 'None';

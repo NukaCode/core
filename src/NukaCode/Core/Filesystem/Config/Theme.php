@@ -32,7 +32,7 @@ class Theme extends Core {
     {
         $this->file      = $file;
         $this->validator = $validator;
-        $this->config    = app_path('config/packages/nukacode/core/theme.php');
+        $this->config    = base_path('config/packages/nukacode/core/theme.php');
     }
 
 	/**
