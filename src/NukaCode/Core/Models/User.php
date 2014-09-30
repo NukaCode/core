@@ -125,10 +125,6 @@ abstract class User extends BaseModel {
 	}
 
 	/********************************************************************
-	 * Model Events
-	 *******************************************************************/
-
-	/********************************************************************
 	 * Setter methods
 	 *******************************************************************/
 
@@ -154,7 +150,28 @@ abstract class User extends BaseModel {
 
 	/********************************************************************
 	 * Extra Methods
-	 *******************************************************************/
+	 ******************************************************************/
+
+	/**
+	 * Update this user's last active time.  Used for determining if they are online
+	 */
+	public function updateLastActive()
+	{
+		$this->lastActive = date('Y-m-d H:i:s');
+		$this->save();
+	}
+
+	/********************************************************************
+	 * Passwords
+	 ******************************************************************
+	 *
+	 * Make sure the provided password matches the existing password
+	 *
+	 * @param $input
+	 *
+	 * @throws \Exception
+	 * @return bool
+	 */
 	public function verifyPassword($input)
 	{
 		// Verify all the needed data exists and is correct
@@ -165,6 +182,9 @@ abstract class User extends BaseModel {
 		return true;
 	}
 
+	/********************************************************************
+	 * Preferences
+	 ******************************************************************/
 	public function getPreferenceValueByKeyName($preferenceKeyName)
 	{
 		$preference = \User_Preference::where('keyName', $preferenceKeyName)->first();
@@ -250,6 +270,9 @@ abstract class User extends BaseModel {
 		return $this;
 	}
 
+	/********************************************************************
+	 * Permissions
+	 ******************************************************************/
 	/**
 	 * Check if a user has a permission
 	 *
@@ -293,7 +316,39 @@ abstract class User extends BaseModel {
 		return false;
 	}
 
-	// old permission system
+	/**
+	 * Is the User a Role
+	 *
+	 * @param  array|string $roles A single role or an array of roles
+	 *
+	 * @return boolean
+	 */
+	public function is($roles)
+	{
+		if ($this->roles->count() > 0) {
+			// If any role is not in the user's roles, fail
+			return in_array($roles, $this->roles->keyName->toArray());
+		}
+
+		return false;
+	}
+
+	/**
+	 * Is the User a Role (any true)
+	 *
+	 * @param  array|string $roles A single role or an array of roles
+	 *
+	 * @return boolean
+	 */
+	public function isOr($roles)
+	{
+		if (Auth::check()) {
+			// If any role is in the user's roles, pass
+			return (bool)array_intersect((array)$roles, (array)Session::get('roles'));
+		}
+
+		return false;
+	}
 
 	/**
 	 * Get the first role for this user in a particular role group
@@ -304,10 +359,9 @@ abstract class User extends BaseModel {
 	 */
 	public function getFirstRole($group)
 	{
-		$roles   = Role::where('group', '=', $group)->get('id');
-		$roleIds = array_pluck($roles, 'id');
+		$roleIds   = Role::where('group', $group)->get()->id;
 
-		return Role_User::where('user_id', '=', $this->id)->whereIn('role_id', $roleIds)->first();
+		return User_Permission_Role_User::where('user_id', $this->id)->whereIn('role_id', $roleIds)->first();
 	}
 
 	/**
@@ -325,7 +379,7 @@ abstract class User extends BaseModel {
 		// If the user does not have the developer role
 		if (! $roles->contains(getRoleId('developer'))) {
 
-			$roleIds = User_Permission_Role::where('group', '=', $group)->get()->id->toArray();
+			$roleIds = User_Permission_Role::where('group', $group)->get()->id->toArray();
 			// Make sure they have at least one role
 			if (count($roleIds) > 0) {
 
@@ -409,70 +463,5 @@ abstract class User extends BaseModel {
 	{
 		// Add the new role
 		$this->roles()->attach($roleId);
-	}
-
-	/**
-	 * Update this user's last active time.  Used for determining if they are online
-	 */
-	public function updateLastActive()
-	{
-		$this->lastActive = date('Y-m-d H:i:s');
-		$this->save();
-	}
-
-	/**
-	 * Can the User do something
-	 *
-	 * @param  array|string $permissions Single permission or an array or permissions
-	 *
-	 * @return boolean
-	 */
-	public function can($permissions)
-	{
-		// If the user is a developer, the answer is always true
-		if ($this->is('DEVELOPER')) {
-			return true;
-		}
-
-		if ($this->roles->count() > 0) {
-			// If any permission is not in the user's permissions, fail
-			return in_array($permissions, $this->roles->actions->keyName->toArray());
-		}
-
-		return false;
-	}
-
-	/**
-	 * Is the User a Role
-	 *
-	 * @param  array|string $roles A single role or an array of roles
-	 *
-	 * @return boolean
-	 */
-	public function is($roles)
-	{
-		if ($this->roles->count() > 0) {
-			// If any role is not in the user's roles, fail
-			return in_array($roles, $this->roles->keyName->toArray());
-		}
-
-		return false;
-	}
-
-	/**
-	 * Is the User a Role (any true)
-	 *
-	 * @param  array|string $roles A single role or an array of roles
-	 *
-	 * @return boolean
-	 */
-	public function isOr($roles)
-	{
-		if (Auth::check()) {
-			// If any role is in the user's roles, pass
-			return (bool)array_intersect((array)$roles, (array)Session::get('roles'));
-		}
-
-		return false;
 	}
 }

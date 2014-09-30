@@ -24,14 +24,23 @@ class Theme extends Core {
         'menu'    => 'required',
     ];
 
-    public function __construct(Filesystem $file, Factory $validator)
+	/**
+	 * @param Filesystem $file
+	 * @param Factory    $validator
+	 */
+	public function __construct(Filesystem $file, Factory $validator)
     {
         $this->file      = $file;
         $this->validator = $validator;
         $this->config    = app_path('config/packages/nukacode/core/theme.php');
     }
 
-    public function updateEntry($package)
+	/**
+	 * Update the config with the color values for easy retrieval
+	 *
+	 * @param $package
+	 */
+	public function updateEntry($package)
     {
         $this->verifyCommand($package);
 

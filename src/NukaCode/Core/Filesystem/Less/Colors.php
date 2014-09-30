@@ -22,14 +22,23 @@ class Colors extends Core {
         'menu'    => 'required',
     ];
 
-    public function __construct(Filesystem $file, Factory $validator)
+	/**
+	 * @param Filesystem $file
+	 * @param Factory    $validator
+	 */
+	public function __construct(Filesystem $file, Factory $validator)
     {
         $this->file      = $file;
         $this->validator = $validator;
         $this->less      = base_path('resources/assets/less/colors.less');
     }
 
-    public function updateEntry($package)
+	/**
+	 * Update the colors.less file to persist the changes
+	 *
+	 * @param $package
+	 */
+	public function updateEntry($package)
     {
         $this->verifyCommand($package);
 
@@ -48,7 +57,12 @@ class Colors extends Core {
         $this->file->put($this->less, implode($lines));
     }
 
-    public function getEntry()
+	/**
+	 * Return the current color values for the site
+	 *
+	 * @return array
+	 */
+	public function getEntry()
     {
         $lines = file($this->less);
 

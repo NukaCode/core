@@ -19,13 +19,20 @@ class Package extends Core {
         'icon'        => 'required'
     ];
 
-    public function __construct(Filesystem $file, Factory $validator)
+	/**
+	 * @param Filesystem $file
+	 * @param Factory    $validator
+	 */
+	public function __construct(Filesystem $file, Factory $validator)
     {
         $this->file      = $file;
         $this->validator = $validator;
         $this->config    = base_path('config/packages.php');
     }
 
+	/**
+	 * Update package details for multiple packages
+	 */
 	public function updateEntries()
 	{
 		$nukaDirectories = $this->file->directories(base_path('vendor/nukacode'));
@@ -42,7 +49,12 @@ class Package extends Core {
 		}
 	}
 
-    public function updateEntry($package)
+	/**
+	 * Compile details about the package and persist it in the config
+	 *
+	 * @param $package
+	 */
+	public function updateEntry($package)
     {
 		$package = (object) $package;
         $this->verifyCommand($package);
@@ -57,7 +69,7 @@ class Package extends Core {
         }
 
         if (!isset($startingLineNumber)) {
-            $finishFile     = true;
+            $finishFile         = true;
             $startingLineNumber = count($lines) - 2;
         }
 
