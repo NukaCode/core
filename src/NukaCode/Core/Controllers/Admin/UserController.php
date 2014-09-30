@@ -1,64 +1,95 @@
 <?php namespace NukaCode\Core\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Illuminate\Routing\Redirector;
-
-use NukaCode\Core\Repositories\User\Permission\Role;
-use NukaCode\Core\Services\Crud;
-use NukaCode\Core\Services\LeftTab;
+use NukaCode\Core\Repositories\Contracts\ActionRepositoryInterface;
+use NukaCode\Core\Repositories\Contracts\PreferenceRepositoryInterface;
+use NukaCode\Core\Repositories\Contracts\RoleRepositoryInterface;
+use NukaCode\Core\Repositories\Contracts\UserRepositoryInterface;
 use Session;
-use User;
-use User_Permission_Role;
-use User_Permission_Role_User;
-use User_Permission_Action;
-use User_Permission_Action_Role;
-use User_Preference;
 
 
 class UserController extends \BaseController {
 
-    public function index()
-    {
-        $users       = \User::orderByNameAsc()->paginate(10);
-        $roles       = \User_Permission_Role::orderByNameAsc()->paginate(10);
-        $actions     = \User_Permission_Action::orderByNameAsc()->paginate(10);
-        $preferences = \User_Preference::orderByNameAsc()->paginate(10);
+	/**
+	 * @var UserRepositoryInterface
+	 */
+	private $userRepo;
 
-        $this->setViewData('users', $users);
-        $this->setViewData('roles', $roles);
-        $this->setViewData('actions', $actions);
-        $this->setViewData('preferences', $preferences);
-    }
+	/**
+	 * @var RoleRepositoryInterface
+	 */
+	private $roleRepo;
 
-    public function userCustomize()
-    {
-        $users = \User::orderByNameAsc()->paginate(10);
+	/**
+	 * @var ActionRepositoryInterface
+	 */
+	private $actionRepo;
 
-        $this->setViewPath('admin.user.customize.user.table');
-        $this->setViewData('users', $users);
-    }
+	/**
+	 * @var PreferenceRepositoryInterface
+	 */
+	private $preferenceRepo;
 
-    public function roleCustomize()
-    {
-        $roles = \User_Permission_Role::orderByPriority()->paginate(10);
+	/**
+	 * @param UserRepositoryInterface       $userRepo
+	 * @param RoleRepositoryInterface       $roleRepo
+	 * @param ActionRepositoryInterface     $actionRepo
+	 * @param PreferenceRepositoryInterface $preferenceRepo
+	 */
+	public function __construct(UserRepositoryInterface $userRepo, RoleRepositoryInterface $roleRepo,
+								ActionRepositoryInterface $actionRepo, PreferenceRepositoryInterface $preferenceRepo)
+	{
+		parent::__construct();
 
-        $this->setViewPath('admin.user.customize.role.table');
-        $this->setViewData('roles', $roles);
-    }
+		$this->userRepo       = $userRepo;
+		$this->roleRepo       = $roleRepo;
+		$this->actionRepo     = $actionRepo;
+		$this->preferenceRepo = $preferenceRepo;
+	}
 
-    public function actionCustomize()
-    {
-        $actions = \User_Permission_Action::orderByNameAsc()->paginate(10);
+	public function index()
+	{
+		$userCount       = $this->userRepo->model->count();
+		$roleCount       = $this->roleRepo->model->count();
+		$actionCount     = $this->actionRepo->model->count();
+		$preferenceCount = $this->preferenceRepo->model->count();
 
-        $this->setViewPath('admin.user.customize.action.table');
-        $this->setViewData('actions', $actions);
-    }
+		$users       = $this->userRepo->paginate(10);
+		$roles       = $this->roleRepo->paginate(10);
+		$actions     = $this->actionRepo->paginate(10);
+		$preferences = $this->preferenceRepo->paginate(10);
 
-    public function preferenceCustomize()
-    {
-        $preferences = \User_Preference::orderByNameAsc()->paginate(10);
+		$this->setViewData(compact('userCount', 'roleCount', 'actionCount', 'preferenceCount', 'users', 'roles', 'actions', 'preferences'));
+	}
 
-        $this->setViewPath('admin.user.customize.preference.table');
-        $this->setViewData('preferences', $preferences);
-    }
+	public function userCustomize()
+	{
+		$users = $this->userRepo->paginate(10);
+
+		$this->setViewPath('admin.user.customize.user.table');
+		$this->setViewData(compact('users'));
+	}
+
+	public function roleCustomize()
+	{
+		$roles = $this->roleRepo->paginate(10);
+
+		$this->setViewPath('admin.user.customize.role.table');
+		$this->setViewData(compact('roles'));
+	}
+
+	public function actionCustomize()
+	{
+		$actions = $this->actionRepo->paginate(10);
+
+		$this->setViewPath('admin.user.customize.action.table');
+		$this->setViewData(compact('actions'));
+	}
+
+	public function preferenceCustomize()
+	{
+		$preferences = $this->preferenceRepo->paginate(10);
+
+		$this->setViewPath('admin.user.customize.preference.table');
+		$this->setViewData(compact('preferences'));
+	}
 }

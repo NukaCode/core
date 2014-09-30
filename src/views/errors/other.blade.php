@@ -8,6 +8,7 @@
 			@if (Session::has('errorMessage'))
 				Error Message: {{ Session::get('errorMessage') }}
             @elseif (isset($message) && $message != null)
+                <br />
                 Error Message: {{ $message }}
 			@endif
 		</div>

@@ -11,8 +11,6 @@ interface UserRepositoryInterface {
 
     public function set($user);
 
-    public function crud();
-
     public function create($data);
 
     public function update($data);

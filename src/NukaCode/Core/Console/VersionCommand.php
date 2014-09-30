@@ -10,22 +10,14 @@ class VersionCommand extends Command {
      *
      * @var string
      */
-    protected $name = 'nuka:core-version';
+    protected $name = 'nuka:version';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Update your app\'s version information for core';
-
-    public $packageName = 'core';
-
-    public $version     = '1.0.1';
-
-    public $color       = 'inverse';
-
-    public $icon        = 'fa-cogs';
+    protected $description = 'Update your app\'s version information for Nuka Code packages.';
 
     private $package;
 
@@ -43,6 +35,6 @@ class VersionCommand extends Command {
      */
     public function fire()
     {
-        $this->package->updateEntry($this);
+        $this->package->updateEntries();
     }
 } 

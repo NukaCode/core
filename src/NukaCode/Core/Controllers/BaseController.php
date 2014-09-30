@@ -1,5 +1,6 @@
 <?php namespace NukaCode\Core\Controllers;
 
+use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Illuminate\Routing\Controller;
 use Auth, Blade, CoreView, Event, Log, Session, Str, Request, View;
 
@@ -13,7 +14,7 @@ class BaseController extends Controller {
 
 	/**
 	 * Create a new Controller instance.
-	 * Assigns the active user
+	 * Assigns basic details
 	 */
 	public function __construct()
 	{
@@ -30,17 +31,6 @@ class BaseController extends Controller {
 
 		// Set up the layout and the initial view
 		CoreView::setUp($this->menu);
-	}
-
-	/**
-	 * Master template method
-	 * Sets the template based on location and passes variables to the view.
-	 *
-	 * @return void
-	 */
-	public function setupLayout()
-	{
-		$this->layout = CoreView::getLayout();
 	}
 
 	/**
@@ -62,6 +52,20 @@ class BaseController extends Controller {
 		return $response;
 	}
 
+	/**
+	 * Master template method
+	 * Sets the template based on location and passes variables to the view.
+	 *
+	 * @return void
+	 */
+	public function setupLayout()
+	{
+		$this->layout = CoreView::getLayout();
+	}
+
+	/**
+	 * Set the active user for controller and view use
+	 */
 	public function setActiveUser()
 	{
 		// Make sure a user is logged in
@@ -79,7 +83,14 @@ class BaseController extends Controller {
 
 	/********************************************************************
 	 * Permissions
-	 *******************************************************************/
+	 ******************************************************************
+	 *
+	 * Check is the active user has a given set of roles
+	 *
+	 * @param array|string $roles
+	 *
+	 * @return bool
+	 */
 	public function hasRole($roles)
 	{
 		if (Auth::check()) {
@@ -97,15 +108,11 @@ class BaseController extends Controller {
 		return false;
 	}
 
-	public function checkPermission($actionKeyName)
-	{
-		$check = $this->hasPermission($actionKeyName);
-
-		if ($check == false) {
-			$this->errorRedirect();
-		}
-	}
-
+	/**
+	 * @param $permissions
+	 *
+	 * @return bool
+	 */
 	public function hasPermission($permissions)
 	{
 		if (Auth::check()) {
@@ -115,9 +122,17 @@ class BaseController extends Controller {
 				return true;
 			}
 		}
-		Session::put('pre_login_url', Request::path());
 
 		return false;
+	}
+
+	public function checkPermission($actionKeyName)
+	{
+		$check = $this->hasPermission($actionKeyName);
+
+		if ($check == false) {
+			return \App::abort(403, 'You do not have permission to access this area.');
+		}
 	}
 
 	/********************************************************************
@@ -136,7 +151,7 @@ class BaseController extends Controller {
 	 */
 	public function redirect($url, $message, $type = 'message')
 	{
-		return $this->redirect->to($url)->with($type, $message);
+		return \Redirect::to($url)->with($type, $message);
 	}
 
 	/**
@@ -149,7 +164,12 @@ class BaseController extends Controller {
 	 */
 	public function redirectRoute($route, array $parameters, $message, $type = 'message')
 	{
-		return $this->redirect->route($route, $parameters)->with($type, $message);
+		return \Redirect::route($route, $parameters)->with($type, $message);
+	}
+
+	public function redirectIntended($route = 'home')
+	{
+		return \Redirect::intended(route($route));
 	}
 
 	/********************************************************************

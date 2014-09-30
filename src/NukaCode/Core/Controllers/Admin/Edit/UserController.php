@@ -1,46 +1,48 @@
 <?php namespace NukaCode\Core\Controllers\Admin\Edit;
 
 use NukaCode\Core\Models\User\Permission\Role;
+use NukaCode\Core\Repositories\Contracts\RoleRepositoryInterface;
 use NukaCode\Core\Repositories\Contracts\UserRepositoryInterface;
 use NukaCode\Core\Requests\Ajax;
 
 class UserController extends \BaseController {
 
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $user;
+	/**
+	 * @var UserRepositoryInterface
+	 */
+	private $userRepo;
 
-    /**
-     * @var Ajax
-     */
-    private $ajax;
+	/**
+	 * @var Ajax
+	 */
+	private $ajax;
 
-    public function __construct(UserRepositoryInterface $user, Ajax $ajax)
-    {
-        parent::__construct();
-        $this->user = $user;
-        $this->ajax = $ajax;
-    }
+	public function __construct(UserRepositoryInterface $userRepo, Ajax $ajax)
+	{
+		parent::__construct();
 
-    public function getIndex($id)
-    {
-        $user  = $this->user->find($id);
-        $roles = Role::orderByNameAsc()->get()->toSelectArray(false);
+		$this->userRepo = $userRepo;
+		$this->ajax     = $ajax;
+	}
 
-        $this->setViewData('user', $user);
-        $this->setViewData('roles', $roles);
-    }
+	public function getIndex(RoleRepositoryInterface $roleRepo, $id)
+	{
+		$user  = $this->userRepo->find($id);
+		$roles = $roleRepo->orderByName()->toSelectArray(false);
 
-    public function postIndex($id)
-    {
-        // Update the user
-        $this->user->findFirst($this->input->only('id'));
-        $this->user->update($this->input->except('roles'));
-        $this->user->setRoles($this->input->get('roles'));
+		$this->setViewData(compact('user', 'roles'));
+	}
 
-        // Send the response
-        return $this->ajax->sendResponse();
-    }
+	// @todo Add request form
+	public function postIndex($id)
+	{
+		// Update the user
+		$this->userRepo->findFirst($this->input->only('id'));
+		$this->userRepo->update($this->input->except('roles'));
+		$this->userRepo->setRoles($this->input->get('roles'));
+
+		// Send the response
+		return $this->ajax->sendResponse();
+	}
 
 } 

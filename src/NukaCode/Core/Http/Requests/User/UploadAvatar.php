@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use NukaCode\Core\Http\Requests\BaseRequest;
 
-class PasswordRequest extends BaseRequest {
+class UploadAvatar extends BaseRequest {
 
 	/**
 	 * Get the validation rules that apply to the request.
@@ -13,8 +13,7 @@ class PasswordRequest extends BaseRequest {
 	public function rules()
 	{
 		return [
-			'password'     => 'required',
-			'new_password' => 'required|confirmed'
+			'avatar' => 'required|image',
 		];
 	}
 

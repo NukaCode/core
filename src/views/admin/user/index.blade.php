@@ -1,8 +1,8 @@
 <div class="row" style="margin: 0 auto;">
-    @include('admin.user.partials.box', ['size' => 2, 'color' => 'primary', 'header' => 'Users', 'subHeader' => $users->getTotal(), 'icon' => 'fa-user', 'editLink' => 'user-customize'])
-    @include('admin.user.partials.box', ['size' => 2, 'color' => 'success', 'header' => 'Roles', 'subHeader' => $roles->getTotal(), 'icon' => 'fa-cubes', 'editLink' => 'role-customize'])
-    @include('admin.user.partials.box', ['size' => 2, 'color' => 'warning', 'header' => 'Actions', 'subHeader' => $actions->getTotal(), 'icon' => 'fa-cube', 'editLink' => 'action-customize'])
-    @include('admin.user.partials.box', ['size' => 2, 'color' => 'info', 'header' => 'Preferences', 'subHeader' => $preferences->getTotal(), 'icon' => 'fa-cog', 'editLink' => 'preference-customize'])
+    @include('admin.user.partials.box', ['size' => 2, 'color' => 'primary', 'header' => 'Users',       'subHeader' => $userCount,       'icon' => 'fa-user',  'editLink' => 'user-customize'])
+    @include('admin.user.partials.box', ['size' => 2, 'color' => 'success', 'header' => 'Roles',       'subHeader' => $roleCount,       'icon' => 'fa-cubes', 'editLink' => 'role-customize'])
+    @include('admin.user.partials.box', ['size' => 2, 'color' => 'warning', 'header' => 'Actions',     'subHeader' => $actionCount,     'icon' => 'fa-cube',  'editLink' => 'action-customize'])
+    @include('admin.user.partials.box', ['size' => 2, 'color' => 'info',    'header' => 'Preferences', 'subHeader' => $preferenceCount, 'icon' => 'fa-cog',   'editLink' => 'preference-customize'])
 </div>
 <hr />
 <div class="row">

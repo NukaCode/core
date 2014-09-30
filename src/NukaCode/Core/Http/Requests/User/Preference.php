@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use NukaCode\Core\Http\Requests\BaseRequest;
 
-class RegistrationRequest extends BaseRequest {
+class Preference extends BaseRequest {
 
 	/**
 	 * Get the validation rules that apply to the request.
@@ -13,8 +13,7 @@ class RegistrationRequest extends BaseRequest {
 	public function rules()
 	{
 		return [
-			'email'    => 'required|email|unique:users,email',
-			'username' => 'required|unique:users,username'
+			'preference' => 'required|array',
 		];
 	}
 
@@ -25,7 +24,7 @@ class RegistrationRequest extends BaseRequest {
 	 */
 	public function authorize()
 	{
-		return Auth::guest();
+		return Auth::check();
 	}
 
 }

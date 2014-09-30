@@ -2,6 +2,7 @@
 
 use NukaCode\Core\Models\User\Permission\Role;
 use NukaCode\Core\Repositories\Contracts\ActionRepositoryInterface;
+use NukaCode\Core\Repositories\Contracts\RoleRepositoryInterface;
 use NukaCode\Core\Requests\Ajax;
 
 class ActionController extends \BaseController {
@@ -23,15 +24,15 @@ class ActionController extends \BaseController {
         $this->action = $action;
     }
 
-    public function getIndex($id)
+    public function getIndex(RoleRepositoryInterface $roleRepo, $id)
     {
         $action = $this->action->find($id);
-        $roles  = Role::orderByNameAsc()->get()->toSelectArray(false, 'id', 'fullName');
+        $roles  = $roleRepo->orderByName()->toSelectArray(false, 'id', 'fullName');
 
-        $this->setViewData('action', $action);
-        $this->setViewData('roles', $roles);
+        $this->setViewData(compact('action', 'roles'));
     }
 
+	// @todo Add request form
     public function postIndex($id)
     {
         // Update the user

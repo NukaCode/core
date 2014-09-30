@@ -20,6 +20,12 @@ class CoreServiceProvider extends ServiceProvider {
 
 	const version = '2.0.0';
 
+	const packageName = 'core';
+
+	const color = 'inverse';
+
+	const icon = 'fa-cogs';
+
 	/**
 	 * Bootstrap the application events.
 	 *

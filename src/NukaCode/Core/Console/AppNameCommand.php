@@ -21,9 +21,7 @@ class AppNameCommand extends LaravelAppNameCommand {
 	}
 
 	/**
-	 * Replace the App namespace at the given path.
-	 *
-	 * @param  string  $path;
+	 * Update the namespace in the primary routes file.
 	 */
 	protected function setRouteNamespace()
 	{

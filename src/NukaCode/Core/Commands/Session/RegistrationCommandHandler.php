@@ -19,6 +19,10 @@ class RegistrationCommandHandler implements CommandHandler {
 	 */
 	private $auth;
 
+	/**
+	 * @param UserRepositoryInterface $user
+	 * @param AuthManager             $auth
+	 */
 	public function __construct(UserRepositoryInterface $user, AuthManager $auth)
 	{
 		$this->user = $user;
@@ -29,10 +33,11 @@ class RegistrationCommandHandler implements CommandHandler {
      * Handle the command.
      *
      * @param object $command
-     * @return void
+     * @return boolean
      */
     public function handle($command)
     {
+		// Create the new user
 		$result = $this->user->create((array)$command);
 
 		if ($result) {
@@ -43,6 +48,7 @@ class RegistrationCommandHandler implements CommandHandler {
 			$this->auth->login($this->user->getEntity());
 		}
 
+		// Send the events for this process
 		$this->dispatchEventsFor($this->user);
 
 		return $result;

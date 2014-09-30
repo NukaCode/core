@@ -4,7 +4,7 @@ use NukaCode\Core\Database\Collection;
 
 abstract class CoreRepository {
 
-    protected $model;
+    public $model;
 
     protected $entity;
 

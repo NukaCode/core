@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use NukaCode\Core\Http\Requests\BaseRequest;
 
-class ProfileRequest extends BaseRequest {
+class Password extends BaseRequest {
 
 	/**
 	 * Get the validation rules that apply to the request.
@@ -13,8 +13,8 @@ class ProfileRequest extends BaseRequest {
 	public function rules()
 	{
 		return [
-			'email' => 'required|email',
-			'url'   => 'url'
+			'password'     => 'required',
+			'new_password' => 'required|confirmed'
 		];
 	}
 

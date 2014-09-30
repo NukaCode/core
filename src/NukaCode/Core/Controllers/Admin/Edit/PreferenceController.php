@@ -26,9 +26,10 @@ class PreferenceController extends \BaseController {
     {
         $preference = $this->preference->find($id);
 
-        $this->setViewData('preference', $preference);
+        $this->setViewData(compact('preference'));
     }
 
+	// @todo Add request form
     public function postIndex($id)
     {
         // Update the user
