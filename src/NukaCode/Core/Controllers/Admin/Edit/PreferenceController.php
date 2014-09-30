@@ -1,5 +1,6 @@
 <?php namespace NukaCode\Core\Controllers\Admin\Edit;
 
+use NukaCode\Core\Http\Requests\Admin\Edit\Preference;
 use NukaCode\Core\Repositories\Contracts\PreferenceRepositoryInterface;
 use NukaCode\Core\Requests\Ajax;
 
@@ -29,12 +30,11 @@ class PreferenceController extends \BaseController {
         $this->setViewData(compact('preference'));
     }
 
-	// @todo Add request form
-    public function postIndex($id)
+    public function postIndex(Preference $request, $id)
     {
         // Update the user
-        $this->preference->findFirst($this->input->only('id'));
-        $this->preference->update($this->input->all());
+        $this->preference->findFirst($request->only('id'));
+        $this->preference->update($request->all());
 
         // Send the response
         return $this->ajax->sendResponse();

@@ -1,5 +1,6 @@
 <?php namespace NukaCode\Core\Controllers\Admin\Edit;
 
+use NukaCode\Core\Http\Requests\Admin\Edit\Action;
 use NukaCode\Core\Models\User\Permission\Role;
 use NukaCode\Core\Repositories\Contracts\ActionRepositoryInterface;
 use NukaCode\Core\Repositories\Contracts\RoleRepositoryInterface;
@@ -32,13 +33,12 @@ class ActionController extends \BaseController {
         $this->setViewData(compact('action', 'roles'));
     }
 
-	// @todo Add request form
-    public function postIndex($id)
+    public function postIndex(Action $request, $id)
     {
         // Update the user
-        $this->action->findFirst($this->input->only('id'));
-        $this->action->update($this->input->except('roles'));
-        $this->action->setRoles($this->input->get('roles'));
+        $this->action->findFirst($request->only('id'));
+        $this->action->update($request->except('roles'));
+        $this->action->setRoles($request->get('roles'));
 
         // Send the response
         return $this->ajax->sendResponse();
