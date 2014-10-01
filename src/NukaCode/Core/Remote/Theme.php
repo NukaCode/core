@@ -44,7 +44,7 @@ class Theme {
 
             $commands = [
                 'lessc ' . $directory . '/themes/' . $theme . '/master.less ' . $this->cssDirectory . 'master.css',
-                //'gulp css-mini'
+                'gulp css-mini'
             ];
         }
 
