@@ -117,6 +117,10 @@ abstract class CoreRepository {
         {
             return call_user_func_array(array($this->entity, $name), $arguments);
         }
+        if (method_exists($this->model, $name))
+        {
+            return call_user_func_array(array($this->model, $name), $arguments);
+        }
 
         throw new \Exception('Method '. $name .' not found.');
     }
