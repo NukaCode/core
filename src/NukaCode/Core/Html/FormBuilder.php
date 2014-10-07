@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Html\FormBuilder as BaseFormBuilder;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\Factory;
 
 class FormBuilder {
@@ -20,15 +21,19 @@ class FormBuilder {
 
 	protected $url;
 
-	public    $labelSize    = 2;
+	public    $labelSize       = 2;
 
-	public    $inputSize    = 10;
+	public    $inputSize       = 10;
 
-	public    $formId       = null;
+	public    $iconSize        = 0;
 
-	public    $type         = 'horizontal';
+	public    $formId          = null;
 
-	public    $allowedTypes = [
+	public    $type            = 'horizontal';
+
+	protected $customFormGroup = 0;
+
+	public    $allowedTypes    = [
 		'basic'      => null,
 		'inline'     => 'form-inline',
 		'horizontal' => 'form-horizontal',
@@ -61,7 +66,7 @@ class FormBuilder {
 		return $this;
 	}
 
-	public function setSizes($labelSize, $inputSize = null)
+	public function setSizes($labelSize, $inputSize = null, $iconSize = null)
 	{
 		$this->labelSize = $labelSize;
 
@@ -69,6 +74,7 @@ class FormBuilder {
 			$inputSize = 12 - $labelSize;
 		}
 		$this->inputSize = $inputSize;
+		$this->iconSize  = $iconSize;
 
 		return $this;
 	}
@@ -94,6 +100,39 @@ class FormBuilder {
 		}
 
 		return $this->form->open($options);
+	}
+
+	public function formGroup()
+	{
+		$this->customFormGroup = 1;
+
+		return <<<EOT
+<div class="form-group">
+EOT;
+	}
+
+	public function endFormGroup()
+	{
+		$this->customFormGroup = 0;
+
+		return <<<EOT
+</div>
+EOT;
+	}
+
+	public function remoteModalRouteIcon($route, $icon)
+	{
+		$inputOpen  = $this->getIconWrapperOpen();
+		$inputClose = $this->getInputWrapperClose();
+
+		return <<<EOT
+$inputOpen
+		<a role="button" href="#remoteModal" data-toggle="modal" data-remote="$route">
+        <i class="$icon"></i>
+    </a>
+    $inputClose
+EOT;
+
 	}
 
 	public function ajaxForm($formId, $message)
@@ -255,6 +294,34 @@ class FormBuilder {
 		return $this->createOutput($name, $label, $input);
 	}
 
+	public function select2($name, $optionsArray, $selected, $attributes = [], $label = null, $placeholder = null)
+	{
+		// Set up the attributes
+		$attributes = $this->verifyAttributes('select2', $attributes);
+
+		// Create the default input
+		$input = $this->form->select($name, $optionsArray, $selected, $attributes);
+
+		// Add the jquery
+		$this->setSelect2Requirements($attributes['id'], $placeholder);
+
+		return $this->createOutput($name, $label, $input);
+	}
+
+	protected function setSelect2Requirements($id, $placeholder)
+	{
+		$script = <<<EOT
+$('#$id')
+			 .prepend('<option/>')
+			 .val(function(){return $('[selected]',this).val() ;})
+			 .select2({
+				placeholder: '$placeholder'
+			 });
+EOT;
+
+		$this->addToSection('onReadyJs', $script);
+	}
+
 	public function color($name, $value, $attributes = [], $label = null)
 	{
 		// Set up the attributes
@@ -384,7 +451,9 @@ EOT;
 			   . '</div>';
 	}
 
-	public function submitReset($submitValue = 'Submit', $resetValue = 'Reset', $submitParameters = array('class' => 'btn btn-sm btn-primary'), $resetParameters = array('class' => 'btn btn-sm btn-inverse'))
+	public function submitReset($submitValue = 'Submit', $resetValue = 'Reset',
+								$submitParameters = array('class' => 'btn btn-sm btn-primary'),
+								$resetParameters = array('class' => 'btn btn-sm btn-inverse'))
 	{
 		return '<div class="form-group">' .
 			   $this->getSubmitWrapperOpen()
@@ -404,7 +473,9 @@ EOT;
 	 *
 	 * @return string
 	 */
-	public function submitCancel($submitValue = 'Submit', $cancelValue = 'Cancel', $submitParameters = array('class' => 'btn btn-sm btn-primary'), $cancelParameters = array('class' => 'btn btn-sm btn-inverse'))
+	public function submitCancel($submitValue = 'Submit', $cancelValue = 'Cancel',
+								 $submitParameters = array('class' => 'btn btn-sm btn-primary'),
+								 $cancelParameters = array('class' => 'btn btn-sm btn-inverse'))
 	{
 		return '<div class="form-group">' .
 			   $this->getSubmitWrapperOpen()
@@ -432,15 +503,19 @@ EOT;
 		// Set up the label
 		$label = $this->setUpLabel($name, $label);
 
-		$formInput = '
-		<div class="form-group">' .
-					 $label .
-					 $this->getInputWrapperOpen() .
-					 $input .
-					 $this->getInputWrapperClose()
-					 . '</div>';
+		$formGroupOpen  = $this->customFormGroup == 0 ? '<div class="form-group">' : null;
+		$formGroupClose = $this->customFormGroup == 0 ? '</div>' : null;
+		$inputOpen      = $this->getInputWrapperOpen();
+		$inputClose     = $this->getInputWrapperClose();
 
-		return $formInput;
+		return <<<EOT
+$formGroupOpen
+			$label
+			$inputOpen
+			$input
+			$inputClose
+			$formGroupClose
+EOT;
 	}
 
 	public function verifyAttributes($input, $attributes)
@@ -451,6 +526,11 @@ EOT;
 				$attributes['class'] = 'colorpicker';
 			} elseif (strpos($attributes['class'], 'colorpicker') === false) {
 				$attributes['class'] = $attributes['class'] . ' colorpicker';
+			}
+		}
+		if ($input == 'select2') {
+			if (! isset($attributes['id'])) {
+				$attributes['id'] = Str::random(10);
 			}
 		}
 
@@ -469,6 +549,17 @@ EOT;
 		switch ($this->type) {
 			case 'horizontal':
 				return '<div class="col-md-' . $this->inputSize . '">';
+				break;
+		}
+
+		return null;
+	}
+
+	protected function getIconWrapperOpen()
+	{
+		switch ($this->type) {
+			case 'horizontal':
+				return '<div class="col-md-' . $this->iconSize . '">';
 				break;
 		}
 
