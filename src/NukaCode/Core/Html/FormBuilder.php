@@ -327,6 +327,10 @@ $('#$id')
 				placeholder: '$placeholder'
 			 });
 EOT;
+		}
+
+
+		return $this->addTosection('js', $script);
 	}
 
 	public function color($name, $value, $attributes = [], $label = null)
