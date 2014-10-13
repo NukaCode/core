@@ -313,13 +313,12 @@ EOT;
 	{
 		if ($multiple) {
 			$script = <<<EOT
-$('#$id')
-			 .select2({
-				placeholder: '$placeholder'
-			 });
+@parent
+$('#$id').select2({placeholder: '$placeholder'});
 EOT;
 		} else {
 			$script = <<<EOT
+@parent
 $('#$id')
 			 .prepend('<option/>')
 			 .val(function(){return $('[selected]',this).val() ;})
@@ -329,8 +328,7 @@ $('#$id')
 EOT;
 		}
 
-
-		return $this->addTosection('js', $script);
+		return $this->addToSection('onReadyJs', $script);
 	}
 
 	public function color($name, $value, $attributes = [], $label = null)
