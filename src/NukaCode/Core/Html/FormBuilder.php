@@ -298,19 +298,28 @@ EOT;
 	{
 		// Set up the attributes
 		$attributes = $this->verifyAttributes('select2', $attributes);
+		$multiple   = in_array('multiple', $attributes);
 
 		// Create the default input
 		$input = $this->form->select($name, $optionsArray, $selected, $attributes);
 
 		// Add the jquery
-		$this->setSelect2Requirements($attributes['id'], $placeholder);
+		$this->setSelect2Requirements($attributes['id'], $placeholder, $multiple);
 
 		return $this->createOutput($name, $label, $input);
 	}
 
-	protected function setSelect2Requirements($id, $placeholder)
+	protected function setSelect2Requirements($id, $placeholder, $multiple)
 	{
-		$script = <<<EOT
+		if ($multiple) {
+			$script = <<<EOT
+$('#$id')
+			 .select2({
+				placeholder: '$placeholder'
+			 });
+EOT;
+		} else {
+			$script = <<<EOT
 $('#$id')
 			 .prepend('<option/>')
 			 .val(function(){return $('[selected]',this).val() ;})
@@ -318,8 +327,6 @@ $('#$id')
 				placeholder: '$placeholder'
 			 });
 EOT;
-
-		$this->addToSection('onReadyJs', $script);
 	}
 
 	public function color($name, $value, $attributes = [], $label = null)
