@@ -314,7 +314,7 @@ EOT;
 		if ($multiple) {
 			$script = <<<EOT
 @parent
-$('#$id').select2({placeholder: '$placeholder'});
+$('#$id').select2({placeholder: '$placeholder',allowClear: true});
 EOT;
 		} else {
 			$script = <<<EOT
@@ -323,7 +323,8 @@ $('#$id')
 			 .prepend('<option/>')
 			 .val(function(){return $('[selected]',this).val() ;})
 			 .select2({
-				placeholder: '$placeholder'
+				placeholder: '$placeholder',
+				allowClear: true
 			 });
 EOT;
 		}
