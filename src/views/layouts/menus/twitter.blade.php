@@ -1,23 +1,18 @@
-@if(count(Menu::handler('main')->getItemsAtDepth(0)) > 0)
+<div id="mainMenu">
 	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="javascript: void(0);">
-				@if (Config::get('core::siteIcon') != null)
-					<i class="fa fa-{{ Config::get('coreOld::siteIcon') }}"></i>
+		<ul class="nav navbar-nav">
+			@foreach ($menuItems->getItems() as $item)
+				@if ($item->option('key') != 'right')
+					@include('layouts.menus.twitter.item')
 				@endif
-				{{ Config::get('coreOld::siteName') }}
-			</a>
-		</div>
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			{{ Menu::handler('main') }}
-			{{ Menu::handler('mainRight') }}
-		</div>
+			@endforeach
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+		@foreach($menuItems->item('right')->getItems() as $item)
+			@include('layouts.menus.twitter.item')
+		@endforeach
+		</ul>
 	</nav>
-	<br style="clear: both;" />
-@endif
+</div>
+<br style="clear: both;" />
+{{--<br style="clear: both;" />--}}
