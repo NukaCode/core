@@ -1,5 +1,5 @@
 @if ($item->hasItems())
-    <li class="dropdown"><a href="{{ $item->option('link') }}">{{ $item->option('title') }}</a>
+    <li class="dropdown {{ $item->isActive() ? 'active' : '' }}"><a href="{{ $item->option('link') }}">{{ $item->option('title') }}</a>
         <ul>
             @foreach ($item->getItems() as $childItem)
                 @include('layouts.menus.utopian.item', ['item' => $childItem])
@@ -7,5 +7,5 @@
         </ul>
     </li>
 @else
-    <li><a href="{{ $item->option('link') }}">{{ $item->option('title') }}</a></li>
+    <li class="{{ $item->isActive() ? 'active' : '' }}"><a href="{{ $item->option('link') }}">{{ $item->option('title') }}</a></li>
 @endif
