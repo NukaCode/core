@@ -204,35 +204,36 @@ class BaseController extends Controller {
 	/********************************************************************
 	 * Menus
 	 *******************************************************************/
-	protected function addItemToMenu($node, $title, $link, $index, $key)
+	protected function addItemToMenu($node, $title, $link, $index, $key, $options)
 	{
+		$options['link'] = $link;
 		$nodeKey = $key == null ? Str::camel($title) : $key;
-		$node->item($nodeKey, $title, $link, [], $index);
+		$node->item($nodeKey, $title, $options, [], $index);
 	}
 
-	public function addMenuItem($title, $link, $index = null, $key = null)
+	public function addMenuItem($title, $link, $index = null, $key = null, $options = [])
 	{
-		$this->addItemToMenu($this->menu, $title, $link, $index, $key);
+		$this->addItemToMenu($this->menu, $title, $link, $index, $key, $options);
 	}
 
-	public function addSubMenuItem($parentKey, $title, $link, $index = null, $key = null)
+	public function addSubMenuItem($parentKey, $title, $link, $index = null, $key = null, $options = [])
 	{
 		$parent = $this->menu->item($parentKey);
-		$this->addItemToMenu($parent, $title, $link, $index, $key);
+		$this->addItemToMenu($parent, $title, $link, $index, $key, $options);
 	}
 
-	public function addRightMenuItem($title, $link, $index = null, $key = null)
+	public function addRightMenuItem($title, $link, $index = null, $key = null, $options = [])
 	{
 		$right = $this->menu->item('right');
-		$this->addItemToMenu($right, $title, $link, $index, $key);
+		$this->addItemToMenu($right, $title, $link, $index, $key, $options);
 	}
 
-	public function addRightSubMenuItem($parentKey, $title, $link, $index = null, $key = null)
+	public function addRightSubMenuItem($parentKey, $title, $link, $index = null, $key = null, $options = [])
 	{
 		$right  = $this->menu->item('right');
 		$parent = $right->item($parentKey);
 
-		$this->addItemToMenu($parent, $title, $link, $index, $key);
+		$this->addItemToMenu($parent, $title, $link, $index, $key, $options);
 	}
 
 	public function __call($method, $parameters)
