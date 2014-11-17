@@ -7,5 +7,7 @@
         </ul>
     </li>
 @else
-    <li class="{{ $item->isActive() ? 'active' : '' }}"><a href="{{ $item->option('link') }}">{{ $item->option('title') }}</a></li>
+    <li class="{{ $item->isActive() ? 'active' : '' }}">
+        {{ HTML::link($item->option('link'), $item->option('title'), array_except($item->getOptions(), ['title', 'link', 'prefix', 'key'])) }}
+    </li>
 @endif
