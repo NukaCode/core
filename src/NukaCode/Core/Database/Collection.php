@@ -316,4 +316,9 @@ class Collection extends BaseCollection {
 
 		return $selectArray;
 	}
+
+	public function getItems()
+	{
+		return $this->items;
+	}
 }
