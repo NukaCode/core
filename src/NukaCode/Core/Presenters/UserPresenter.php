@@ -20,7 +20,7 @@ class UserPresenter extends CorePresenter {
     {
         $preference = $this->getPreferenceValueByKeyName('SHOW_EMAIL');
 
-        if ($preference == 'yes' || (\CoreView::getActiveUser()->id == $this->id)) {
+        if ($preference == 'yes' || (\Auth::user()->id == $this->id)) {
             return \HTML::mailto($this->email, $this->email);
         }
 
