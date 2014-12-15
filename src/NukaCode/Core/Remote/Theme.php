@@ -1,7 +1,7 @@
 <?php namespace NukaCode\Core\Remote;
 
-use NukaCode\Core\Exceptions\Theme\InvalidConfig;
-use NukaCode\Core\Exceptions\Theme\InvalidSrc;
+use NukaCode\Bootstrap\Exceptions\Theme\InvalidConfig;
+use NukaCode\Bootstrap\Exceptions\Theme\InvalidSrc;
 
 class Theme {
 

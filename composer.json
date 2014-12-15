@@ -25,9 +25,7 @@
     },
     "autoload":    {
         "classmap": [
-            "src/database/migrations",
-            "src/database/seeds",
-            "src/views"
+            "src/database/migrations"
         ],
         "psr-4":    {
             "NukaCode\\Core\\": "src/NukaCode/Core"

@@ -2,195 +2,213 @@
 
 use HTML, ViewBuilder;
 use NukaCode\Core\Database\Collection;
-use NukaCode\Core\View\View;
+use NukaCode\Core\Exceptions\View\ViewNotImplemented;
 
 class LeftTab {
 
-    /**
-     * Template name to load at the top of the page.
-     */
-    public $header = null;
+	/**
+	 * Template name to load at the top of the page.
+	 */
+	public $header = null;
 
-    /**
-     * Tab that is loaded on page load.
-     */
-    public $defaultTab = null;
+	/**
+	 * Tab that is loaded on page load.
+	 */
+	public $defaultTab = null;
 
-    /**
-     * Html to display while the page is loaded via ajax.
-     */
-    public $loadingIcon = '<i class="fa fa-spinner fa-spin"></i>';
+	/**
+	 * Html to display while the page is loaded via ajax.
+	 */
+	public $loadingIcon = '<i class="fa fa-spinner fa-spin"></i>';
 
-    /**
-     * Should the panels collapse
-     */
-    public $collapsible = false;
+	/**
+	 * Should the panels collapse
+	 */
+	public $collapsible = false;
 
-    /**
-     * Panel objects
-     */
-    public $panels = null;
+	/**
+	 * Panel objects
+	 */
+	public $panels = null;
 
-    /**
-     * Whether to use the list-glow view
-     */
-    public $glow = false;
+	/**
+	 * Whether to use the list-glow view
+	 */
+	public $glow = false;
 
 	/**
 	 * When the class is constructed assign a new collection to
 	 * the panels var.
 	 *
-	 * @param View $viewPath
+	 * @param Factory $view
 	 */
-    public function __construct(View $viewPath)
-    {
-        $this->panels = new Collection();
-    }
+	public function __construct()
+	{
+		$this->panels = new Collection();
+	}
 
-    /**
-     * Set the template that will display above the left tabs
-     *
-     * @param $headerPath The path to the view file.
-     *
-     * @return LeftTab
-     */
-    public function setHeader($headerPath)
-    {
-        if (ViewBuilder::checkView($headerPath)) {
-            $this->header = $headerPath;
-        }
+	/**
+	 * Set the template that will display above the left tabs
+	 *
+	 * @param $headerPath The path to the view file.
+	 *
+	 * @return LeftTab
+	 */
+	public function setHeader($headerPath)
+	{
+		if (ViewBuilder::checkView($headerPath)) {
+			$this->header = $headerPath;
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Add a new panel to the left tab
-     *
-     * @return LeftTab\Panel
-     */
-    public function addPanel()
-    {
-        return new LeftTab\Panel($this);
-    }
+	/**
+	 * Add a new panel to the left tab
+	 *
+	 * @return LeftTab\Panel
+	 */
+	public function addPanel()
+	{
+		return new LeftTab\Panel($this);
+	}
 
-    /**
-     * The the default tab loaded at page load.
-     *
-     * @param $tab The id or number of the tab to load.
-     *
-     * @return $this
-     */
-    public function setDefaultTab($tab)
-    {
-        if (intval($tab)) {
-            $this->setDefaultTab($this->panels->tabs[($tab - 1)]->id);
-        } else {
-            $this->defaultTab = $tab;
-        }
+	/**
+	 * The the default tab loaded at page load.
+	 *
+	 * @param $tab The id or number of the tab to load.
+	 *
+	 * @return $this
+	 */
+	public function setDefaultTab($tab)
+	{
+		if (intval($tab)) {
+			$this->setDefaultTab($this->panels->tabs[($tab - 1)]->id);
+		} else {
+			$this->defaultTab = $tab;
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Set the loading html while the tap is loaded via ajax.
-     *
-     * @param $loadingIcon The HTML to display.
-     *
-     * @return $this
-     */
-    public function setLoadingIcon($loadingIcon)
-    {
-        $this->loadingIcon = $loadingIcon;
+	/**
+	 * Set the loading html while the tap is loaded via ajax.
+	 *
+	 * @param $loadingIcon The HTML to display.
+	 *
+	 * @return $this
+	 */
+	public function setLoadingIcon($loadingIcon)
+	{
+		$this->loadingIcon = $loadingIcon;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Set  the panels collapse.
-     *
-     * @param bool $collapsible
-     *
-     * @return $this
-     */
-    public function setCollapsible($collapsible)
-    {
-        $this->collapsible = (bool)$collapsible;
+	/**
+	 * Set  the panels collapse.
+	 *
+	 * @param bool $collapsible
+	 *
+	 * @return $this
+	 */
+	public function setCollapsible($collapsible)
+	{
+		$this->collapsible = (bool)$collapsible;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Set the panels to use list-glow
-     *
-     * @param bool $glow
-     *
-     * @return $this
-     */
-    public function setGlow($glow)
-    {
-        $this->glow = (bool)$glow;
+	/**
+	 * Set the panels to use list-glow
+	 *
+	 * @param bool $glow
+	 *
+	 * @return $this
+	 */
+	public function setGlow($glow)
+	{
+		$this->glow = (bool)$glow;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Build the left tab helper.
-     *
-     * @return void
-     */
-    public function make()
-    {
-        // Set the default tab
-        if ($this->defaultTab == null) {
-            $this->setDefaultTab($this->panels->tabs->first()->id);
-        }
+	/**
+	 * Build the left tab helper.
+	 *
+	 * @throws ViewNotImplemented
+	 *
+	 * @return void
+	 */
+	public function make()
+	{
+		// Set the default tab
+		if ($this->defaultTab == null) {
+			$this->setDefaultTab($this->panels->tabs->first()->id);
+		}
 
-        if ($this->glow) {
-            ViewBuilder::setViewPath('helpers.lefttabglow')->addData('settings', $this);
-        } else {
-            ViewBuilder::setViewPath('helpers.lefttab')->addData('settings', $this);
-        }
-    }
+		if ($this->glow) {
+			$helperView = 'helpers.lefttabglow';
 
-    public function parseConfig($config)
-    {
-        // Handle the unique options
-        $this->setValues($config, ['Collapsible', 'LoadingIcon', 'DefaultTab']);
+		} else {
+			$helperView = 'helpers.lefttab';
+		}
 
-        // Handle the panels
-        foreach ($config['panels'] as $panel) {
-            $newPanel = $this->addPanel();
+		$this->sendToViewBuilder($helperView);
+	}
 
-            // Handle the unique options
-            $newPanel->setValues($panel, ['Id', 'BasePath', 'Title']);
+	public function parseConfig($config)
+	{
+		// Handle the unique options
+		$this->setValues($config, ['Collapsible', 'LoadingIcon', 'DefaultTab']);
 
-            foreach ($panel['tabs'] as $tab) {
-                $title   = $tab['title'];
-                $path    = $tab['path'];
-                $id      = isset($tab['id']) ? $tab['id'] : null;
-                $options = isset($tab['options']) ? $tab['options'] : [];
+		// Handle the panels
+		foreach ($config['panels'] as $panel) {
+			$newPanel = $this->addPanel();
 
-                $newPanel->addTab($title, $path, $id, $options);
-            }
+			// Handle the unique options
+			$newPanel->setValues($panel, ['Id', 'BasePath', 'Title']);
 
-            $newPanel->buildPanel();
-        }
+			foreach ($panel['tabs'] as $tab) {
+				$title   = $tab['title'];
+				$path    = $tab['path'];
+				$id      = isset($tab['id']) ? $tab['id'] : null;
+				$options = isset($tab['options']) ? $tab['options'] : [];
 
-        $this->make();
-    }
+				$newPanel->addTab($title, $path, $id, $options);
+			}
 
-    /**
-     * @param $array array
-     * @param $keys  mixed
-     *
-     * @return mixed
-     */
-    protected function setValues($array, $keys)
-    {
-        foreach ((array)$keys as $key) {
-            if (isset($array[$key])) {
-                call_user_func_array([$this, "set{$key}"], [$array[$key]]);
-            }
-        }
-    }
+			$newPanel->buildPanel();
+		}
+
+		$this->make();
+	}
+
+	/**
+	 * @param $array array
+	 * @param $keys  mixed
+	 *
+	 * @return mixed
+	 */
+	protected function setValues($array, $keys)
+	{
+		foreach ((array)$keys as $key) {
+			if (isset($array[$key])) {
+				call_user_func_array([$this, "set{$key}"], [$array[$key]]);
+			}
+		}
+	}
+
+	/**
+	 * @param $helperView
+	 *
+	 * @throws ViewNotImplemented
+	 */
+	private function sendToViewBuilder($helperView)
+	{
+		if (! ViewBuilder::exists($helperView)) {
+			throw new ViewNotImplemented($helperView);
+		}
+		ViewBuilder::setViewPath($helperView)->addData('settings', $this);
+	}
 }

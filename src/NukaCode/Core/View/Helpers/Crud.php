@@ -1,6 +1,7 @@
 <?php namespace NukaCode\Core\View\Helpers;
 
 use HTML, ViewBuilder;
+use NukaCode\Core\Exceptions\View\ViewNotImplemented;
 
 class Crud {
 
@@ -83,7 +84,13 @@ class Crud {
      */
     public function make()
     {
-        ViewBuilder::setViewPath('helpers.crud')->addData('settings', $this);
+		$helperView = 'helpers.crud';
+
+		if (! ViewBuilder::exists($helperView)) {
+			throw new ViewNotImplemented($helperView);
+		}
+
+        ViewBuilder::setViewPath($helperView)->addData('settings', $this);
     }
 
     /**

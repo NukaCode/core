@@ -80,9 +80,6 @@ class CoreServiceProvider extends ServiceProvider {
 	{
 		$aliases = [
 			// Facades
-			'HTML'                        => 'NukaCode\Core\Support\Facades\Html\HTML',
-			'bForm'                       => 'NukaCode\Core\Support\Facades\Html\bForm',
-			'BBCode'                      => 'NukaCode\Core\Support\Facades\Html\BBCode',
 			'ViewBuilder'                 => 'NukaCode\Core\Support\Facades\View\ViewBuilder',
 			'Ajax'                        => 'NukaCode\Core\Support\Facades\Requests\Ajax',
 			// Utilities
@@ -113,7 +110,7 @@ class CoreServiceProvider extends ServiceProvider {
 			[
 				'NukaCode\Core\Console\AppNameCommand' => 'command.app.name',
 				'NukaCode\Core\Console\VersionCommand',
-				'NukaCode\Core\Console\ThemeCommand',
+				//'NukaCode\Core\Console\ReseedTableCommand',
 				//'NukaCode\Core\Console\DatabaseCommand',
 			]
 		);

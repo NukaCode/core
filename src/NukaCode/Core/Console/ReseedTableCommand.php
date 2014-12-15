@@ -2,22 +2,23 @@
 
 use Illuminate\Console\Command;
 use NukaCode\Core\Database\Migrating;
+use Symfony\Component\Console\Input\InputOption;
 
-class ReseedRolesCommand extends Command {
+class ReseedTableCommand extends Command {
 
 	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	protected $name = 'nuka:reseed-roles';
+	protected $name = 'nuka:reseed-table';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Reseed the roles table.';
+	protected $description = 'Reseed the required table.';
 
 	/**
 	 * Create a new command instance.
@@ -37,7 +38,20 @@ class ReseedRolesCommand extends Command {
 	 */
 	public function fire()
 	{
-		$this->migrating->reseedRoles();
+		$databaseSeeder = $this->option('databaseSeeder');
+		$this->migrating->reseedTable($databaseSeeder);
+	}
+
+	/**
+	 * Get the console command options.
+	 *
+	 * @return array
+	 */
+	protected function getOptions()
+	{
+		return [
+			['file', null, InputOption::VALUE_REQUIRED, 'The name of the seeder file.', null],
+		];
 	}
 
 } 
