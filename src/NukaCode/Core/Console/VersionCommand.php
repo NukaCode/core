@@ -36,5 +36,6 @@ class VersionCommand extends Command {
     public function fire()
     {
         $this->package->updateEntries();
+		$this->package->runAdminConfigs();
     }
 } 

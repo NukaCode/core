@@ -110,6 +110,7 @@ class CoreServiceProvider extends ServiceProvider {
 			[
 				'NukaCode\Core\Console\AppNameCommand' => 'command.app.name',
 				'NukaCode\Core\Console\VersionCommand',
+				'NukaCode\Core\Console\BowerCommand',
 				//'NukaCode\Core\Console\ReseedTableCommand',
 				//'NukaCode\Core\Console\DatabaseCommand',
 			]

@@ -6,29 +6,43 @@ use NukaCode\Core\Filesystem\Core;
 
 class Package extends Core {
 
-    protected $file;
+	protected $file;
 
-    protected $validator;
+	protected $validator;
 
-    protected $config;
+	protected $config;
 
-    protected $rules = [
-        'packageName' => 'required',
-        'version'     => 'required',
-        'color'       => 'required',
-        'icon'        => 'required'
-    ];
+	protected $rules = [
+		'packageName' => 'required',
+		'version'     => 'required',
+		'color'       => 'required',
+		'icon'        => 'required'
+	];
 
 	/**
 	 * @param Filesystem $file
 	 * @param Factory    $validator
 	 */
 	public function __construct(Filesystem $file, Factory $validator)
-    {
-        $this->file      = $file;
-        $this->validator = $validator;
-        $this->config    = base_path('config/packages.php');
-    }
+	{
+		$this->file      = $file;
+		$this->validator = $validator;
+		$this->config    = base_path('resources/config/packages.php');
+	}
+
+	public function runAdminConfigs()
+	{
+		$nukaDirectories = $this->file->directories(base_path('vendor/nukacode'));
+		$adminConfig     = [];
+
+		foreach ($nukaDirectories as $nukaDirectory) {
+			if ($this->file->exists($nukaDirectory . '/admin.json')) {
+				$adminConfig = array_merge_recursive($adminConfig, (array)json_decode($this->file->get($nukaDirectory . '/admin.json')));
+			}
+		}
+
+		$this->file->put(base_path() .'/admin_test.json', json_encode($adminConfig, JSON_PRETTY_PRINT));
+	}
 
 	/**
 	 * Update package details for multiple packages
@@ -42,8 +56,8 @@ class Package extends Core {
 			$package = explode('/', $nukaDirectory);
 			$package = ucfirst(end($package));
 
-			$serviceProvider = new \ReflectionClass('NukaCode\\'. $package .'\\'. $package .'ServiceProvider');
-			$package = $serviceProvider->getConstants();
+			$serviceProvider = new \ReflectionClass('NukaCode\\' . $package . '\\' . $package . 'ServiceProvider');
+			$package         = $serviceProvider->getConstants();
 
 			$this->updateEntry($package);
 		}
@@ -55,43 +69,43 @@ class Package extends Core {
 	 * @param $package
 	 */
 	public function updateEntry($package)
-    {
-		$package = (object) $package;
-        $this->verifyCommand($package);
+	{
+		$package = (object)$package;
+		$this->verifyCommand($package);
 
-        $lines         = file($this->config);
-        $finishFile    = false;
+		$lines      = file($this->config);
+		$finishFile = false;
 
-        foreach ($lines as $lineNumber => $line) {
-            if (strpos($line, $package->packageName) !== false) {
-                $startingLineNumber = $lineNumber;
-            }
-        }
+		foreach ($lines as $lineNumber => $line) {
+			if (strpos($line, '\''. $package->packageName .'\'') !== false) {
+				$startingLineNumber = $lineNumber;
+			}
+		}
 
-        if (!isset($startingLineNumber)) {
-            $finishFile         = true;
-            $startingLineNumber = count($lines) - 2;
-        }
+		if (! isset($startingLineNumber)) {
+			$finishFile         = true;
+			$startingLineNumber = count($lines) - 2;
+		}
 
-        $previousLineNumber = $startingLineNumber - 1;
-        $versionLineNumber  = $startingLineNumber + 1;
-        $colorLineNumber    = $startingLineNumber + 2;
-        $iconLineNumber     = $startingLineNumber + 3;
-        $endingLineNumber   = $startingLineNumber + 4;
+		$previousLineNumber = $startingLineNumber - 1;
+		$versionLineNumber  = $startingLineNumber + 1;
+		$colorLineNumber    = $startingLineNumber + 2;
+		$iconLineNumber     = $startingLineNumber + 3;
+		$endingLineNumber   = $startingLineNumber + 4;
 
-        $lines[$previousLineNumber] = "        ],\n";
-        $lines[$startingLineNumber] = "        '{$package->packageName}' => [\n";
-        $lines[$versionLineNumber]  = "            'version' => '{$package->version}',\n";
-        $lines[$colorLineNumber]    = "            'color'   => '{$package->color}',\n";
-        $lines[$iconLineNumber]     = "            'icon'    => '{$package->icon}',\n";
-        $lines[$endingLineNumber]   = "        ],\n";
+		$lines[$previousLineNumber] = "        ],\n";
+		$lines[$startingLineNumber] = "        '{$package->packageName}' => [\n";
+		$lines[$versionLineNumber]  = "            'version' => '{$package->version}',\n";
+		$lines[$colorLineNumber]    = "            'color'   => '{$package->color}',\n";
+		$lines[$iconLineNumber]     = "            'icon'    => '{$package->icon}',\n";
+		$lines[$endingLineNumber]   = "        ],\n";
 
-        if ($finishFile === true) {
-            $lines[] = "    ]\n";
-            $lines[] = "];\n";
-        }
+		if ($finishFile === true) {
+			$lines[] = "    ]\n";
+			$lines[] = "];\n";
+		}
 
-        $this->file->delete($this->config);
-        $this->file->put($this->config, implode($lines));
-    }
+		$this->file->delete($this->config);
+		$this->file->put($this->config, implode($lines));
+	}
 }

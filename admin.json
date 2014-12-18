@@ -1,0 +1,14 @@
+{
+    "navigation": {
+    },
+    "notifications": [
+        {
+            "color": "inverse",
+            "title": "Laravel",
+            "focus": "5.0.0",
+            "icon": "fa-code",
+            "size": 3,
+            "progress": 100
+        }
+    ]
+}

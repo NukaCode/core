@@ -33,10 +33,10 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "php artisan nuka:core-version"
+            "php artisan nuka:version"
         ],
         "post-update-cmd": [
-            "php artisan nuka:core-version"
+            "php artisan nuka:version"
         ]
     }
 }
