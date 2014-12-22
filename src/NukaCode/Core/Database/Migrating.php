@@ -20,16 +20,22 @@ class Migrating {
 
 	protected $seedDirectory;
 
-	public function __construct(Filesystem $file, Application $application)
+	public function __construct(Filesystem $file)
 	{
 		$this->file        = $file;
-		$this->application = $application;
 
 		// Set up the variables
 		$this->stream             = fopen('php://output', 'w');
 		$this->nukaDirectories    = $this->file->directories(base_path('vendor/nukacode'));
 		$this->migrationDirectory = '/src/database/migrations';
 		$this->seedDirectory      = '/src/database/seeds';
+	}
+
+	public function setApplication($application)
+	{
+		$this->application = $application;
+
+		return $this;
 	}
 
 	public function reset()
@@ -100,6 +106,7 @@ class Migrating {
 		if ($this->file->exists($nukaDirectory . $this->migrationDirectory)) {
 			// Set up a migration location application can use
 			$migrationLocation = str_replace(base_path() . '/', '', $nukaDirectory . $this->migrationDirectory);
+			ppd($migrationLocation);
 
 			echo('Running ' . $package . ' migrations...' . "\n");
 

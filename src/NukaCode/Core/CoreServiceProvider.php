@@ -82,10 +82,6 @@ class CoreServiceProvider extends ServiceProvider {
 			// Facades
 			'ViewBuilder'                 => 'NukaCode\Core\Support\Facades\View\ViewBuilder',
 			'Ajax'                        => 'NukaCode\Core\Support\Facades\Requests\Ajax',
-			// Utilities
-			'Utility_Collection'          => 'NukaCode\Core\Database\Collection',
-			'Seed'                        => 'NukaCode\Core\Models\Seed',
-			'Migration'                   => 'NukaCode\Core\Models\Migration',
 		];
 
 		$appAliases = Config::get('core::nonCoreAliases');
@@ -112,7 +108,7 @@ class CoreServiceProvider extends ServiceProvider {
 				'NukaCode\Core\Console\VersionCommand',
 				'NukaCode\Core\Console\BowerCommand',
 				//'NukaCode\Core\Console\ReseedTableCommand',
-				//'NukaCode\Core\Console\DatabaseCommand',
+				'NukaCode\Core\Console\DatabaseCommand',
 			]
 		);
 	}

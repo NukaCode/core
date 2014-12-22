@@ -39,7 +39,7 @@ class ReseedTableCommand extends Command {
 	public function fire()
 	{
 		$databaseSeeder = $this->option('databaseSeeder');
-		$this->migrating->reseedTable($databaseSeeder);
+		$this->migrating->setApplication($this->getApplication())->reseedTable($databaseSeeder);
 	}
 
 	/**

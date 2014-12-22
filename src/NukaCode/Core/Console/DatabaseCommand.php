@@ -50,7 +50,7 @@ class DatabaseCommand extends Command {
 			$this->migrating->reset();
 		}
 
-		$this->migrating->migrate($seedFlag);
+		$this->migrating->setApplication($this->getApplication())->migrate($seedFlag);
 	}
 
 	/**
