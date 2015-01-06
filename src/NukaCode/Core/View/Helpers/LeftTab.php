@@ -29,8 +29,6 @@ class LeftTab {
 
 	/**
 	 * Panel objects
-	 *
-	 * @var Panel
 	 */
 	public $panels = null;
 
