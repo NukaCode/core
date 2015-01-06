@@ -38,5 +38,6 @@
         "post-update-cmd": [
             "php artisan nuka:version"
         ]
-    }
+    },
+    "minimum-stability": "dev"
 }
