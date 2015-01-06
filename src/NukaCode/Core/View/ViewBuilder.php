@@ -12,31 +12,22 @@ class ViewBuilder {
 
 	protected $viewPath;
 
-	protected $viewMenu;
-
 	public function __construct(Layout $viewLayout, Path $viewPath, Factory $view)
 	{
 		$this->viewLayout = $viewLayout;
 		$this->viewPath   = $viewPath;
-		//$this->viewMenu   = $viewMenu;
-		$this->view = $view;
+		$this->view       = $view;
 	}
 
-	public function setUp($menu)
+	public function setUp()
 	{
 		$this->layout         = $this->viewLayout->setUp();
 		$this->layout->layout = $this->viewPath->setUp($this->layout->layout);
-		//$this->viewMenu->setUp($menu);
 	}
 
 	public function exists($view)
 	{
 		return $this->view->exists($view);
-	}
-
-	public function setMenu($menu)
-	{
-		$this->viewMenu->setUp($menu);
 	}
 
 	public function getLayout()

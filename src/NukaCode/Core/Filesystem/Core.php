@@ -9,8 +9,9 @@ class Core {
         if ($validator->fails()) {
             $messages = $validator->messages();
 
-            foreach ($messages->all() as $message) {
-                throw new \InvalidArgumentException($message);
+            foreach ($messages->all() as $field => $message) {
+
+                throw new \InvalidArgumentException($field .' '. explode('.', $message)[1]);
             }
         }
     }

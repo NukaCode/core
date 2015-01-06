@@ -41,7 +41,7 @@ class Path {
 
 	protected function setContent()
 	{
-		if (stripos($this->path, 'missingmethod') === false) {
+		if (stripos($this->path, 'missingmethod') === false && $this->view->exists($this->path)) {
 			try {
 				$this->layout->content = $this->view->make($this->path);
 			} catch (\Exception $e) {
@@ -125,7 +125,9 @@ class Path {
 	protected function getPrefixName($method)
 	{
 		$prefix = $this->route->getCurrentRoute()->getPrefix();
-		$prefix = str_replace([$method . '.', '.' . $method], '', str_replace('/', '.', $prefix));
+		$prefix = str_replace('/', '.', $prefix);
+		$prefix = preg_replace('/\b\.'. $method .'\b/', '', $prefix);
+		$prefix = preg_replace('/\b'. $method .'\.\b/', '', $prefix);
 
 		return $prefix;
 	}
