@@ -11,7 +11,7 @@ abstract class BasePresenter extends Presenter {
      */
     public function createdAtReadable()
     {
-        return $this->created_at->format('F jS, Y \a\t h:ia');
+        return $this->entity->created_at->format('F jS, Y \a\t h:ia');
     }
 
     /**
@@ -26,12 +26,12 @@ abstract class BasePresenter extends Presenter {
 
     public function hidden()
     {
-        return $this->hiddenFlag == 1 ? 'Hidden' : null;
+        return $this->entity->hiddenFlag == 1 ? 'Hidden' : null;
     }
 
     public function active()
     {
-        return $this->hiddenFlag == 1 ? 'Hidden' : null;
+        return $this->entity->hiddenFlag == 1 ? 'Hidden' : null;
     }
 
     /**

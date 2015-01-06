@@ -20,6 +20,8 @@ class ReseedTableCommand extends Command {
 	 */
 	protected $description = 'Reseed the required table.';
 
+	protected $migrating;
+
 	/**
 	 * Create a new command instance.
 	 *

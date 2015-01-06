@@ -19,10 +19,8 @@ class MultiView {
 
     public function addRootColumn($title, $collection, $name, $field, $selectArray)
     {
-        $this->rootColumn->title = $title;
+        $this->setColumnProperties($this->rootColumn, $title, $name, $field);
         $this->rootColumn->collection = $collection;
-        $this->rootColumn->name = $name;
-        $this->rootColumn->field = $field;
 
         $this->crud->addFormField($field, 'select', $selectArray);
 
@@ -31,10 +29,8 @@ class MultiView {
 
     public function addMultiColumn($title, $property, $name, $field, $selectArray)
     {
-        $this->multiColumn->title = $title;
+        $this->setColumnProperties($this->multiColumn, $title, $name, $field);
         $this->multiColumn->property = $property;
-        $this->multiColumn->name = $name;
-        $this->multiColumn->field = $field;
 
         $this->crud->addFormField($field, 'multiselect', $selectArray);
 
@@ -49,5 +45,18 @@ class MultiView {
         $crud->multiView = $this;
 
         return $crud;
+    }
+
+    /**
+     * @param $column
+     * @param $title
+     * @param $name
+     * @param $field
+     */
+    private function setColumnProperties($column, $title, $name, $field)
+    {
+        $this->$column->title    = $title;
+        $this->$column->name     = $name;
+        $this->$column->field    = $field;
     }
 }

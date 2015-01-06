@@ -4,6 +4,10 @@ abstract class BaseRepository {
 
     public $model;
 
+    public $entity;
+
+    public $ajax = null;
+
     public function find($id)
     {
         return $this->model->find($id);
@@ -35,14 +39,14 @@ abstract class BaseRepository {
             throw new \InvalidArgumentException('No model to save.');
         }
 
-		if (isset($this->ajax) && $this->ajax->errorCount() > 0) {
+		if ($this->ajax != null && $this->ajax->errorCount() > 0) {
 			return false;
 		}
 
 		$entity->save();
 
         if (! $entity) {
-            if (isset($this->ajax)) {
+            if ($this->ajax != null) {
                 // Messages from validation need to be easily readable.
                 foreach ($entity->getErrors()->all() as $key => $message) {
                     $this->ajax->addError($key, $message);
@@ -51,7 +55,7 @@ abstract class BaseRepository {
 
             return $entity->getErrors()->all();
         } else {
-            if (isset($this->ajax)) {
+            if ($this->ajax != null) {
                 $this->ajax->setStatus('success');
             }
         }

@@ -56,7 +56,7 @@ class CoreServiceProvider extends ServiceProvider {
 	 */
 	protected function shareWithApp()
 	{
-		$this->app['core'] = $this->app->share(function ($app) {
+		$this->app['core'] = $this->app->share(function () {
 			return true;
 		});
 	}

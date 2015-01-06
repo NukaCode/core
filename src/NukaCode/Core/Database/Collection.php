@@ -77,20 +77,18 @@ class Collection extends BaseCollection {
      * Should be able to do this with methods
      * that already exist on collection.
      *
-     * @param int   $key
      * @param mixed $value
      * @param int   $afterKey
      *
      * @return Collection
      */
-    public function insertAfter($key, $value, $afterKey)
+    public function insertAfter($value, $afterKey)
     {
         $new_object = new self();
 
         foreach ((array)$this->items as $k => $v) {
             if ($afterKey == $k) {
                 $new_object->add($value);
-                $afterFlag = true;
             }
 
             $new_object->add($v);

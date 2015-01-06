@@ -3,6 +3,7 @@
 use HTML, ViewBuilder;
 use NukaCode\Core\Database\Collection;
 use NukaCode\Core\Exceptions\View\ViewNotImplemented;
+use NukaCode\Core\View\Helpers\LeftTab\Panel;
 
 class LeftTab {
 
@@ -28,6 +29,8 @@ class LeftTab {
 
 	/**
 	 * Panel objects
+	 *
+	 * @var Panel
 	 */
 	public $panels = null;
 
@@ -39,8 +42,6 @@ class LeftTab {
 	/**
 	 * When the class is constructed assign a new collection to
 	 * the panels var.
-	 *
-	 * @param Factory $view
 	 */
 	public function __construct()
 	{

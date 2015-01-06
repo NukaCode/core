@@ -45,7 +45,6 @@ class Path {
 			try {
 				$this->layout->content = $this->view->make($this->path);
 			} catch (\Exception $e) {
-				throw $e;
 				$this->layout->content = null;
 			}
 		}

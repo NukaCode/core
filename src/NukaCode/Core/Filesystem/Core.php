@@ -1,6 +1,10 @@
 <?php namespace NukaCode\Core\Filesystem;
 
-class Core {
+abstract class Core {
+
+    protected $validator;
+
+    protected $rules;
 
     protected function verifyCommand($package)
     {

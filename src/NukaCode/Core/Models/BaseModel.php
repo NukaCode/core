@@ -48,7 +48,8 @@ abstract class BaseModel extends Model {
      */
     public static function findExistingReferences($model)
     {
-        $invalid = true;
+        $invalid      = true;
+        $uniqueString = null;
 
         while ($invalid == true) {
             // Create a new random string.
@@ -84,7 +85,7 @@ abstract class BaseModel extends Model {
     /**
      * Order by created_at ascending scope.
      *
-     * @param array $query The current query to append to
+     * @param $query The current query to append to
      */
     public function scopeOrderByCreatedAsc($query)
     {
@@ -94,7 +95,7 @@ abstract class BaseModel extends Model {
     /**
      * Order by name ascending scope.
      *
-     * @param array $query The current query to append to
+     * @param $query The current query to append to
      */
     public function scopeOrderByNameAsc($query)
     {
@@ -104,7 +105,7 @@ abstract class BaseModel extends Model {
     /**
      * Get only active rows.
      *
-     * @param array $query The current query to append to
+     * @param $query The current query to append to
      */
     public function scopeActive($query)
     {
@@ -114,7 +115,7 @@ abstract class BaseModel extends Model {
     /**
      * Get only inactive rows.
      *
-     * @param array $query The current query to append to
+     * @param $query The current query to append to
      */
     public function scopeInactive($query)
     {
@@ -153,9 +154,9 @@ abstract class BaseModel extends Model {
      * Getters and Setters
      *******************************************************************/
     /**
-     * Allow id to be called regardless of the primary key.
+     * Allow id to be called regardless of the primary key.\
      *
-     * @param int|null $value The original value of id.
+     * @param int|null  $value The original value of id.
      *
      * @return int|string
      */
