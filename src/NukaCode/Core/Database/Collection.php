@@ -100,6 +100,30 @@ class Collection extends BaseCollection {
     }
 
     /**
+     * Turn a collection into a drop down for an html select element.
+     *
+     * @param  string $firstOptionText Text for the first object in the select array.
+     * @param  string $id              The column to use for the id column in the option element.
+     * @param  string $name            The column to use for the name column in the option element.
+     *
+     * @return array                    The new select element array.
+     */
+    public function toSelectArray($firstOptionText = 'Select one', $id = 'id', $name = 'name')
+    {
+        $selectArray = [];
+
+        if ($firstOptionText != false) {
+            $selectArray[0] = $firstOptionText;
+        }
+
+        foreach ($this->items as $item) {
+            $selectArray[$item->{$id}] = $item->{$name};
+        }
+
+        return $selectArray;
+    }
+
+    /**
      * Turn the magic getWhere into a real where query.
      *
      * @param $method
@@ -147,36 +171,17 @@ class Collection extends BaseCollection {
      */
     private function determineMagicWhereDetails($whereStatement)
     {
-        $finialOperator = '=';
+        $finalOperator  = '=';
         $position       = null;
         $not            = false;
 
         foreach ($whereStatement as $operator) {
-            switch ($operator) {
-                case 'get':
-                case 'where':
-                    // Skip get and where.
-                    continue;
-                case 'first':
-                case 'last':
-                    // Set where return position.
-                    $position = $operator;
-                    break;
-                case 'not':
-                    // Invert results
-                    $not = true;
-                    break;
-                case 'in':
-                case 'between':
-                case 'like':
-                case 'null':
-                case '=':
-                    $finialOperator = $operator;
-                    break;
-            }
+            $finalOperator = $this->checkMagicWhereFinalOperator($operator, $finalOperator);
+            $position      = $this->checkMagicWherePosition($operator, $position);
+            $not           = $this->checkMagicWhereNot($operator, $not);
         }
 
-        return [$finialOperator, $position, $not];
+        return [$finalOperator, $position, $not];
 
         // This is not working at the moment
         // @todo riddles - fix this
@@ -194,6 +199,33 @@ class Collection extends BaseCollection {
         //
         //    return $where;
         //}
+    }
+
+    private function checkMagicWhereFinalOperator($operator, $finalOperator)
+    {
+        if (in_array($operator, ['in', 'between', 'like', 'null', '='])) {
+            return $operator;
+        }
+
+        return $finalOperator;
+    }
+
+    private function checkMagicWherePosition($operator, $position)
+    {
+        if (in_array($operator, ['first', 'last'])) {
+            return $operator;
+        }
+
+        return $position;
+    }
+
+    private function checkMagicWhereNot($operator, $not)
+    {
+        if (in_array($operator, ['not'])) {
+            return true;
+        }
+
+        return $not;
     }
 
     /**
@@ -300,12 +332,16 @@ class Collection extends BaseCollection {
         switch ($operator) {
             case 'in':
                 return $this->getWhereIn($object, $column, $value, $inverse);
+
             case 'between':
                 return $this->getWhereBetween($object, $column, $value, $inverse);
+
             case 'like':
                 return $this->getWhereLike($object, $column, $value, $inverse);
+
             case 'null':
                 return $this->getWhereNull($object, $column, $inverse);
+
             case '=':
             default:
                 return $this->getWhereDefault($object, $column, $value, $inverse);
@@ -373,29 +409,5 @@ class Collection extends BaseCollection {
         }
 
         return false;
-    }
-
-    /**
-     * Turn a collection into a drop down for an html select element.
-     *
-     * @param  string $firstOptionText Text for the first object in the select array.
-     * @param  string $id              The column to use for the id column in the option element.
-     * @param  string $name            The column to use for the name column in the option element.
-     *
-     * @return array                    The new select element array.
-     */
-    public function toSelectArray($firstOptionText = 'Select one', $id = 'id', $name = 'name')
-    {
-        $selectArray = [];
-
-        if ($firstOptionText != false) {
-            $selectArray[0] = $firstOptionText;
-        }
-
-        foreach ($this->items as $item) {
-            $selectArray[$item->{$id}] = $item->{$name};
-        }
-
-        return $selectArray;
     }
 }
