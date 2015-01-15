@@ -215,25 +215,7 @@ class Collection extends BaseCollection {
             $forget = false;
 
             if (strstr($column, '->')) {
-                $taps = explode('->', $column);
-
-                $objectToSearch = $item;
-                $columnToSearch = array_pop($taps);
-
-                foreach ($taps as $tap) {
-                    // Keep tapping till we hit the last object.
-                    $objectToSearch = $objectToSearch->$tap;
-                }
-
-                if ($objectToSearch instanceof self) {
-                    foreach ($objectToSearch as $subObject) {
-                        // The column has a tap that ends in a collection.
-                        $forget = $this->whereObject($subObject, $columnToSearch, $operator, $value, $inverse);
-                    }
-                } else {
-                    // The column has a tap that ends in direct access
-                    $forget = $this->whereObject($objectToSearch, $columnToSearch, $operator, $value, $inverse);
-                }
+                $forget = $this->handleMultiTap($key, $item, $column, $value, $operator, $inverse);
             } else {
                 // No tap direct object access
                 $forget = $this->whereObject($item, $column, $operator, $value, $inverse);
@@ -251,6 +233,50 @@ class Collection extends BaseCollection {
         }
 
         return $output;
+    }
+
+    /**
+     * @param $item
+     * @param $column
+     * @param $value
+     * @param $operator
+     * @param $inverse
+     *
+     * @return bool
+     */
+    private function handleMultiTap($item, $column, $value, $operator, $inverse)
+    {
+        $objectToSearch = $this->tapThroughObjects($column, $item);
+
+        if ($objectToSearch instanceof self) {
+            foreach ($objectToSearch as $subObject) {
+                // The column has a tap that ends in a collection.
+                return $this->whereObject($subObject, $item, $operator, $value, $inverse);
+            }
+        } else {
+            // The column has a tap that ends in direct access
+            return $this->whereObject($objectToSearch, $item, $operator, $value, $inverse);
+        }
+    }
+
+    /**
+     * @param $column
+     * @param $item
+     *
+     * @return mixed
+     */
+    private function tapThroughObjects($column, $item)
+    {
+        $taps = explode('->', $column);
+
+        $objectToSearch = $item;
+        foreach ($taps as $tapKey => $tap) {
+
+            // Keep tapping till we hit the last object.
+            $objectToSearch = $objectToSearch->$tap;
+        }
+
+        return $objectToSearch;
     }
 
     /**
@@ -273,51 +299,77 @@ class Collection extends BaseCollection {
 
         switch ($operator) {
             case 'in':
-                if (! in_array($object->$column, $value) && $inverse == false) {
-                    return true;
-                }
-                if (in_array($object->$column, $value) && $inverse == true) {
-                    return true;
-                }
-                break;
+                return $this->getWhereIn($object, $column, $value, $inverse);
             case 'between':
-                if ($inverse == false) {
-                    if ($object->$column < $value[0] || $object->$column > $value[1]) {
-                        return true;
-                    }
-                } else {
-                    if ($object->$column >= $value[0] && $object->$column <= $value[1]) {
-                        return true;
-                    }
-                }
-                break;
+                return $this->getWhereBetween($object, $column, $value, $inverse);
             case 'like':
-                if (! strstr($object->$column, $value) && $inverse == false) {
-                    return true;
-                }
-                if (strstr($object->$column, $value) && $inverse == true) {
-                    return true;
-                }
-                break;
+                return $this->getWhereLike($object, $column, $value, $inverse);
             case 'null':
-                if ($object->$column != "" && $inverse == false) {
-                    return true;
-                }
-                if (is_null($object->$column) && $inverse == true) {
-                    return true;
-                }
-                break;
-
-            // Equals fall through to default.
+                return $this->getWhereNull($object, $column, $inverse);
             case '=':
             default:
-                if ($object->$column != $value && $inverse == false) {
-                    return true;
-                }
-                if ($object->$column == $value && $inverse == true) {
-                    return true;
-                }
-                break;
+                return $this->getWhereDefault($object, $column, $value, $inverse);
+        }
+    }
+
+    private function getWhereIn($object, $column, $value, $inverse)
+    {
+        if (! in_array($object->$column, $value) && $inverse == false) {
+            return true;
+        }
+        if (in_array($object->$column, $value) && $inverse == true) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function getWhereBetween($object, $column, $value, $inverse)
+    {
+        if ($inverse == false) {
+            if ($object->$column < $value[0] || $object->$column > $value[1]) {
+                return true;
+            }
+        } else {
+            if ($object->$column >= $value[0] && $object->$column <= $value[1]) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function getWhereLike($object, $column, $value, $inverse)
+    {
+        if (! strstr($object->$column, $value) && $inverse == false) {
+            return true;
+        }
+        if (strstr($object->$column, $value) && $inverse == true) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function getWhereNull($object, $column, $inverse)
+    {
+        if ($object->$column != "" && $inverse == false) {
+            return true;
+        }
+        if (is_null($object->$column) && $inverse == true) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function getWhereDefault($object, $column, $value, $inverse)
+    {
+        if ($object->$column != $value && $inverse == false) {
+            return true;
+        }
+        if ($object->$column == $value && $inverse == true) {
+            return true;
         }
 
         return false;
