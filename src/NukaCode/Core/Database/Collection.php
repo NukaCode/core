@@ -185,12 +185,12 @@ class Collection extends BaseCollection {
 
         // This is not working at the moment
         // @todo riddles - fix this
-        //if ($finialOperator == 'many') {
+        //if ($finalOperator == 'many') {
         //    $where = null;
         //    foreach ($args[0] as $column => $value) {
         //        $where = $this->getWhere(
         //            $column,            // Column
-        //            $finialOperator,    // Operator
+        //            $finalOperator,    // Operator
         //            $value,             // Value
         //            $not,               // Inverse
         //            $position            // First or last
@@ -332,16 +332,12 @@ class Collection extends BaseCollection {
         switch ($operator) {
             case 'in':
                 return $this->getWhereIn($object, $column, $value, $inverse);
-
             case 'between':
                 return $this->getWhereBetween($object, $column, $value, $inverse);
-
             case 'like':
                 return $this->getWhereLike($object, $column, $value, $inverse);
-
             case 'null':
                 return $this->getWhereNull($object, $column, $inverse);
-
             case '=':
             default:
                 return $this->getWhereDefault($object, $column, $value, $inverse);
