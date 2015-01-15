@@ -28,7 +28,7 @@ class Collection extends BaseCollection {
                 foreach ($item as $subItem) {
                     $newCollection->put($newCollection->count(), $subItem->$key);
                 }
-            } elseif (is_object($item) && !$item instanceof self && $item->$key instanceof self) { // Next tap is a collection.
+            } elseif (is_object($item) && ! $item instanceof self && $item->$key instanceof self) { // Next tap is a collection.
                 foreach ($item->$key as $subItem) {
                     $newCollection->put($newCollection->count(), $subItem);
                 }
@@ -62,10 +62,10 @@ class Collection extends BaseCollection {
 
         // Run the command on each object in the collection.
         foreach ($this->items as $item) {
-            if (!is_object($item)) {
+            if (! is_object($item)) {
                 continue;
             }
-            call_user_func_array(array($item, $method), $args);
+            call_user_func_array([$item, $method], $args);
         }
 
         return $this;
@@ -116,19 +116,12 @@ class Collection extends BaseCollection {
             return $this->getWhere($args[0], '=', $args[1]);
         }
 
-        $operators = array(
-            'in',
-            'between',
-            'like',
-            'null',
-
+        $operators = [
+            'in', 'between', 'like', 'null',
             'not',
-
-            'first',
-            'last',
-
+            'first', 'last',
             'many',
-        );
+        ];
 
         // If an operator is found then add operators.
         if (array_intersect($whereStatement, $operators)) {
@@ -138,40 +131,47 @@ class Collection extends BaseCollection {
             $not            = false;
 
             foreach ($whereStatement as $operator) {
-                // Skip get and where.
-                if ($operator == 'get' || $operator == 'where') {
-                    continue;
-                }
-
-                // Set where return position.
-                if ($operator == 'first' || $operator == 'last') {
-                    $position = $operator;
-                }
-
-                // Invert results
-                if ($operator == 'not') {
-                    $not = true;
-                }
-
-                if (in_array($operator, ['in', 'between', 'like', 'null', '='])) {
-                    $finialOperator = $operator;
+                switch ($operator) {
+                    case 'get':
+                    case 'where':
+                        // Skip get and where.
+                        continue;
+                        break;
+                    case 'first':
+                    case 'last':
+                        // Set where return position.
+                        $position = $operator;
+                        break;
+                    case 'not':
+                        // Invert results
+                        $not = true;
+                        break;
+                    case 'in':
+                    case 'between':
+                    case 'like':
+                    case 'null':
+                    case '=':
+                        $finialOperator = $operator;
+                        break;
                 }
             }
 
-            if ($finialOperator == 'many') {
-                $where = null;
-                foreach ($args[0] as $column => $value) {
-                    $where = $this->getWhere(
-                        $column,            // Column
-                        $finialOperator,    // Operator
-                        $value,             // Value
-                        $not,               // Inverse
-                        $position            // First or last
-                    );
-                }
-
-                return $where;
-            }
+            // This is not working at the moment
+            // @todo riddles - fix this
+            //if ($finialOperator == 'many') {
+            //    $where = null;
+            //    foreach ($args[0] as $column => $value) {
+            //        $where = $this->getWhere(
+            //            $column,            // Column
+            //            $finialOperator,    // Operator
+            //            $value,             // Value
+            //            $not,               // Inverse
+            //            $position            // First or last
+            //        );
+            //    }
+            //
+            //    return $where;
+            //}
 
             return $this->getWhere(
                 $args[0],                               // Column
@@ -235,7 +235,7 @@ class Collection extends BaseCollection {
         }
 
         // Handel first and last.
-        if (!is_null($position)) {
+        if (! is_null($position)) {
             return $output->$position();
         }
 
@@ -256,13 +256,13 @@ class Collection extends BaseCollection {
     private function whereObject($object, $column, $operator, $value = null, $inverse = false)
     {
         // Remove the object is the column does not exits.
-        if (!$object->$column) {
+        if (! $object->$column) {
             return true;
         }
 
         switch ($operator) {
             case 'in':
-                if (!in_array($object->$column, $value) && $inverse == false) {
+                if (! in_array($object->$column, $value) && $inverse == false) {
                     return true;
                 }
                 if (in_array($object->$column, $value) && $inverse == true) {
@@ -281,7 +281,7 @@ class Collection extends BaseCollection {
                 }
                 break;
             case 'like':
-                if (!strstr($object->$column, $value) && $inverse == false) {
+                if (! strstr($object->$column, $value) && $inverse == false) {
                     return true;
                 }
                 if (strstr($object->$column, $value) && $inverse == true) {
@@ -323,7 +323,7 @@ class Collection extends BaseCollection {
      */
     public function toSelectArray($firstOptionText = 'Select one', $id = 'id', $name = 'name')
     {
-        $selectArray = array();
+        $selectArray = [];
 
         if ($firstOptionText != false) {
             $selectArray[0] = $firstOptionText;
