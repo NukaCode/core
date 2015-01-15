@@ -1,6 +1,5 @@
 <?php namespace NukaCode\Core\View\Helpers\LeftTab;
 
-use HTML;
 use NukaCode\Core\Database\Collection;
 
 class Panel {

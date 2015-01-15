@@ -1,7 +1,5 @@
 <?php namespace NukaCode\Core\View\Helpers\Crud;
 
-use HTML;
-
 class MultiView {
 
     public $crud;

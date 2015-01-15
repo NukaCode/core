@@ -1,6 +1,6 @@
 <?php namespace NukaCode\Core\View\Helpers;
 
-use HTML, ViewBuilder;
+use ViewBuilder;
 use NukaCode\Core\Exceptions\View\ViewNotImplemented;
 
 class Crud {

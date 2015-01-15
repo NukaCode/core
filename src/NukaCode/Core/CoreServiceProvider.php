@@ -1,126 +1,96 @@
 <?php namespace NukaCode\Core;
 
-use Config;
-use Illuminate\Console\AppNamespaceDetectorTrait;
-use Illuminate\Foundation\AliasLoader;
-use Illuminate\Support\ServiceProvider;
-use NukaCode\Core\Console\AppNameCommand;
-use NukaCode\Core\Database\Collection;
+class CoreServiceProvider extends BaseServiceProvider {
 
-class CoreServiceProvider extends ServiceProvider {
+    /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = false;
 
-	use AppNamespaceDetectorTrait;
+    const version = '2.0.0';
 
-	/**
-	 * Indicates if loading of the provider is deferred.
-	 *
-	 * @var bool
-	 */
-	protected $defer = false;
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->shareWithApp();
+        $this->setConfig();
+        $this->registerAliases();
+        $this->registerArtisanCommands();
+    }
 
-	const version = '2.0.0';
+    /**
+     * Share the package with application
+     *
+     * @return void
+     */
+    protected function shareWithApp()
+    {
+        $this->app['core'] = $this->app->share(function () {
+            return true;
+        });
+    }
 
-	const packageName = 'core';
+    /**
+     * Set up the config values
+     *
+     * @return void
+     */
+    protected function setConfig()
+    {
+        $this->app['config']->set(
+            [
+                'nukacode' => [
+                    'core' => $this->getConfig()
+                ]
+            ]
+        );
+    }
 
-	const color = 'inverse';
+    /**
+     * Register aliases
+     *
+     * @return void
+     */
+    protected function registerAliases()
+    {
+        $aliases = [
+            // Facades
+            'ViewBuilder' => 'NukaCode\Core\Support\Facades\View\ViewBuilder',
+            'Ajax'        => 'NukaCode\Core\Support\Facades\Requests\Ajax',
+        ];
 
-	const icon = 'fa-cogs';
+        $exclude = $this->app['config']->get('nukacode.core.excludeAliases');
 
-	/**
-	 * Bootstrap the application events.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		//$this->package('nukacode/core');
-	}
+        $this->loadAliases($aliases, $exclude);
+    }
 
-	/**
-	 * Register the service provider.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-		$this->shareWithApp();
-		$this->registerViews();
-		$this->registerAliases();
-		$this->registerArtisanCommands();
-	}
+    public function registerArtisanCommands()
+    {
+        $this->commands(
+            [
+                'NukaCode\Core\Console\AppNameCommand' => 'command.app.name',
+                'NukaCode\Core\Console\VersionCommand',
+                'NukaCode\Core\Console\BowerCommand',
+                'NukaCode\Core\Console\ReseedTableCommand',
+                'NukaCode\Core\Console\DatabaseCommand',
+            ]
+        );
+    }
 
-	/**
-	 * Share the package with application
-	 *
-	 * @return void
-	 */
-	protected function shareWithApp()
-	{
-		$this->app['core'] = $this->app->share(function () {
-			return true;
-		});
-	}
-
-	/**
-	 * Register views
-	 *
-	 * @return void
-	 */
-	protected function registerViews()
-	{
-		$this->app['view']->addLocation(__DIR__ . '/../../views');
-	}
-
-	/**
-	 * Register aliases
-	 *
-	 * @return void
-	 */
-	protected function registerAliases()
-	{
-		$aliases = [
-			// Facades
-			'ViewBuilder'                 => 'NukaCode\Core\Support\Facades\View\ViewBuilder',
-			'Ajax'                        => 'NukaCode\Core\Support\Facades\Requests\Ajax',
-		];
-
-		$appAliases = Config::get('core::nonCoreAliases');
-		$loader     = AliasLoader::getInstance();
-
-		foreach ($aliases as $alias => $class) {
-			if (! is_null($appAliases)) {
-				if (! in_array($alias, $appAliases)) {
-					$loader->alias($alias, $class);
-				}
-			} else {
-				$loader->alias($alias, $class);
-			}
-		}
-
-
-	}
-
-	public function registerArtisanCommands()
-	{
-		$this->commands(
-			[
-				'NukaCode\Core\Console\AppNameCommand' => 'command.app.name',
-				'NukaCode\Core\Console\VersionCommand',
-				'NukaCode\Core\Console\BowerCommand',
-				//'NukaCode\Core\Console\ReseedTableCommand',
-				'NukaCode\Core\Console\DatabaseCommand',
-			]
-		);
-	}
-
-	/**
-	 * Get the services provided by the provider.
-	 *
-	 * @return array
-	 */
-	public function provides()
-	{
-		return [];
-	}
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return ['core'];
+    }
 
 }

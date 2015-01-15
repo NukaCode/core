@@ -1,6 +1,6 @@
 <?php namespace NukaCode\Core\View\Helpers;
 
-use HTML, ViewBuilder;
+use ViewBuilder;
 use NukaCode\Core\Database\Collection;
 use NukaCode\Core\Exceptions\View\ViewNotImplemented;
 use NukaCode\Core\View\Helpers\LeftTab\Panel;
@@ -65,11 +65,11 @@ class LeftTab {
 	/**
 	 * Add a new panel to the left tab
 	 *
-	 * @return LeftTab\Panel
+	 * @return Panel
 	 */
 	public function addPanel()
 	{
-		return new LeftTab\Panel($this);
+		return new Panel($this);
 	}
 
 	/**
