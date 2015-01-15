@@ -126,51 +126,7 @@ class Collection extends BaseCollection {
         // If an operator is found then add operators.
         if (array_intersect($whereStatement, $operators)) {
 
-            $finialOperator = '=';
-            $position       = null;
-            $not            = false;
-
-            foreach ($whereStatement as $operator) {
-                switch ($operator) {
-                    case 'get':
-                    case 'where':
-                        // Skip get and where.
-                        continue;
-                    case 'first':
-                    case 'last':
-                        // Set where return position.
-                        $position = $operator;
-                        break;
-                    case 'not':
-                        // Invert results
-                        $not = true;
-                        break;
-                    case 'in':
-                    case 'between':
-                    case 'like':
-                    case 'null':
-                    case '=':
-                        $finialOperator = $operator;
-                        break;
-                }
-            }
-
-            // This is not working at the moment
-            // @todo riddles - fix this
-            //if ($finialOperator == 'many') {
-            //    $where = null;
-            //    foreach ($args[0] as $column => $value) {
-            //        $where = $this->getWhere(
-            //            $column,            // Column
-            //            $finialOperator,    // Operator
-            //            $value,             // Value
-            //            $not,               // Inverse
-            //            $position            // First or last
-            //        );
-            //    }
-            //
-            //    return $where;
-            //}
+            list($finialOperator, $position, $not) = $this->determineMagicWhereDetails($whereStatement);
 
             return $this->getWhere(
                 $args[0],                               // Column
@@ -182,6 +138,62 @@ class Collection extends BaseCollection {
 
 
         }
+    }
+
+    /**
+     * @param $whereStatement
+     *
+     * @return array
+     */
+    private function determineMagicWhereDetails($whereStatement)
+    {
+        $finialOperator = '=';
+        $position       = null;
+        $not            = false;
+
+        foreach ($whereStatement as $operator) {
+            switch ($operator) {
+                case 'get':
+                case 'where':
+                    // Skip get and where.
+                    continue;
+                case 'first':
+                case 'last':
+                    // Set where return position.
+                    $position = $operator;
+                    break;
+                case 'not':
+                    // Invert results
+                    $not = true;
+                    break;
+                case 'in':
+                case 'between':
+                case 'like':
+                case 'null':
+                case '=':
+                    $finialOperator = $operator;
+                    break;
+            }
+        }
+
+        return [$finialOperator, $position, $not];
+
+        // This is not working at the moment
+        // @todo riddles - fix this
+        //if ($finialOperator == 'many') {
+        //    $where = null;
+        //    foreach ($args[0] as $column => $value) {
+        //        $where = $this->getWhere(
+        //            $column,            // Column
+        //            $finialOperator,    // Operator
+        //            $value,             // Value
+        //            $not,               // Inverse
+        //            $position            // First or last
+        //        );
+        //    }
+        //
+        //    return $where;
+        //}
     }
 
     /**
