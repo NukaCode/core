@@ -159,6 +159,7 @@ class Collection extends BaseCollection {
             }
 
             if ($finialOperator == 'many') {
+                $where = null;
                 foreach ($args[0] as $column => $value) {
                     $where = $this->getWhere(
                         $column,            // Column

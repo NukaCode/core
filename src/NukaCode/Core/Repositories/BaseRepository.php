@@ -29,12 +29,12 @@ abstract class BaseRepository {
     }
 
     /**
-     * @throws \InvalidArgumentException
+     * @param $entity
+     *
+     * @return bool
      */
-    public function save()
+    public function save($entity)
     {
-		$entity = $this->getEntity();
-
         if ($entity == null) {
             throw new \InvalidArgumentException('No model to save.');
         }
@@ -67,7 +67,9 @@ abstract class BaseRepository {
 
     /**
      * @param string $name
-     * @param array $arguments
+     * @param array  $arguments
+     *
+     * @return mixed
      *
      * @throws \Exception
      */
@@ -75,15 +77,15 @@ abstract class BaseRepository {
     {
         if (method_exists($this, $name))
         {
-            return call_user_func_array(array($this, $name), $arguments);
+            return call_user_func_array([$this, $name], $arguments);
         }
         if (method_exists($this->entity, $name))
         {
-            return call_user_func_array(array($this->entity, $name), $arguments);
+            return call_user_func_array([$this->entity, $name], $arguments);
         }
         if (method_exists($this->model, $name))
         {
-            return call_user_func_array(array($this->model, $name), $arguments);
+            return call_user_func_array([$this->model, $name], $arguments);
         }
 
         throw new \Exception('Method '. $name .' not found.');

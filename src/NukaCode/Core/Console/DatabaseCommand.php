@@ -26,8 +26,6 @@ class DatabaseCommand extends Command {
 	 * Create a new command instance.
 	 *
 	 * @param Migrating $migrating
-	 *
-	 * @return mixed
 	 */
 	public function __construct(Migrating $migrating)
 	{

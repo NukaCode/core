@@ -38,8 +38,6 @@ class BowerCommand extends Command {
 	 * Create a new command instance.
 	 *
 	 * @param Filesystem $file
-	 *
-	 * @return mixed
 	 */
 	public function __construct(Filesystem $file)
 	{

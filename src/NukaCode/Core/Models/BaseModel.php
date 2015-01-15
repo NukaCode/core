@@ -5,6 +5,9 @@ use Laracasts\Presenter\PresentableTrait;
 use NukaCode\Core\Database\Collection;
 use Illuminate\Support\Str;
 
+/**
+ * @property string $uniqueId
+ */
 abstract class BaseModel extends Model {
 
     use PresentableTrait;
