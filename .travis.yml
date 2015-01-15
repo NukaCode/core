@@ -1,0 +1,20 @@
+language: php
+
+php:
+  -5.6
+  -5.5
+  -5.4
+  -hhvm
+
+matrix:
+  allow_failures:
+    - php: hhvm
+  fast_finish: true
+
+before_script:
+  - composer install
+
+script:
+  - phpspec run
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload  --format=php-clover coverage.xml
