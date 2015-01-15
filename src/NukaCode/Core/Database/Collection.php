@@ -136,7 +136,6 @@ class Collection extends BaseCollection {
                     case 'where':
                         // Skip get and where.
                         continue;
-                        break;
                     case 'first':
                     case 'last':
                         // Set where return position.
