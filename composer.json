@@ -29,13 +29,5 @@
             "NukaCode\\Core\\": "src/NukaCode/Core"
         }
     },
-    "scripts": {
-        "post-install-cmd": [
-            "php artisan nuka:version"
-        ],
-        "post-update-cmd": [
-            "php artisan nuka:version"
-        ]
-    },
     "minimum-stability": "dev"
 }
