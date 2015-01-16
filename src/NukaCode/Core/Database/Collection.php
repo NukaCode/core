@@ -171,9 +171,9 @@ class Collection extends BaseCollection {
      */
     private function determineMagicWhereDetails($whereStatement)
     {
-        $finalOperator  = '=';
-        $position       = null;
-        $not            = false;
+        $finalOperator = '=';
+        $position      = null;
+        $not           = false;
 
         foreach ($whereStatement as $operator) {
             $finalOperator = $this->checkMagicWhereFinalOperator($operator, $finalOperator);
@@ -247,7 +247,7 @@ class Collection extends BaseCollection {
             $forget = false;
 
             if (strstr($column, '->')) {
-                $forget = $this->handleMultiTap($key, $item, $column, $value, $operator, $inverse);
+                $forget = $this->handleMultiTap($item, $column, $value, $operator, $inverse);
             } else {
                 // No tap direct object access
                 $forget = $this->whereObject($item, $column, $operator, $value, $inverse);
@@ -278,16 +278,16 @@ class Collection extends BaseCollection {
      */
     private function handleMultiTap($item, $column, $value, $operator, $inverse)
     {
-        $objectToSearch = $this->tapThroughObjects($column, $item);
+        list($objectToSearch, $columnToSearch) = $this->tapThroughObjects($column, $item);
 
         if ($objectToSearch instanceof self) {
             foreach ($objectToSearch as $subObject) {
                 // The column has a tap that ends in a collection.
-                return $this->whereObject($subObject, $item, $operator, $value, $inverse);
+                return $this->whereObject($subObject, $columnToSearch, $operator, $value, $inverse);
             }
         } else {
             // The column has a tap that ends in direct access
-            return $this->whereObject($objectToSearch, $item, $operator, $value, $inverse);
+            return $this->whereObject($objectToSearch, $columnToSearch, $operator, $value, $inverse);
         }
     }
 
@@ -302,13 +302,15 @@ class Collection extends BaseCollection {
         $taps = explode('->', $column);
 
         $objectToSearch = $item;
+        $columnToSearch = array_pop($taps);
+
         foreach ($taps as $tapKey => $tap) {
 
             // Keep tapping till we hit the last object.
             $objectToSearch = $objectToSearch->$tap;
         }
 
-        return $objectToSearch;
+        return [$objectToSearch, $columnToSearch];
     }
 
     /**
@@ -325,7 +327,8 @@ class Collection extends BaseCollection {
     private function whereObject($object, $column, $operator, $value = null, $inverse = false)
     {
         // Remove the object is the column does not exits.
-        if (! $object->$column) {
+        // Only do this if we aren't looking for null
+        if (! $object->$column && $operator != 'null') {
             return true;
         }
 
@@ -385,10 +388,10 @@ class Collection extends BaseCollection {
 
     private function getWhereNull($object, $column, $inverse)
     {
-        if ($object->$column != "" && $inverse == false) {
+        if ((! is_null($object->$column) || $object->$column != null) && $inverse == false) {
             return true;
         }
-        if (is_null($object->$column) && $inverse == true) {
+        if ((is_null($object->$column) || $object->$column == null) && $inverse == true) {
             return true;
         }
 
