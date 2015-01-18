@@ -11,9 +11,6 @@ abstract class BaseController extends Controller {
 
 	public function __construct()
 	{
-		// Resetting blade syntax to original
-		$this->resetBladeSyntax();
-
 		// Set up the default view resolution
 		ViewBuilder::setUp();
 		$this->setupLayout();
@@ -132,13 +129,6 @@ abstract class BaseController extends Controller {
 		$parameters = array_merge((array)$method, $parameters);
 
 		return $this->missingMethod($parameters);
-	}
-
-	private function resetBladeSyntax()
-	{
-		Blade::setEchoFormat('%s');
-		Blade::setContentTags('{{', '}}');
-		Blade::setEscapedContentTags('{{{', '}}}');
 	}
 
 } 
