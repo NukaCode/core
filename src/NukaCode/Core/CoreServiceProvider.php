@@ -11,6 +11,11 @@ class CoreServiceProvider extends BaseServiceProvider {
 
     const VERSION = '2.0.0';
 
+    public function boot()
+    {
+        $this->package('nukacode/core');
+    }
+
     /**
      * Register the service provider.
      *
@@ -43,13 +48,7 @@ class CoreServiceProvider extends BaseServiceProvider {
      */
     protected function setConfig()
     {
-        $this->app['config']->set(
-            [
-                'nukacode' => [
-                    'core' => $this->getConfig()
-                ]
-            ]
-        );
+        $this->app['config']->package('nukacode/core', __DIR__ . '/../../config');
     }
 
     /**
@@ -74,7 +73,6 @@ class CoreServiceProvider extends BaseServiceProvider {
     {
         $this->commands(
             [
-                'NukaCode\Core\Console\AppNameCommand' => 'command.app.name',
                 'NukaCode\Core\Console\VersionCommand',
                 'NukaCode\Core\Console\BowerCommand',
                 'NukaCode\Core\Console\ReseedTableCommand',

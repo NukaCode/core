@@ -65,11 +65,11 @@ class LeftTab {
 	/**
 	 * Add a new panel to the left tab
 	 *
-	 * @return Panel
+	 * @return LeftTab\Panel
 	 */
 	public function addPanel()
 	{
-		return new Panel($this);
+		return new LeftTab\Panel($this);
 	}
 
 	/**

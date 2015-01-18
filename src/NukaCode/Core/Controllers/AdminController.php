@@ -6,20 +6,33 @@ use Illuminate\Foundation\Application;
 
 class AdminController extends BaseController {
 
-	public function __construct()
-	{
-		parent::__construct();
+    /**
+     * @var Filesystem
+     */
+    private $file;
 
-		$this->setViewLayout('layouts.admin');
-	}
+    /**
+     * @var Repository
+     */
+    private $configRepository;
 
-	public function dashboard(Filesystem $file, Repository $configRepository)
-	{
-		$config = json_decode($file->get(base_path() . '/admin.json'));
+    public function __construct(Filesystem $file, Repository $configRepository)
+    {
+        parent::__construct();
 
-		$laravelVersion = Application::VERSION;
-		$packages       = $configRepository->get('packages.nukacode');
+        $this->setViewLayout('layouts.admin');
 
-		$this->setViewData(compact('laravelVersion', 'packages', 'config'));
-	}
+        $this->file             = $file;
+        $this->configRepository = $configRepository;
+    }
+
+    public function dashboard()
+    {
+        $config = json_decode($this->file->get(base_path() . '/admin.json'));
+
+        $laravelVersion = Application::VERSION;
+        $packages       = $this->configRepository->get('packages.nukacode');
+
+        $this->setViewData(compact('laravelVersion', 'packages', 'config'));
+    }
 }
