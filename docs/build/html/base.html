@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Base Classes &mdash; NukaCode 2.0.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="NukaCode 2.0.0 documentation" href="index.html"/>
+        <link rel="prev" title="Installation" href="install.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> NukaCode</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install.html#composer">Composer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#configs-migrations-seeds">Configs/Migrations/Seeds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#routes">Routes</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Base Classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#base-controller">Base Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#base-request">Base Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#base-model">Base Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#base-presenter">Base Presenter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#base-repository">Base Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#base-service-provider">Base Service Provider</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">NukaCode</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Base Classes</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/base.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="base-classes">
+<h1>Base Classes<a class="headerlink" href="#base-classes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="base-controller">
+<h2>Base Controller<a class="headerlink" href="#base-controller" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="blade">
+<h3>Blade<a class="headerlink" href="#blade" title="Permalink to this headline">¶</a></h3>
+<p>The base controller resets blade syntax to the Laravel 4 version by default.  You can override this by setting
+<tt class="docutils literal"><span class="pre">$resetBladeSyntax</span></tt> to false in your controller.</p>
+</div>
+<div class="section" id="view-helpers">
+<h3>View Helpers<a class="headerlink" href="#view-helpers" title="Permalink to this headline">¶</a></h3>
+<p>The view helper methods are there to handle controller to view set up and data transfer.  By default, core auto finds
+the view to load and the layout.  These are done to remove the constant <tt class="docutils literal"><span class="pre">view()</span></tt> or <tt class="docutils literal"><span class="pre">View::make()</span></tt> code in
+controllers.</p>
+<div class="section" id="setviewlayout">
+<h4>setViewLayout<a class="headerlink" href="#setviewlayout" title="Permalink to this headline">¶</a></h4>
+<p>Use this to set the layout your views will extend.  By default, core looks for <tt class="docutils literal"><span class="pre">layouts.default</span></tt> for standard
+requests and <tt class="docutils literal"><span class="pre">layouts.ajax</span></tt> for ajax requests.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="40%" />
+<col width="32%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Required</th>
+<th class="head">Default</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>$view</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="setviewpath">
+<h4>setViewPath<a class="headerlink" href="#setviewpath" title="Permalink to this headline">¶</a></h4>
+<p>This is used to override the view path that core finds on it&#8217;s own.  If the path it finds is incorrect, or you simply
+want to point to something specific, call this method.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="40%" />
+<col width="32%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Required</th>
+<th class="head">Default</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>$view</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="setviewdata">
+<h4>setViewData<a class="headerlink" href="#setviewdata" title="Permalink to this headline">¶</a></h4>
+<p>This method allows you to pass data to the view.  It accepts either an array or it will accept PHP&#8217;s <tt class="docutils literal"><span class="pre">compact()</span></tt>
+function.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="39%" />
+<col width="20%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Type</th>
+<th class="head">Required</th>
+<th class="head">Default</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>$data</td>
+<td>string | compact</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>$value</td>
+<td>mixed</td>
+<td>No</td>
+<td>null</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre>Examples
+$this-&gt;setViewData(&#39;user&#39;, User::find($user_id);
+$this-&gt;setViewData(compact(&#39;user&#39;));
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">Both of these will send a variable named $user to the view.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="base-request">
+<h2>Base Request<a class="headerlink" href="#base-request" title="Permalink to this headline">¶</a></h2>
+<p>The base form request is a minor modification of Laravel&#8217;s <tt class="docutils literal"><span class="pre">Illuminate\Foundation\Http\FormRequest</span></tt>.  It adds
+integration with the Ajax service included with core so that validation failures get passed to the Ajax service.</p>
+</div>
+<div class="section" id="base-model">
+<h2>Base Model<a class="headerlink" href="#base-model" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="presenters">
+<h3>Presenters<a class="headerlink" href="#presenters" title="Permalink to this headline">¶</a></h3>
+<p>Core uses <tt class="docutils literal"><span class="pre">laracasts\presenter</span></tt> to handle the Presenter set up for a model.  To use it, simply set your model&#8217;s
+<tt class="docutils literal"><span class="pre">$presenter</span></tt> property to the full class name (Including namespace) of the presenter.:</p>
+<div class="highlight-python"><div class="highlight"><pre>protected $presenter = &#39;App\Presenters\ModelPresenter&#39;;
+</pre></div>
+</div>
+</div>
+<div class="section" id="observers">
+<h3>Observers<a class="headerlink" href="#observers" title="Permalink to this headline">¶</a></h3>
+<p>To set up Observers, simply set the <tt class="docutils literal"><span class="pre">$observer</span></tt> property on your model.  Like presenters, this should be the full
+class name including namespace.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This observer will be called in the models boot method.  If you need to do anything inside the boot method make sure to call the parent.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>protected static $observer = &#39;App\Models\Observers\ModelObserver&#39;;
+</pre></div>
+</div>
+</div>
+<div class="section" id="unique-id-unique-string">
+<h3>Unique ID / Unique String<a class="headerlink" href="#unique-id-unique-string" title="Permalink to this headline">¶</a></h3>
+<p>If you want to add a unique id to your model, Core will help with this.  It can work one of two ways.</p>
+<ol class="arabic simple">
+<li>If it detects that your primaryKey is contains the word unique in the column name, it will automatically set it to a unique string when a model is created.</li>
+<li>If you set a column name in the <tt class="docutils literal"><span class="pre">$uniqueStringColumns</span></tt> array on your model, anything in that name will have a unique string injected into it when a model is created.</li>
+</ol>
+<p>You can set the string size by changing the <tt class="docutils literal"><span class="pre">$uniqueStringLimit</span></tt> property on your model.  It defaults to 10.</p>
+</div>
+</div>
+<div class="section" id="base-presenter">
+<h2>Base Presenter<a class="headerlink" href="#base-presenter" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="base-repository">
+<h2>Base Repository<a class="headerlink" href="#base-repository" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="base-service-provider">
+<h2>Base Service Provider<a class="headerlink" href="#base-service-provider" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="install.html" class="btn btn-neutral" title="Installation"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, stygian, riddles.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
