@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to NukaCode!
-------------------------------------
+========================
 This package is designed to offer some helpful tools for a laravel based site.  It works best with NukaCode - Laravel
 Base, but does not require it.
 
@@ -16,15 +16,22 @@ Base, but does not require it.
 .. image:: https://poser.pugx.org/nukacode/core/license.svg
 
 Links
-------------------------------------
+------------------
 .. _Github: https://github.com/NukaCode/core/tree/master/src/NukaCode/Core
 .. _Packagist: https://packagist.org/packages/nukacode/core
 
 * `Github`_
 * `Packagist`_
 
+Installation
+------------------
+.. toctree::
+    :maxdepth: 2
+
+    install
+
 Extensions
-------------------------------------
+------------------
 - Base (Coming soon)
 - Front End
     - Bootstrap (Coming soon)
