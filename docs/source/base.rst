@@ -42,12 +42,12 @@ setViewData
 This method allows you to pass data to the view.  It accepts either an array or it will accept PHP's ``compact()``
 function.
 
-========== ============== ======== =======
-Parameters Type           Required Default
-========== ============== ======== =======
-$data      string-compact Yes
-$value     mixed          No       null
-========== ============== ======== =======
+========== ================ ======== =======
+Parameters Type             Required Default
+========== ================ ======== =======
+$data      string | compact Yes
+$value     mixed            No       null
+========== ================ ======== =======
 
 ::
 
