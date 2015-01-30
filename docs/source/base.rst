@@ -12,8 +12,8 @@ The base controller resets blade syntax to the Laravel 4 version by default.  Yo
 View Helpers
 ~~~~~~~~~~~~~~~~~~~~~~~~
 The view helper methods are there to handle controller to view set up and data transfer.  By default, core auto finds
- the view to load and the layout.  These are done to remove the constant ``view()`` or ``View::make()`` code in
- controllers.
+the view to load and the layout.  These are done to remove the constant ``view()`` or ``View::make()`` code in
+controllers.
 
 setViewData
 ^^^^^^^^^^^^^^^^^^^^^^^^
