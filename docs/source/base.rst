@@ -61,7 +61,6 @@ integration with the Ajax service included with core so that validation failures
 
 Base Model
 ------------------------
-Core's base model adds quite a bit and sets a few defaults for all models.
 
 Presenters
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -82,9 +81,10 @@ Unique ID / Unique String
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 If you want to add a unique id to your model, Core will help with this.  It can work one of two ways.
 
-# If it detects that your primaryKey is contains the word unique in the column name, it will automatically set it to a
+#. If it detects that your primaryKey is contains the word unique in the column name, it will automatically set it to a
 unique string when a model is created.
-# If you set a column name in the ``$uniqueStringColumns`` array on your model, anything in that name will have a unique
+#. If you set a column name in the ``$uniqueStringColumns`` array on your model, anything in that name will have a
+unique
 string injected into it when a model is created.
 
 You can set the string size by changing the ``$uniqueStringLimit`` property on your model.  It defaults to 10.
