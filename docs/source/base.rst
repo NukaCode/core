@@ -47,12 +47,11 @@ Parameters Required Default
 ========== ======== =======
 $key | $compact       Yes
 $value     No       null
-========== ======== =======::
-
+========== ======== =======
+::
     Examples
     $this->setViewData('user', User::find($user_id);
     $this->setViewData(compact('user'));
-
 Base Request
 ------------------------
 The base form request is a minor modification of Laravel's ``Illuminate\Foundation\Http\FormRequest``.  It adds
