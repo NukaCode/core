@@ -49,6 +49,7 @@ $key | $compact       Yes
 $value     No       null
 ========== ======== =======
 ::
+
     Examples
     $this->setViewData('user', User::find($user_id);
     $this->setViewData(compact('user'));
