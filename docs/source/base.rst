@@ -1,6 +1,9 @@
 Base Classes
 =======
+.. toctree::
+    :maxdepth: 3
 
+    base
 
 Base Controller
 -------
@@ -13,8 +16,8 @@ The base controller resets blade syntax to the Laravel 4 version by default.  Yo
 View Helpers
 ~~~~~~~
 The view helper methods are there to handle controller to view set up and data transfer.  By default, core auto finds
-the view to load and the layout.  These are done to remove the constant ``view()`` or ``View::make()`` code in
-controllers.
+the view and the layout to load.  These are done to remove the constant ``view()`` or ``View::make()`` code in
+controllers when generally view paths follow the controller.action standard.
 
 setViewLayout
 ^^^^^^^
@@ -91,12 +94,70 @@ If you want to add a unique id to your model, Core will help with this.  It can 
 
 You can set the string size by changing the ``$uniqueStringLimit`` property on your model.  It defaults to 10.
 
+Scopes
+~~~~~~~
+Base model adds a few common scopes to make things easier.
+
+orderByCreatedAt
+^^^^^^^
+This will order the models by created_at in ascending order.
+
+orderByNameAsc
+^^^^^^^
+This will order the models by name in ascending order.
 
 Base Presenter
 -------
+The base presenter that comes with Core aims at making only the most basic assumptions.  One thing it does it expand upon the ``laracasts\presenter`` by adding a ``__call()`` magic method.  This is used to look for methods on the presenter first and fall back to the model.
+
+createdAtReadable
+~~~~~~~
+This method simply returns a model's created_at field in a human readbale format.  For example, if the created_at was 2014-12-01 it would return December 1st, 2014 at 12:00a.
+
+name
+~~~~~~~
+This simply runs ``stripslashes`` on the models name field.
+
+hidden / active
+~~~~~~~
+These two methods look for a hidden or active boolean on the model and return a string if true.  By default hidden looks for hiddenFlag and active looks for activeFlag on the model.  You can change this by passing the field name to the method.::
+
+    $user->hidden('is_hidden'); // Will return "hidden" if $user->is_hidden is true.
 
 Base Repository
 -------
+Base repository adds a few very simple helpers.
 
-Base Service Provider
--------
+find
+~~~~~~~
+This runs find on the model for the id passed to it.
+
+========== ================ ======== =======
+Parameters Type             Required Default
+========== ================ ======== =======
+$id        string|int       Yes
+========== ================ ======== =======
+
+findFirst
+~~~~~~~
+Similar to find but this method runs firstOrFail.  This means it will throw an exception if the model is not found.
+
+========== ================ ======== =======
+Parameters Type             Required Default
+========== ================ ======== =======
+$id        string|int       Yes
+========== ================ ======== =======
+
+orderByName
+~~~~~~~
+This uses the ``orderByNameAsc()`` scope found on BaseModel.  It finishes the query off with ``get()`` so only use it if all you need to do is order all models.
+
+paginate
+~~~~~~~
+This method runs ``orderByNameAsc()`` but end with ``paginate()`` with the count you pass in.
+
+========== ================ ======== =======
+Parameters Type             Required Default
+========== ================ ======== =======
+$count     int              Yes
+========== ================ ======== =======

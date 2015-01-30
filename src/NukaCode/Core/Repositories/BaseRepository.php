@@ -4,10 +4,6 @@ abstract class BaseRepository {
 
     public $model;
 
-    public $entity;
-
-    public $ajax = null;
-
     public function find($id)
     {
         return $this->model->find($id);
@@ -15,7 +11,7 @@ abstract class BaseRepository {
 
     public function findFirst($id)
     {
-        return $this->model->findOrFail($id)->first();
+        return $this->model->firstOrFail($id);
     }
 
     public function orderByName()
@@ -26,43 +22,6 @@ abstract class BaseRepository {
     public function paginate($count)
     {
         return $this->model->orderByNameAsc()->paginate($count);
-    }
-
-    /**
-     * @param $entity
-     *
-     * @return bool
-     */
-    public function save($entity)
-    {
-        if ($entity == null) {
-            throw new \InvalidArgumentException('No model to save.');
-        }
-
-		if ($this->ajax != null && $this->ajax->errorCount() > 0) {
-			return false;
-		}
-
-		$entity->save();
-
-        if (! $entity) {
-            if ($this->ajax != null) {
-                // Messages from validation need to be easily readable.
-                foreach ($entity->getErrors()->all() as $key => $message) {
-                    $this->ajax->addError($key, $message);
-                }
-            }
-
-            return $entity->getErrors()->all();
-        } else {
-            if ($this->ajax != null) {
-                $this->ajax->setStatus('success');
-            }
-        }
-
-		$this->entity = $entity;
-
-        return true;
     }
 
     /**
@@ -78,10 +37,6 @@ abstract class BaseRepository {
         if (method_exists($this, $name))
         {
             return call_user_func_array([$this, $name], $arguments);
-        }
-        if (method_exists($this->entity, $name))
-        {
-            return call_user_func_array([$this->entity, $name], $arguments);
         }
         if (method_exists($this->model, $name))
         {

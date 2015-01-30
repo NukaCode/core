@@ -24,30 +24,14 @@ abstract class BasePresenter extends Presenter {
         return stripslashes($this->entity->name);
     }
 
-    public function hidden()
+    public function hidden($hiddenField = 'hiddenFlag')
     {
-        return $this->entity->hiddenFlag == 1 ? 'Hidden' : null;
+        return $this->entity->{$hiddenField} == 1 ? 'Hidden' : null;
     }
 
-    public function active()
+    public function active($activeField = 'activeFlag')
     {
-        return $this->entity->hiddenFlag == 1 ? 'Hidden' : null;
-    }
-
-    /**
-     * Allow for property-style retrieval
-     *
-     * @param $property
-     * @return mixed
-     */
-    public function __get($property)
-    {
-        if (method_exists($this, $property))
-        {
-            return $this->{$property}();
-        }
-
-        return $this->entity->{$property};
+        return $this->entity->{$activeField} == 1 ? 'Active' : null;
     }
 
 	/**

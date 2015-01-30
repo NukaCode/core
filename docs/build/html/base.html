@@ -29,6 +29,7 @@
 
   
     <link rel="top" title="NukaCode 2.0.0 documentation" href="index.html"/>
+        <link rel="next" title="Base Classes" href=""/>
         <link rel="prev" title="Installation" href="install.html"/> 
 
   
@@ -71,7 +72,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#base-model">Base Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#base-presenter">Base Presenter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#base-repository">Base Repository</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#base-service-provider">Base Service Provider</a></li>
 </ul>
 </li>
 </ul>
@@ -110,6 +110,39 @@
             
   <div class="section" id="base-classes">
 <h1>Base Classes<a class="headerlink" href="#base-classes" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Base Classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#base-controller">Base Controller</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blade">Blade</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#view-helpers">View Helpers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#base-request">Base Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#base-model">Base Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#presenters">Presenters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#observers">Observers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unique-id-unique-string">Unique ID / Unique String</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scopes">Scopes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#base-presenter">Base Presenter</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#createdatreadable">createdAtReadable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#name">name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hidden-active">hidden / active</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#base-repository">Base Repository</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#find">find</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#findfirst">findFirst</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orderbyname">orderByName</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paginate">paginate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section" id="base-controller">
 <h2>Base Controller<a class="headerlink" href="#base-controller" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="blade">
@@ -120,8 +153,8 @@
 <div class="section" id="view-helpers">
 <h3>View Helpers<a class="headerlink" href="#view-helpers" title="Permalink to this headline">¶</a></h3>
 <p>The view helper methods are there to handle controller to view set up and data transfer.  By default, core auto finds
-the view to load and the layout.  These are done to remove the constant <tt class="docutils literal"><span class="pre">view()</span></tt> or <tt class="docutils literal"><span class="pre">View::make()</span></tt> code in
-controllers.</p>
+the view and the layout to load.  These are done to remove the constant <tt class="docutils literal"><span class="pre">view()</span></tt> or <tt class="docutils literal"><span class="pre">View::make()</span></tt> code in
+controllers when generally view paths follow the controller.action standard.</p>
 <div class="section" id="setviewlayout">
 <h4>setViewLayout<a class="headerlink" href="#setviewlayout" title="Permalink to this headline">¶</a></h4>
 <p>Use this to set the layout your views will extend.  By default, core looks for <tt class="docutils literal"><span class="pre">layouts.default</span></tt> for standard
@@ -249,15 +282,123 @@ class name including namespace.</p>
 </ol>
 <p>You can set the string size by changing the <tt class="docutils literal"><span class="pre">$uniqueStringLimit</span></tt> property on your model.  It defaults to 10.</p>
 </div>
+<div class="section" id="scopes">
+<h3>Scopes<a class="headerlink" href="#scopes" title="Permalink to this headline">¶</a></h3>
+<p>Base model adds a few common scopes to make things easier.</p>
+<div class="section" id="orderbycreatedat">
+<h4>orderByCreatedAt<a class="headerlink" href="#orderbycreatedat" title="Permalink to this headline">¶</a></h4>
+<p>This will order the models by created_at in ascending order.</p>
+</div>
+<div class="section" id="orderbynameasc">
+<h4>orderByNameAsc<a class="headerlink" href="#orderbynameasc" title="Permalink to this headline">¶</a></h4>
+<p>This will order the models by name in ascending order.</p>
+</div>
+</div>
 </div>
 <div class="section" id="base-presenter">
 <h2>Base Presenter<a class="headerlink" href="#base-presenter" title="Permalink to this headline">¶</a></h2>
+<p>The base presenter that comes with Core aims at making only the most basic assumptions.  One thing it does it expand upon the <tt class="docutils literal"><span class="pre">laracasts\presenter</span></tt> by adding a <tt class="docutils literal"><span class="pre">__call()</span></tt> magic method.  This is used to look for methods on the presenter first and fall back to the model.</p>
+<div class="section" id="createdatreadable">
+<h3>createdAtReadable<a class="headerlink" href="#createdatreadable" title="Permalink to this headline">¶</a></h3>
+<p>This method simply returns a model&#8217;s created_at field in a human readbale format.  For example, if the created_at was 2014-12-01 it would return December 1st, 2014 at 12:00a.</p>
+</div>
+<div class="section" id="name">
+<h3>name<a class="headerlink" href="#name" title="Permalink to this headline">¶</a></h3>
+<p>This simply runs <tt class="docutils literal"><span class="pre">stripslashes</span></tt> on the models name field.</p>
+</div>
+<div class="section" id="hidden-active">
+<h3>hidden / active<a class="headerlink" href="#hidden-active" title="Permalink to this headline">¶</a></h3>
+<p>These two methods look for a hidden or active boolean on the model and return a string if true.  By default hidden looks for hiddenFlag and active looks for activeFlag on the model.  You can change this by passing the field name to the method.:</p>
+<div class="highlight-python"><div class="highlight"><pre>$user-&gt;hidden(&#39;is_hidden&#39;); // Will return &quot;hidden&quot; if $user-&gt;is_hidden is true.
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="base-repository">
 <h2>Base Repository<a class="headerlink" href="#base-repository" title="Permalink to this headline">¶</a></h2>
+<p>Base repository adds a few very simple helpers.</p>
+<div class="section" id="find">
+<h3>find<a class="headerlink" href="#find" title="Permalink to this headline">¶</a></h3>
+<p>This runs find on the model for the id passed to it.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="39%" />
+<col width="20%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Type</th>
+<th class="head">Required</th>
+<th class="head">Default</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>$id</td>
+<td>string|int</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div class="section" id="base-service-provider">
-<h2>Base Service Provider<a class="headerlink" href="#base-service-provider" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="findfirst">
+<h3>findFirst<a class="headerlink" href="#findfirst" title="Permalink to this headline">¶</a></h3>
+<p>Similar to find but this method runs firstOrFail.  This means it will throw an exception if the model is not found.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="39%" />
+<col width="20%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Type</th>
+<th class="head">Required</th>
+<th class="head">Default</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>$id</td>
+<td>string|int</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="orderbyname">
+<h3>orderByName<a class="headerlink" href="#orderbyname" title="Permalink to this headline">¶</a></h3>
+<p>This uses the <tt class="docutils literal"><span class="pre">orderByNameAsc()</span></tt> scope found on BaseModel.  It finishes the query off with <tt class="docutils literal"><span class="pre">get()</span></tt> so only use it if all you need to do is order all models.</p>
+</div>
+<div class="section" id="paginate">
+<h3>paginate<a class="headerlink" href="#paginate" title="Permalink to this headline">¶</a></h3>
+<p>This method runs <tt class="docutils literal"><span class="pre">orderByNameAsc()</span></tt> but end with <tt class="docutils literal"><span class="pre">paginate()</span></tt> with the count you pass in.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="39%" />
+<col width="20%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Type</th>
+<th class="head">Required</th>
+<th class="head">Default</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>$count</td>
+<td>int</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 
@@ -266,6 +407,8 @@ class name including namespace.</p>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="" class="btn btn-neutral float-right" title="Base Classes"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="install.html" class="btn btn-neutral" title="Installation"><span class="fa fa-arrow-circle-left"></span> Previous</a>
