@@ -3,7 +3,7 @@ Base Classes
 
 Base Controller
 ------------------------
-.. todo:: Add resetBlade property (bool) to base.
+
 Blade
 ~~~~~~~~~~~~~~~~~~~~~~~~
 The base controller resets blade syntax to the Laravel 4 version by default.  You can override this by setting
@@ -63,18 +63,31 @@ Base Model
 ------------------------
 Core's base model adds quite a bit and sets a few defaults for all models.
 
-Traits
+Presenters
 ^^^^^^^^^^^^^^^^^^^^^^^^
-* PresentableTrait - This is pulled in from ``laracasts/presenter`` to allow easy presenter integration.
+Core uses ``laracasts\presenter`` to handle the Presenter set up for a model.  To use it, simply set your model's
+``$presenter`` property to the full class name (Including namespace) of the presenter.::
 
-Properties
+    protected $presenter = 'App\Presenters\ModelPresenter';
+Observers
 ^^^^^^^^^^^^^^^^^^^^^^^^
-==== ===== =====
-Name Value Notes
-==== ===== =====
-injectIdentifier True
-throwValidationExceptions False
-==== ===== =====
+To set up Observers, simply set the ``$observer`` property on your model.  Like presenters, this should be the full
+class name including namespace.
+
+This observer will be called in the models boot method.  If you need to do anything inside the boot method make sure
+to call the parent.::
+
+    protected static $observer = 'App\Models\Observers\ModelObserver';
+Unique ID / Unique String
+^^^^^^^^^^^^^^^^^^^^^^^^^
+If you want to add a unique id to your model, Core will help with this.  It can work one of two ways.
+
+# If it detects that your primaryKey is contains the word unique in the column name, it will automatically set it to a
+unique string when a model is created.
+# If you set a column name in the ``$uniqueStringColumns`` array on your model, anything in that name will have a unique
+string injected into it when a model is created.
+
+You can set the string size by changing the ``$uniqueStringLimit`` property on your model.  It defaults to 10.
 
 
 Base Presenter
