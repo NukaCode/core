@@ -40,18 +40,18 @@ $view      Yes
 setViewData
 ^^^^^^^^^^^^^^^^^^^^^^^^
 This method allows you to pass data to the view.  It accepts either an array or it will accept PHP's ``compact()``
-function.::
-
-    Examples
-    $this->setViewData('user', User::find($user_id);
-    $this->setViewData(compact('user'));
+function.
 
 ========== ======== =======
 Parameters Required Default
 ========== ======== =======
 $key | $compact       Yes
 $value     No       null
-========== ======== =======
+========== ======== =======::
+
+    Examples
+    $this->setViewData('user', User::find($user_id);
+    $this->setViewData(compact('user'));
 
 Base Request
 ------------------------
