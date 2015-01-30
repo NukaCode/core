@@ -46,6 +46,13 @@ Base Classes
 
     base
 
+Collection
+------------------
+.. toctree::
+    :maxdepth: 2
+
+    collection
+
 Extensions
 ------------------
 - Base (Coming soon)

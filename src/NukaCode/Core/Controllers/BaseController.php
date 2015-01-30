@@ -9,10 +9,14 @@ abstract class BaseController extends Controller {
 
 	protected $layout;
 
+	protected $resetBlade = true;
+
 	public function __construct()
 	{
-		// Resetting blade syntax to original
-		$this->resetBladeSyntax();
+		if ($this->resetBlade === true) {
+			// Resetting blade syntax to original
+			$this->resetBladeSyntax();
+		}
 
 		// Set up the default view resolution
 		ViewBuilder::setUp();

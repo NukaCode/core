@@ -43,32 +43,18 @@ abstract class BaseModel extends Model {
     protected static $observer = null;
 
     /**
-     * Make sure the uniqueId is always unique.
+     * Any field in this array will be populated with a unique string on create.
      *
-     * @param string $model The model to search for the uniqueId on.
-     *
-     * @return string
+     * @var array
      */
-    public static function findExistingReferences($model)
-    {
-        $invalid      = true;
-        $uniqueString = null;
+    protected static $uniqueStringColumns = ['email'];
 
-        while ($invalid == true) {
-            // Create a new random string.
-            $uniqueString = Str::random(10);
-
-            // Look for any instances of that string on the model.
-            $existingReferences = $model::where('uniqueId', $uniqueString)->count();
-
-            // If none exist, this is a valid unique string.
-            if ($existingReferences == 0) {
-                $invalid = false;
-            }
-        }
-
-        return $uniqueString;
-    }
+    /**
+     * The size string to generate for unique string column.
+     *
+     * @var int
+     */
+    protected static $uniqueStringLimit = 10;
 
     /**
      * Use the custom collection that allows tapping.
@@ -144,8 +130,17 @@ abstract class BaseModel extends Model {
         // If the class uses uniqueIds, make sure it is truly unique.
         if (self::testClassForUniqueId($class) == true) {
             $class::creating(function ($object) use ($class) {
-                $object->uniqueId = parent::findExistingReferences($class);
+                $object->{$object->primaryKey} = $class::findExistingReferences($class, $object->primaryKey);
             });
+        }
+
+        // If any fields are marked for unique strings, add them.
+        if (count(self::$uniqueStringColumns) > 0) {
+            foreach ($class::$uniqueStringColumns as $field) {
+                $class::creating(function ($object) use ($class, $field) {
+                    $object->{$field} = $class::findExistingReferences($class, $field);
+                });
+            }
         }
 
         if (static::$observer != null) {
@@ -159,14 +154,15 @@ abstract class BaseModel extends Model {
     /**
      * Allow id to be called regardless of the primary key.\
      *
-     * @param int|null  $value The original value of id.
+     * @param int|null $value The original value of id.
      *
      * @return int|string
      */
     public function getIdAttribute($value)
     {
-        if (isset($this->uniqueId)) {
-            return $this->uniqueId;
+
+        if (stripos($this->primaryKey, 'unique') !== false) {
+            return $this->{$this->primaryKey};
         }
 
         return $value;
@@ -175,6 +171,35 @@ abstract class BaseModel extends Model {
     /********************************************************************
      * Extra Methods
      *******************************************************************/
+    /**
+     * Make sure the uniqueId is always unique.
+     *
+     * @param string $model The model to search on.
+     * @param        $field The field to search on.
+     *
+     * @return string
+     */
+    public static function findExistingReferences($model, $field)
+    {
+        $invalid      = true;
+        $uniqueString = null;
+
+        while ($invalid == true) {
+            // Create a new random string.
+            $uniqueString = Str::random($model::$uniqueStringLimit);
+
+            // Look for any instances of that string on the model.
+            $existingReferences = $model::where($field, $uniqueString)->count();
+
+            // If none exist, this is a valid unique string.
+            if ($existingReferences == 0) {
+                $invalid = false;
+            }
+        }
+
+        return $uniqueString;
+    }
+
     /**
      * See if a given class uses uniqueId as the primary key.
      *
@@ -186,7 +211,7 @@ abstract class BaseModel extends Model {
     {
         $object = new $class;
 
-        if ($object->primaryKey == 'uniqueId') {
+        if (stripos($object->primaryKey, 'unique') !== false) {
             return true;
         }
 
