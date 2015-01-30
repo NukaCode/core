@@ -45,9 +45,10 @@ function.
 ========== ==== ======== =======
 Parameters Type Required Default
 ========== ==== ======== =======
-$data      string|compact Yes
+$data      string-compact Yes
 $value     mixed No       null
 ========== ==== ======== =======
+
 ::
 
     Examples
