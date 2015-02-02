@@ -7,142 +7,147 @@ use NukaCode\Core\Support\Facades\View\ViewBuilder;
 
 abstract class BaseController extends Controller {
 
-	protected $layout;
+    protected $layout;
 
-	protected $resetBlade = true;
+    protected $layoutOptions = [
+        'default' => 'layouts.default',
+        'ajax'    => 'layouts.ajax'
+    ];
 
-	public function __construct()
-	{
-		if ($this->resetBlade === true) {
-			// Resetting blade syntax to original
-			$this->resetBladeSyntax();
-		}
+    protected $resetBlade    = true;
 
-		// Set up the default view resolution
-		ViewBuilder::setUp();
-		$this->setupLayout();
-	}
+    public function __construct()
+    {
+        if ($this->resetBlade === true) {
+            // Resetting blade syntax to original
+            $this->resetBladeSyntax();
+        }
 
-	/********************************************************************
-	 * View helpers
-	 *******************************************************************/
+        // Set up the default view resolution
+        ViewBuilder::setUp($this->layoutOptions);
+        $this->setupLayout();
+    }
 
-	/**
-	 * Pass data to the view.
-	 *
-	 * @param mixed $key
-	 * @param mixed $value
-	 */
-	public function setViewData($key, $value = null)
-	{
-		if (is_array($key)) {
-			foreach ($key as $name => $data) {
-				View::share($name, $data);
-			}
-		} else {
-			View::share($key, $value);
-		}
-	}
+    /********************************************************************
+     * View helpers
+     *******************************************************************/
 
-	/**
-	 * Force the view path.
-	 *
-	 * @param $view
-	 */
-	public function setViewPath($view)
-	{
-		ViewBuilder::setViewPath($view);
-	}
+    /**
+     * Pass data to the view.
+     *
+     * @param mixed $key
+     * @param mixed $value
+     */
+    public function setViewData($key, $value = null)
+    {
+        if (is_array($key)) {
+            foreach ($key as $name => $data) {
+                View::share($name, $data);
+            }
+        } else {
+            View::share($key, $value);
+        }
+    }
 
-	/**
-	 * Force the layout for the view.
-	 *
-	 * @param $view
-	 */
-	public function setViewLayout($view)
-	{
-		ViewBuilder::setViewLayout($view);
+    /**
+     * Force the view path.
+     *
+     * @param $view
+     */
+    public function setViewPath($view)
+    {
+        ViewBuilder::setViewPath($view);
+    }
 
-		$this->layout = ViewBuilder::getLayout();
-	}
+    /**
+     * Force the layout for the view.
+     *
+     * @param $view
+     */
+    public function setViewLayout($view)
+    {
+        ViewBuilder::setViewLayout($view);
 
-	/**
-	 * Do not display a view for this request.
-	 */
-	public function skipView()
-	{
-		$this->layout->content = null;
-	}
+        $this->layout = ViewBuilder::getLayout();
+    }
 
-	/**
-	 * Master template method
-	 * Sets the template based on location and passes variables to the view.
-	 *
-	 * @return void
-	 */
-	public function setupLayout()
-	{
-		$this->layout = ViewBuilder::getLayout();
-	}
+    /**
+     * Do not display a view for this request.
+     */
+    public function skipView()
+    {
+        $this->layout->content = null;
+    }
 
-	/********************************************************************
-	 * Auto resolve methods
-	 *******************************************************************/
+    /**
+     * Master template method
+     * Sets the template based on location and passes variables to the view.
+     *
+     * @return void
+     */
+    public function setupLayout()
+    {
+        $this->layout = ViewBuilder::getLayout();
+    }
 
-	/**
-	 * Execute an action on the controller.
-	 *
-	 * Overloading this method to make sure our layout is
-	 * always used.
-	 *
-	 * @param  string $method
-	 * @param  array  $parameters
-	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
-	 */
-	public function callAction($method, $parameters)
-	{
-		$response = call_user_func_array([$this, $method], $parameters);
+    /********************************************************************
+     * Auto resolve methods
+     *******************************************************************/
 
-		if (is_null($response) && ! is_null($this->layout)) {
-			$response = $this->layout;
-		}
+    /**
+     * Execute an action on the controller.
+     *
+     * Overloading this method to make sure our layout is
+     * always used.
+     *
+     * @param  string $method
+     * @param  array  $parameters
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function callAction($method, $parameters)
+    {
+        $response = call_user_func_array([$this, $method], $parameters);
 
-		return $response;
-	}
+        if (is_null($response) && ! is_null($this->layout)) {
+            $response = $this->layout;
+        }
 
-	/**
-	 * Catch a missing method and try to figure out what
-	 * it should be.
-	 *
-	 * @param array $parameters
-	 */
-	public function missingMethod($parameters = [])
-	{
-		ViewBuilder::missingMethod($parameters);
-	}
+        return $response;
+    }
 
-	/**
-	 * Catch any un-found method and route through
-	 * missing method.
-	 *
-	 * @param string $method
-	 * @param array  $parameters
-	 *
-	 * @return mixed|void
-	 */
-	public function __call($method, $parameters)
-	{
-		$parameters = array_merge((array)$method, $parameters);
+    /**
+     * Catch a missing method and try to figure out what
+     * it should be.
+     *
+     * @param array $parameters
+     */
+    public function missingMethod($parameters = [])
+    {
+        ViewBuilder::missingMethod($parameters);
+    }
 
-		return $this->missingMethod($parameters);
-	}
+    /**
+     * Catch any un-found method and route through
+     * missing method.
+     *
+     * @param string $method
+     * @param array  $parameters
+     *
+     * @return mixed|void
+     */
+    public function __call($method, $parameters)
+    {
+        $parameters = array_merge((array)$method, $parameters);
 
-	private function resetBladeSyntax()
-	{
-		Blade::setEchoFormat('%s');
-		Blade::setContentTags('{{', '}}');
-		Blade::setEscapedContentTags('{{{', '}}}');
-	}
+        return $this->missingMethod($parameters);
+    }
+
+    private function resetBladeSyntax()
+    {
+        Blade::setEchoFormat('%s');
+        Blade::setContentTags('{{', '}}');
+        Blade::setEscapedContentTags('{{{', '}}}');
+    }
 
 } 

@@ -19,9 +19,9 @@ class ViewBuilder {
 		$this->view       = $view;
 	}
 
-	public function setUp()
+	public function setUp($layoutOptions)
 	{
-		$this->layout         = $this->viewLayout->setUp();
+		$this->layout         = $this->viewLayout->setUp($layoutOptions);
 		$this->layout->layout = $this->viewPath->setUp($this->layout->layout);
 	}
 
@@ -44,7 +44,7 @@ class ViewBuilder {
 
 	public function setViewLayout($view)
 	{
-		$this->layout         = $this->viewLayout->setUp($view);
+		$this->layout         = $this->viewLayout->change($view);
 		$this->layout->layout = $this->viewPath->setUp($this->layout->layout);
 	}
 

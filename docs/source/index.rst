@@ -8,8 +8,9 @@ Welcome to NukaCode!
 This package is designed to offer some helpful tools for a laravel based site.  It works best with NukaCode - Laravel
 Base, but does not require it.
 
-=====
-=====
+======
+Badges
+======
 .. image:: https://scrutinizer-ci.com/g/NukaCode/core/badges/quality-score.png?b=Laravel5
     :target: https://scrutinizer-ci.com/g/NukaCode/core/?branch=Laravel5
 .. image:: https://scrutinizer-ci.com/g/NukaCode/core/badges/coverage.png?b=Laravel5
@@ -52,6 +53,15 @@ Collection
     :maxdepth: 2
 
     collection
+
+View
+------------------
+.. toctree::
+    :maxdepth: 2
+
+    viewresolution
+    viewhelpers
+    ajax
 
 Extensions
 ------------------

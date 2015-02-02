@@ -3,3 +3,4 @@
 /.idea
 ._*
 coverage.xml
+docs/build
