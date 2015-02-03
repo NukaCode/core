@@ -1,7 +1,5 @@
 <?php namespace NukaCode\Core\Ajax;
 
-use Response;
-
 class Ajax {
 
     protected static $ajaxInstance;
