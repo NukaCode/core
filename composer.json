@@ -13,9 +13,9 @@
         }
     ],
     "require": {
-        "laravel/framework": "~5.0|~4.2",
+        "laravel/framework": "~5.0",
         "doctrine/dbal": "2.4.2",
-        "laracasts/presenter": "0.2.0|0.1.4"
+        "laracasts/presenter": "0.2.0"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.1",
