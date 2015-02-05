@@ -1,8 +1,3 @@
-.. NukaCode documentation master file, created by
-   sphinx-quickstart on Fri Jan 30 10:29:53 2015.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to NukaCode!
 ========================
 This package is designed to offer some helpful tools for a laravel based site.  It works best with NukaCode - Laravel
@@ -27,11 +22,8 @@ Badges
 
 Links
 ------------------
-.. _Github: https://github.com/NukaCode/core/tree/master/src/NukaCode/Core
-.. _Packagist: https://packagist.org/packages/nukacode/core
-
-* `Github`_
-* `Packagist`_
+* `Github <https://github.com/NukaCode/core/tree/master/src/NukaCode/Core>`_
+* `Packagist <https://packagist.org/packages/nukacode/core>`_
 
 Installation
 ------------------

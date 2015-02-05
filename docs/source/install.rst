@@ -4,9 +4,19 @@ Installation
 Composer
 ------------------------------------
 You will need primarily only Laravel to run core.
+::
 
-``composer require laravel/framework:~5.0``
+    composer require laravel/framework:~5.0
+    composer require nukacode/core:~2.0
 
+Service Providers
+------------------------------------
+Add the following service providers to ``configs/app.php``.
+::
+
+     'NukaCode\Core\CoreServiceProvider',
+     'NukaCode\Core\View\ViewServiceProvider',
+     'NukaCode\Core\Requests\AjaxServiceProvider',
 Configs/Migrations/Seeds
 ------------------------------------
 Once that is done, you can publish the configs and migrations.

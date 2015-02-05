@@ -25,7 +25,7 @@ class Layout {
 
     public function setUp($layoutOptions)
     {
-        $this->layoutOptions = $layoutOptions;
+        $this->layoutOptions = $this->verifyLayoutOptions($layoutOptions);
         $this->layout        = $this->determineLayout(null);
         $this->setPageTitle();
         $this->layout->content = null;
@@ -78,5 +78,20 @@ class Layout {
         }
 
         return $layout;
+    }
+
+    private function verifyLayoutOptions($layoutOptions)
+    {
+        if(! is_array($layoutOptions)) {
+            throw new \InvalidArgumentException('The layoutOptions must be an array.');
+        }
+        if(! isset($layoutOptions['default'])) {
+            throw new \InvalidArgumentException('The layoutOptions must have a default layout view.');
+        }
+        if(! isset($layoutOptions['ajax'])) {
+            throw new \InvalidArgumentException('The layoutOptions must have a ajax layout view.');
+        }
+
+        return $layoutOptions;
     }
 }
