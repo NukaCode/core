@@ -21,6 +21,10 @@
         "phpspec/phpspec": "~2.1",
         "henrikbjorn/phpspec-code-coverage": "~0.2"
     },
+    "suggest": {
+        "nukacode/menu": "Full featured menu system.",
+        "nukacode/front-end-bootstrap": "Helpers and views based around Twitter Bootstrap."
+    },
     "autoload":    {
         "classmap": [
             "src/database/migrations"
