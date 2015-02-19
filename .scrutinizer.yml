@@ -10,7 +10,7 @@ tools:
   sensiolabs_security_checker: true
   php_changetracking: true
   php_cs_fixer:
-      config: { level: psr1 }
+      config: { level: psr2 }
 checks:
   php:
     code_rating: true
