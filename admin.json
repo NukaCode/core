@@ -1,0 +1,17 @@
+{
+    "navigation": {
+    },
+    "notifications": [
+        {
+            "color": "inverse",
+            "title": "Laravel",
+            "focus": {
+                "method": "App::version",
+                "argument": null
+            },
+            "icon": "fa-code",
+            "size": 3,
+            "bar": "bar"
+        }
+    ]
+}

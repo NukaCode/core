@@ -1,0 +1,24 @@
+language: php
+
+php:
+  - 5.5
+  - 5.4
+  - hhvm
+
+notifications:
+  slack: nukacode:HyFrc2QLi5PC5fPxadm07O5v
+
+matrix:
+  allow_failures:
+    - php: hhvm
+  fast_finish: true
+
+before_script:
+  - /home/travis/.phpenv/versions/5.5/bin/composer self-update
+  - /home/travis/.phpenv/versions/5.4/bin/composer self-update
+  - composer install
+
+script:
+  - ./vendor/bin/phpspec run
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload  --format=php-clover coverage.xml
