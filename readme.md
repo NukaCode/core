@@ -6,4 +6,4 @@
 [![License](https://poser.pugx.org/nukacode/core/license.svg)](https://packagist.org/packages/nukacode/core)
 
 # Documentation
-See the documentation at [Read the docs](http://nukacode-core.readthedocs.org/en/stable/)
+See the documentation at [Read the docs](http://nukacode-core.readthedocs.org/en/stable/) YUP
