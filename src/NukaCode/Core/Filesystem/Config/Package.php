@@ -12,10 +12,14 @@ class Package extends Core {
 
     protected $config;
 
-    protected $rules = [
+    protected $rules    = [
         'NAME'    => 'required',
         'VERSION' => 'required',
         'DOCS'    => 'required',
+    ];
+
+    private   $packages = [
+        'nukacode' => []
     ];
 
     /**
@@ -51,49 +55,18 @@ class Package extends Core {
 
             $this->updateEntry($package);
         }
+
+        $this->file->put($this->config, "<?PHP \n\n return " . var_export($this->packages, true) . ';');
     }
 
-    /**
-     * Compile details about the package and persist it in the config
-     *
-     * @param $package
-     */
     public function updateEntry($package)
     {
         $package = (object)$package;
         $this->verifyCommand($package);
 
-        $lines      = file($this->config);
-        $finishFile = false;
+        $data['version'] = $package->VERSION;
+        $data['docs']    = $package->DOCS;
 
-        foreach ($lines as $lineNumber => $line) {
-            if (strpos($line, '\'' . $package->NAME . '\'') !== false) {
-                $startingLineNumber = $lineNumber;
-            }
-        }
-
-        if (! isset($startingLineNumber)) {
-            $finishFile         = true;
-            $startingLineNumber = count($lines) - 2;
-        }
-
-        $previousLineNumber = $startingLineNumber - 1;
-        $versionLineNumber  = $startingLineNumber + 1;
-        $docsLineNumber     = $startingLineNumber + 2;
-        $endingLineNumber   = $startingLineNumber + 3;
-
-        $lines[$previousLineNumber] = "        ],\n";
-        $lines[$startingLineNumber] = "        '{$package->NAME}' => [\n";
-        $lines[$versionLineNumber]  = "            'version' => '{$package->VERSION}',\n";
-        $lines[$docsLineNumber]     = "            'docs'    => '{$package->DOCS}'\n";
-        $lines[$endingLineNumber]   = "        ],\n";
-
-        if ($finishFile === true) {
-            $lines[] = "    ]\n";
-            $lines[] = "];\n";
-        }
-
-        $this->file->delete($this->config);
-        $this->file->put($this->config, implode($lines));
+        $this->packages['nukacode'][$package->NAME] = $data;
     }
 }
