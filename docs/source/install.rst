@@ -1,6 +1,16 @@
 Installation
 ====================================
 
+Using the installer
+-------------------
+``composer global require "nukacode/installer=~1.0"``
+
+``nukacode new <directory>``
+
+.. note: You can use the ``--slim`` option at the end to get a minimal version.
+
+The full version comes with nukacode core, menu, bootstrap, users and admin.  The slim variant comes with only core and menu.
+
 From NukaCode/Laravel-Base
 --------------------------
 ``composer create-project nukacode/laravel-base <path>``
