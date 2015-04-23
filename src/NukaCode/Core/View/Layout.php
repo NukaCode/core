@@ -70,9 +70,11 @@ class Layout {
                 } else {
                     $layout = $this->view->make($this->layoutOptions['default']);
                 }
-            } else {
+            } elseif (is_string($this->layout)) {
                 $layout = $this->view->make($this->layout);
-            }
+            } else {
+				$layout = $this->layout;
+			}
         } else {
             $layout = $this->view->make($layout);
         }
