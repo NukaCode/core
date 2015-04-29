@@ -23,9 +23,11 @@ abstract class BaseController extends Controller {
             $this->resetBladeSyntax();
         }
 
-        // Set up the default view resolution
-        ViewBuilder::setUp($this->layoutOptions);
-        $this->setupLayout();
+        if (! app()->runningInConsole()) {
+            // Set up the default view resolution
+            ViewBuilder::setUp($this->layoutOptions);
+            $this->setupLayout();
+        }
     }
 
     /********************************************************************
