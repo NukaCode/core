@@ -84,6 +84,12 @@ class Path {
 		if (! is_null($prefix) && $prefix != '') {
 			if ($this->view->exists($prefix . '.' . $view)) {
 				$view = $prefix . '.' . $view;
+			} else {
+                		$prefix = substr($prefix, 0, -1);
+                		
+                		if ($this->view->exists($prefix . '.' . $view)) {
+                    			$view = $prefix . '.' . $view;
+                		}
 			}
 		}
 
