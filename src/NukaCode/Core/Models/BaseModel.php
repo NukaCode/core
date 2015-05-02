@@ -135,7 +135,7 @@ abstract class BaseModel extends Model {
         }
 
         // If any fields are marked for unique strings, add them.
-        if (count(self::$uniqueStringColumns) > 0) {
+        if (count($class::$uniqueStringColumns) > 0) {
             foreach ($class::$uniqueStringColumns as $field) {
                 $class::creating(function ($object) use ($class, $field) {
                     $object->{$field} = $class::findExistingReferences($class, $field);
