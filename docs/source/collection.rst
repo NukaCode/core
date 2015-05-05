@@ -29,25 +29,20 @@ getWhere[ in | between | like | null | many ] [not] [ first | last ](mixed $colu
 
 Method parameters
 ~~~~~~~
-+-----------------+---------------------------+---------------------------------------------------------------------------------------------------------------------+
-| Method Name     | Parameters                | Result                                                                                                              |
-+=================+===========================+=====================================================================================================================+
-| getWhere        | STRING $column            | This will return all object in the collection that have the column `$column` that equals `$value`.                  |
-|                 | STRING $value             |                                                                                                                     |
-+-----------------+---------------------------+---------------------------------------------------------------------------------------------------------------------+
-| getWhereIn      | STRING $column            | This will return all objects in the collection where the column `$column` is in the array of `$values`.             |
-|                 | STRING $values            |                                                                                                                     |
-+-----------------+---------------------------+---------------------------------------------------------------------------------------------------------------------+
-| getWhereBetween | STRING $column            | This will return all objects in the collection where the column `$column` is between `$values[0]` and `$values[1]`. |
-|                 | STRING $values            |                                                                                                                     |
-+-----------------+---------------------------+---------------------------------------------------------------------------------------------------------------------+
-| getWhereLike    | STRING $column            | This will return all objects in the collection where column `$column` contains the sub string `$value`.             |
-|                 | STRING $value             |                                                                                                                     |
-+-----------------+---------------------------+---------------------------------------------------------------------------------------------------------------------+
-| getWhereNull    | STRING $column            | This will return all objects in the collection where column `$column` is null.                                      |
-+-----------------+---------------------------+---------------------------------------------------------------------------------------------------------------------+
-| getWhereMany    | ARRAY $columns => $values | This will return all objects in the collection that match all where statements in the passed in array.              |
-+-----------------+---------------------------+---------------------------------------------------------------------------------------------------------------------+
+================ ========================= =====================================================================================================================
+Method Name      Parameters       Result
+================ ========================= =====================================================================================================================
+getWhere         | STRING $column          This will return all object in the collection that have the column `$column` that equals `$value`.
+                 | STRING $value
+getWhereIn       | STRING $column          This will return all objects in the collection where the column `$column` is in the array of `$values`.
+                 | STRING $values
+getWhereBetween  | STRING $column          This will return all objects in the collection where the column `$column` is between `$values[0]` and `$values[1]`.
+                 | STRING $values
+getWhereLike     | STRING $column          This will return all objects in the collection where column `$column` contains the sub string `$value`.
+                 | STRING $value
+getWhereNull     STRING $column            This will return all objects in the collection where column `$column` is null.
+getWhereMany     ARRAY $columns => $values This will return all objects in the collection that match all where statements in the passed in array.
+================ ========================= =====================================================================================================================
   
 toSelectArray()
 -------
