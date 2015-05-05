@@ -32,18 +32,22 @@ Method parameters
 ================ =========================== =====================================================================================================================
 Method Name      Parameters                  Result
 ================ =========================== =====================================================================================================================
-getWhere         | STRING $column            | This will return all object in the collection that have 
-                 | STRING $value             | the column `$column` that equals `$value`.
-getWhereIn       | STRING $column            | This will return all objects in the collection where the 
-                 | STRING $values            | column `$column` is in the array of `$values`.
-getWhereBetween  | STRING $column            | This will return all objects in the collection where the 
-                 | STRING $values            | column `$column` is between `$values[0]` and `$values[1]`.
-getWhereLike     | STRING $column            | This will return all objects in the collection where column 
-                 | STRING $value             | `$column` contains the sub string `$value`.
-getWhereNull     | STRING $column            | This will return all objects in the collection where column 
-                                             | `$column` is null.
-getWhereMany     | ARRAY $columns => $values | This will return all objects in the collection that match 
-                                             | all where statements in the passed in array.
+getWhere         | STRING $column            | This will return all object in the collection 
+                 | STRING $value             | that have the column `$column` that equals 
+                                             | `$value`.
+getWhereIn       | STRING $column            | This will return all objects in the collection 
+                 | STRING $values            | where the column `$column` is in the array of 
+                                             | `$values`.
+getWhereBetween  | STRING $column            | This will return all objects in the collection 
+                 | STRING $values            | where the column `$column` is between `$values[0]`
+                                             | and `$values[1]`.
+getWhereLike     | STRING $column            | This will return all objects in the collection 
+                 | STRING $value             | where column `$column` contains the sub string 
+                                             | `$value`.
+getWhereNull     | STRING $column            | This will return all objects in the collection 
+                                             | where column `$column` is null.
+getWhereMany     | ARRAY $columns => $values | This will return all objects in the collection 
+                                             | that match all where statements in the passed in array.
 ================ =========================== =====================================================================================================================
 
 Method Modifiers
@@ -51,13 +55,16 @@ Method Modifiers
 ================ ========================= =====================================================================================================================
 Method Name      Parameters                Result
 ================ ========================= =====================================================================================================================
-getWhereNot      | STRING $column          | This will return all objects in the collection that column 
-                 | STRING $value           | $column is other than $value.  (The not operator can be added 
-                                           | to all methods to invert the results)
-getWhereFirst    | STRING $column          | This will return only the first object in the collection.
-                 | STRING $value           | (The first operator can be added to all methods to return the first result)
-getWhereLast     | STRING $column          | This will return only the last object in the collection.
-                 | STRING $value           | (The last operator can be added to all methods to return the last result)
+getWhereNot      | STRING $column          | This will return all objects in the collection 
+                 | STRING $value           | that column `$column` is other than $value.  
+                                           | (The not operator can be added to all methods 
+                                           | to invert the results)
+getWhereFirst    | STRING $column          | This will return only the first object in the 
+                 | STRING $value           | collection.  (The first operator can be added 
+                                           | to all methods to return the first result)
+getWhereLast     | STRING $column          | This will return only the last object in the 
+                 | STRING $value           | collection.  (The last operator can be added 
+                                           | to all methods to return the last result)
 ================ ========================= =====================================================================================================================
 
 Example
