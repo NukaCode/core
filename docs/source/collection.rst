@@ -1,33 +1,59 @@
 Collection
 ========
 
-Where
+Tap property of collection
 -------
+If you have a collection you can tap a relationship of an object in the collection to get a new collection of the relationship data. You can also tap a property of the object in the collection to get a new collection of all instances of that property in that collection.
+::
+  $users = User::all();
+  $actions = $users->roles->actions;
+  $roleNames = $users->roles->name;
+  
+In this example, $actions would return a collection of all actions attached to all roles attached to the users.
+`$roleNames` would return a collection of every role name for each role the users are attached to.
 
-where
-~~~~~~~~
+Run method on collection
+-------
+You can run a method on the entire collection such as `save()`, or `delete()`.  If you wanted to delete an entire collection you could do
+::
+  $users->roles->delete();
+  
+Searching a collection
+-------
+If you need to return a specific set of objects from a collection you can call the `getWhere()` method on the collection. This is a magic method used to search the collection.
+Get where can take several extra parameters by changing the method name.
 
-whereIn
-~~~~~~~~
+Method name convention
+~~~~~~~
+getWhere[ in | between | like | null | many ] [not] [ first | last ](mixed $column, mixes $value)
 
-whereBetween
-~~~~~~~~
+Method parameters
+~~~~~~~
+================ ========================= ================
+Method Name      Parameters       Result
+================ ========================= ================
+getWhere         STRING $column            This will return all object in the collection that have the column `$column` that equals `$value`.
+                 STRING $value
+getWhereIn       STRING $column            This will return all objects in the collection where the column `$column` is in the array of `$values`.
+                 STRING $values
+getWhereBetween  STRING $column            This will return all objects in the collection where the column `$column` is between `$values[0]` and `$values[1]`.
+                 STRING $values
+getWhereLike     STRING $column            This will return all objects in the collection where column `$column` contains the sub string `$value`.
+                 STRING $value
+getWhereNull     STRING $column            This will return all objects in the collection where column `$column` is null.
+getWhereMany     ARRAY $columns => $values This will return all objects in the collection that match all where statements in the passed in array.
+================ ========================= ================
+  
+toSelectArray()
+-------
+================ ================ ======== =======
+Parameters       Type             Required Default
+================ ================ ======== =======
+$firstOptionText string           No       'Select One'
+$id              string           No       'id'
+$name            string           No       'name'
+================ ================ ======== =======
 
-whereNull
-~~~~~~~~
-
-whereLike
-~~~~~~~~
-
-Alternates
-~~~~~~~~
-
-Not
-^^^^^^^^
-
-First
-^^^^^^^^
-
-Last
-^^^^^^^^
-
+This method takes a standard object from an eloquent call and converts it to an array usable by Laravel's form select method. This is used similarly to the Laravel `toJson()` or `toArray()` methods.
+::
+  $users = User::orderByNameAsc()->get()->toSelectArray( 'Select a user', 'uniqueId', 'username');
