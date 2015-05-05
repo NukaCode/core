@@ -62,6 +62,7 @@ getWhereLast     | STRING $column          | This will return only the last obje
 
 Example
 ~~~~~~~
+You can also look at `the tests <https://github.com/NukaCode/core/blob/master/tests/spec/NukaCode/Core/Database/CollectionSpec.php>`_ for more examples
 ::
   $aColleciton->getWhere('aField','Some Text');
   $aCollection->getWhere('relationship->aField', 'Some Text');
