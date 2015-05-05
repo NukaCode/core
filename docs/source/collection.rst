@@ -36,7 +36,7 @@ Method parameters
 |                 | STRING $value             |                                                                                                                     |
 +-----------------+---------------------------+---------------------------------------------------------------------------------------------------------------------+
 | getWhereIn      | STRING $column            | This will return all objects in the collection where the column `$column` is in the array of `$values`.             |
-|                 | STRING $values                                                                                                                                  |
+|                 | STRING $values            |                                                                                                                     |
 +-----------------+---------------------------+---------------------------------------------------------------------------------------------------------------------+
 | getWhereBetween | STRING $column            | This will return all objects in the collection where the column `$column` is between `$values[0]` and `$values[1]`. |
 |                 | STRING $values            |                                                                                                                     |
