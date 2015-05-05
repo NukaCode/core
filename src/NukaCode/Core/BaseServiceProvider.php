@@ -25,20 +25,23 @@ abstract class BaseServiceProvider extends ServiceProvider {
         }
     }
 
-    protected function getDatabaseFiles($path)
-    {
-        $dir = base_path($path);
+	protected function getDatabaseFiles($path) {
+		$dir = base_path($path);
 
-        $migrations = \File::files($dir . '/migrations');
-        $seeds      = \File::files($dir . '/seeds/');
+		$migrations = \File::files($dir . '/migrations');
 
-        $databaseFiles = [$dir . '/seeds/' => base_path('database/seeds/')];
-        $databaseFiles = $this->getMigrationDetails($migrations, $databaseFiles);
+		if (\File::exists($dir . '/seeds/')) {
+			$seeds         = \File::files($dir . '/seeds/');
+			$databaseFiles = [$dir . '/seeds/' => base_path('database/seeds/')];
+			$this->getSeedDetails($seeds);
+		} else {
+			$databaseFiles = [];
+		}
 
-        $this->getSeedDetails($seeds);
+		$databaseFiles = $this->getMigrationDetails($migrations, $databaseFiles);
 
-        return $databaseFiles;
-    }
+		return $databaseFiles;
+	}
 
     /**
      * @param $migrations
