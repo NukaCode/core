@@ -11,7 +11,7 @@ class CoreServiceProvider extends BaseServiceProvider {
 
     const NAME = 'core';
 
-    const VERSION = '2.0.11';
+    const VERSION = '2.1.0';
 
     const DOCS = 'nukacode-core';
 
