@@ -12,8 +12,6 @@ class UniqueId
     /**
      * Allow id to be called regardless of the primary key.
      *
-     * @param int|null $value The original value of id.
-     *
      * @return int|string
      */
     public function getIdAttribute()
