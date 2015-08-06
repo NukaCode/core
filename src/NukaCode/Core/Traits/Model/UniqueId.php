@@ -16,7 +16,7 @@ class UniqueId
      *
      * @return int|string
      */
-    public function getIdAttribute($value)
+    public function getIdAttribute()
     {
         return $this->{$this->primaryKey};
     }
