@@ -1,12 +1,15 @@
-<?php namespace NukaCode\Core\View;
+<?php
+
+namespace NukaCode\Core\View;
 
 use Illuminate\Config\Repository;
 use Illuminate\View\Factory;
 use Illuminate\Http\Request;
 
-class Layout {
+class Layout
+{
 
-    public    $layout;
+    public $layout;
 
     protected $view;
 
@@ -73,8 +76,8 @@ class Layout {
             } elseif (is_string($this->layout)) {
                 $layout = $this->view->make($this->layout);
             } else {
-				$layout = $this->layout;
-			}
+                $layout = $this->layout;
+            }
         } else {
             $layout = $this->view->make($layout);
         }
@@ -84,13 +87,13 @@ class Layout {
 
     private function verifyLayoutOptions($layoutOptions)
     {
-        if(! is_array($layoutOptions)) {
+        if (! is_array($layoutOptions)) {
             throw new \InvalidArgumentException('The layoutOptions must be an array.');
         }
-        if(! isset($layoutOptions['default'])) {
+        if (! isset($layoutOptions['default'])) {
             throw new \InvalidArgumentException('The layoutOptions must have a default layout view.');
         }
-        if(! isset($layoutOptions['ajax'])) {
+        if (! isset($layoutOptions['ajax'])) {
             throw new \InvalidArgumentException('The layoutOptions must have a ajax layout view.');
         }
 

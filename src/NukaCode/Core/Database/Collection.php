@@ -1,4 +1,6 @@
-<?php namespace NukaCode\Core\Database;
+<?php
+
+namespace NukaCode\Core\Database;
 
 use Illuminate\Database\Eloquent\Collection as BaseCollection;
 
@@ -11,7 +13,8 @@ use Illuminate\Database\Eloquent\Collection as BaseCollection;
  *
  * @package NukaCode\Core\Database
  */
-class Collection extends BaseCollection {
+class Collection extends BaseCollection
+{
 
     /**
      * Dynamically retrieve attributes on the model.
@@ -23,6 +26,7 @@ class Collection extends BaseCollection {
     public function __get($key)
     {
         $newCollection = new self();
+
         foreach ($this->items as $item) {
             if ($item instanceof self) { // This item is a collection.
                 foreach ($item as $subItem) {
@@ -149,18 +153,18 @@ class Collection extends BaseCollection {
 
         // If an operator is found then add operators.
         if (array_intersect($whereStatement, $operators)) {
+            list($operator, $firstOrLast, $inverse) = $this->determineMagicWhereDetails($whereStatement);
 
-            list($finialOperator, $position, $not) = $this->determineMagicWhereDetails($whereStatement);
+            $column = $args[0];
+            $value  = (isset($args[1]) ? $args[1] : null);
 
             return $this->getWhere(
-                $args[0],                               // Column
-                $finialOperator,                        // Operator
-                (isset($args[1]) ? $args[1] : null),    // value
-                $not,                                   // Inverse
-                $position                                // First or last
+                $column,
+                $operator,
+                $value,
+                $inverse,
+                $firstOrLast
             );
-
-
         }
     }
 
@@ -243,9 +247,6 @@ class Collection extends BaseCollection {
     {
         $output = clone $this;
         foreach ($output->items as $key => $item) {
-
-            $forget = false;
-
             if (strstr($column, '->')) {
                 $forget = $this->handleMultiTap($item, $column, $value, $operator, $inverse);
             } else {
@@ -305,7 +306,6 @@ class Collection extends BaseCollection {
         $columnToSearch = array_pop($taps);
 
         foreach ($taps as $tapKey => $tap) {
-
             // Keep tapping till we hit the last object.
             $objectToSearch = $objectToSearch->$tap;
         }

@@ -1,11 +1,15 @@
-<?php namespace NukaCode\Core\Controllers;
+<?php
+
+namespace NukaCode\Core\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
+use Laracasts\Utilities\JavaScript\JavaScriptFacade;
 use NukaCode\Core\Support\Facades\View\ViewBuilder;
 
-abstract class BaseController extends Controller {
+abstract class BaseController extends Controller
+{
 
     protected $layout;
 
@@ -14,7 +18,7 @@ abstract class BaseController extends Controller {
         'ajax'    => 'layouts.ajax'
     ];
 
-    protected $resetBlade    = true;
+    protected $resetBlade = false;
 
     public function __construct()
     {
@@ -48,6 +52,23 @@ abstract class BaseController extends Controller {
             }
         } else {
             View::share($key, $value);
+        }
+    }
+
+    /**
+     * Pass data directly to Javascript.
+     *
+     * @link https://github.com/laracasts/PHP-Vars-To-Js-Transformer
+     *
+     * @param mixed $key
+     * @param mixed $value
+     */
+    protected function setJavascriptData($key, $value = null)
+    {
+        if (is_array($key)) {
+            JavaScriptFacade::put($key);
+        } else {
+            JavaScriptFacade::put([$key => $value]);
         }
     }
 
@@ -123,6 +144,8 @@ abstract class BaseController extends Controller {
      * it should be.
      *
      * @param array $parameters
+     *
+     * @return mixed|void
      */
     public function missingMethod($parameters = [])
     {
@@ -145,11 +168,13 @@ abstract class BaseController extends Controller {
         return $this->missingMethod($parameters);
     }
 
+    /**
+     * Resets blade syntax to Laravel 4 style.
+     */
     private function resetBladeSyntax()
     {
         Blade::setEchoFormat('%s');
         Blade::setContentTags('{{', '}}');
         Blade::setEscapedContentTags('{{{', '}}}');
     }
-
-} 
+}

@@ -1,14 +1,18 @@
-<?php namespace NukaCode\Core\Database;
+<?php
+
+namespace NukaCode\Core\Database;
 
 use Illuminate\Database\Seeder as BaseSeeder;
 use NukaCode\Core\Models\Seed;
 
-class Seeder extends BaseSeeder {
+class Seeder extends BaseSeeder
+{
 
     /**
      * Seed the given connection from the given path.
      *
-     * @param  string  $class
+     * @param  string $class
+     *
      * @return void
      */
     public function call($class)
@@ -19,5 +23,4 @@ class Seeder extends BaseSeeder {
 
         parent::call($class);
     }
-
 }

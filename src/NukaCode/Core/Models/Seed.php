@@ -1,8 +1,11 @@
-<?php namespace NukaCode\Core\Models;
+<?php
 
-class Seed extends \BaseModel {
+namespace NukaCode\Core\Models;
 
-	protected $table = 'seeds';
+class Seed extends \BaseModel
+{
 
-	protected $fillable = ['name'];
+    protected $table = 'seeds';
+
+    protected $fillable = ['name'];
 }

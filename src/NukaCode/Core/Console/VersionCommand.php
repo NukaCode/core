@@ -1,9 +1,12 @@
-<?php namespace NukaCode\Core\Console;
+<?php
+
+namespace NukaCode\Core\Console;
 
 use Illuminate\Console\Command;
 use NukaCode\Core\Filesystem\Config\Package;
 
-class VersionCommand extends Command {
+class VersionCommand extends Command
+{
 
     /**
      * The console command name.
@@ -17,7 +20,7 @@ class VersionCommand extends Command {
      *
      * @var string
      */
-    protected $description = 'Update your app\'s version information for Nuka Code packages.';
+    protected $description = 'Update your app\'s version information for NukaCode packages.';
 
     private $package;
 
@@ -37,4 +40,4 @@ class VersionCommand extends Command {
     {
         $this->package->updateEntries();
     }
-} 
+}

@@ -2,13 +2,16 @@
 
 use Illuminate\Support\Facades\Facade;
 
-class ViewBuilder extends Facade {
+class ViewBuilder extends Facade
+{
 
     /**
      * Get the registered name of the component.
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return 'viewcore'; }
-
+    protected static function getFacadeAccessor()
+    {
+        return 'viewcore';
+    }
 }

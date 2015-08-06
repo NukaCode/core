@@ -1,6 +1,9 @@
-<?php namespace NukaCode\Core\Exceptions\View;
+<?php
 
-class ViewNotImplemented extends \Exception {
+namespace NukaCode\Core\Exceptions\View;
+
+class ViewNotImplemented extends \Exception
+{
 
     public function __construct($location)
     {

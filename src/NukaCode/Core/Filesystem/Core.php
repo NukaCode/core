@@ -1,6 +1,9 @@
-<?php namespace NukaCode\Core\Filesystem;
+<?php
 
-abstract class Core {
+namespace NukaCode\Core\Filesystem;
+
+abstract class Core
+{
 
     protected $validator;
 

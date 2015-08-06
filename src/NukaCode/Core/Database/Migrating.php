@@ -1,4 +1,6 @@
-<?php namespace NukaCode\Core\Database;
+<?php
+
+namespace NukaCode\Core\Database;
 
 use Illuminate\Console\Application;
 use Illuminate\Filesystem\Filesystem;
@@ -6,7 +8,8 @@ use NukaCode\Core\Models\Migration;
 use NukaCode\Core\Models\Seed;
 use Symfony\Component\Console\Output\StreamOutput;
 
-class Migrating {
+class Migrating
+{
 
     protected $file;
 
@@ -157,7 +160,6 @@ class Migrating {
 
                 $this->seedTable($seeder, $seederKey);
 
-
                 echo(ucwords($package) . ' ' . $seeder . ' seeded!' . "\n");
             }
         }
@@ -230,4 +232,4 @@ class Migrating {
 
         return [$seeder, $seederKey];
     }
-} 
+}

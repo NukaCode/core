@@ -1,7 +1,9 @@
-<?php namespace NukaCode\Core\Exceptions\SSH;
+<?php
 
+namespace NukaCode\Core\Exceptions\SSH;
 
-class NoCommandsProvided extends \Exception {
+class NoCommandsProvided extends \Exception
+{
 
     public function __construct()
     {

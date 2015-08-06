@@ -1,6 +1,9 @@
-<?php namespace NukaCode\Core;
+<?php
 
-class CoreServiceProvider extends BaseServiceProvider {
+namespace NukaCode\Core;
+
+class CoreServiceProvider extends BaseServiceProvider
+{
 
     /**
      * Indicates if loading of the provider is deferred.
@@ -9,11 +12,19 @@ class CoreServiceProvider extends BaseServiceProvider {
      */
     protected $defer = false;
 
+    protected $namespace = 'nukacode/core';
+
     const NAME = 'core';
 
     const VERSION = '2.1.0';
 
     const DOCS = 'nukacode-core';
+
+    public function boot()
+    {
+        $this->loadConfigsFrom(__DIR__ . '/../../config', $this->namespace);
+        $this->loadAliasesFrom(config_path($this->namespace), $this->namespace);
+    }
 
     /**
      * Register the service provider.
@@ -23,8 +34,7 @@ class CoreServiceProvider extends BaseServiceProvider {
     public function register()
     {
         $this->shareWithApp();
-        $this->setPublishGroups();
-        $this->registerAliases();
+        $this->publishDatabaseFiles();
         $this->registerArtisanCommands();
     }
 
@@ -45,35 +55,11 @@ class CoreServiceProvider extends BaseServiceProvider {
      *
      * @return void
      */
-    protected function setPublishGroups()
+    protected function publishDatabaseFiles()
     {
-        $this->publishes(
-            [
-                __DIR__ . '/../../config/config.php' => config_path('nukacode-core.php')
-            ], 'config'
-        );
-
         $databaseFiles = $this->getDatabaseFiles('vendor/nukacode/core/src/database');
 
         $this->publishes($databaseFiles, 'database');
-    }
-
-    /**
-     * Register aliases
-     *
-     * @return void
-     */
-    protected function registerAliases()
-    {
-        $aliases = [
-            // Facades
-            'ViewBuilder' => 'NukaCode\Core\Support\Facades\View\ViewBuilder',
-            'Ajax'        => 'NukaCode\Core\Support\Facades\Requests\Ajax',
-        ];
-
-        $exclude = $this->app['config']->get('nukacode-core.excludeAliases');
-
-        $this->loadAliases($aliases, $exclude);
     }
 
     public function registerArtisanCommands()
@@ -82,7 +68,6 @@ class CoreServiceProvider extends BaseServiceProvider {
             [
                 'NukaCode\Core\Console\AppNameCommand' => 'command.app.name',
                 'NukaCode\Core\Console\VersionCommand',
-                'NukaCode\Core\Console\BowerCommand',
             ]
         );
     }

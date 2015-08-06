@@ -1,6 +1,9 @@
-<?php namespace NukaCode\Core\View\Helpers\Crud;
+<?php
 
-class MultiView {
+namespace NukaCode\Core\View\Helpers\Crud;
+
+class MultiView
+{
 
     public $crud;
 
@@ -10,8 +13,8 @@ class MultiView {
 
     public function __construct($crud)
     {
-        $this->crud = $crud;
-        $this->rootColumn = new \stdClass();
+        $this->crud        = $crud;
+        $this->rootColumn  = new \stdClass();
         $this->multiColumn = new \stdClass();
     }
 
@@ -53,8 +56,8 @@ class MultiView {
      */
     private function setColumnProperties($column, $title, $name, $field)
     {
-        $this->$column->title    = $title;
-        $this->$column->name     = $name;
-        $this->$column->field    = $field;
+        $this->$column->title = $title;
+        $this->$column->name  = $name;
+        $this->$column->field = $field;
     }
 }

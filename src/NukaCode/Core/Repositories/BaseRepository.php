@@ -1,6 +1,9 @@
-<?php namespace NukaCode\Core\Repositories;
+<?php
 
-abstract class BaseRepository {
+namespace NukaCode\Core\Repositories;
+
+abstract class BaseRepository
+{
 
     public $model;
 
@@ -34,15 +37,13 @@ abstract class BaseRepository {
      */
     public function __call($name, $arguments)
     {
-        if (method_exists($this, $name))
-        {
+        if (method_exists($this, $name)) {
             return call_user_func_array([$this, $name], $arguments);
         }
-        if (method_exists($this->model, $name))
-        {
+        if (method_exists($this->model, $name)) {
             return call_user_func_array([$this->model, $name], $arguments);
         }
 
-        throw new \Exception('Method '. $name .' not found.');
+        throw new \Exception('Method ' . $name . ' not found.');
     }
-} 
+}

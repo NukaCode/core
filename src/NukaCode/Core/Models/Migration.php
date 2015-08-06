@@ -1,9 +1,9 @@
 <?php namespace NukaCode\Core\Models;
 
-class Migration extends \BaseModel {
+class Migration extends \BaseModel
+{
 
-	protected $table = 'migrations';
+    protected $table = 'migrations';
 
-	protected $fillable = [];
-
+    protected $fillable = [];
 }

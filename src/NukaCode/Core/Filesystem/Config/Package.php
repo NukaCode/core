@@ -1,10 +1,13 @@
-<?php namespace NukaCode\Core\Filesystem\Config;
+<?php
+
+namespace NukaCode\Core\Filesystem\Config;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Validation\Factory;
 use NukaCode\Core\Filesystem\Core;
 
-class Package extends Core {
+class Package extends Core
+{
 
     protected $file;
 
@@ -12,13 +15,13 @@ class Package extends Core {
 
     protected $config;
 
-    protected $rules    = [
+    protected $rules = [
         'NAME'    => 'required',
         'VERSION' => 'required',
         'DOCS'    => 'required',
     ];
 
-    private   $packages = [
+    private $packages = [
         'nukacode' => []
     ];
 

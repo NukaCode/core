@@ -1,47 +1,31 @@
-<?php namespace NukaCode\Core;
+<?php
 
+namespace NukaCode\Core;
+
+use Esensi\Loaders\Providers\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
-use Illuminate\Support\ServiceProvider;
 
-abstract class BaseServiceProvider extends ServiceProvider {
+abstract class BaseServiceProvider extends ServiceProvider
+{
 
-    /**
-     * Bootstrap the application events.
-     *
-     * @return void
-     */
-    public function boot()
+    protected function getDatabaseFiles($path)
     {
-    }
+        $dir = base_path($path);
 
-    protected function loadAliases($aliases, $exclude)
-    {
-        $loader = AliasLoader::getInstance();
+        $migrations = \File::files($dir . '/migrations');
 
-        foreach ($aliases as $alias => $class) {
-            if (! in_array($alias, (array)$exclude)) {
-                $loader->alias($alias, $class);
-            }
+        if (\File::exists($dir . '/seeds/')) {
+            $seeds         = \File::files($dir . '/seeds/');
+            $databaseFiles = [$dir . '/seeds/' => base_path('database/seeds/')];
+            $this->getSeedDetails($seeds);
+        } else {
+            $databaseFiles = [];
         }
+
+        $databaseFiles = $this->getMigrationDetails($migrations, $databaseFiles);
+
+        return $databaseFiles;
     }
-
-	protected function getDatabaseFiles($path) {
-		$dir = base_path($path);
-
-		$migrations = \File::files($dir . '/migrations');
-
-		if (\File::exists($dir . '/seeds/')) {
-			$seeds         = \File::files($dir . '/seeds/');
-			$databaseFiles = [$dir . '/seeds/' => base_path('database/seeds/')];
-			$this->getSeedDetails($seeds);
-		} else {
-			$databaseFiles = [];
-		}
-
-		$databaseFiles = $this->getMigrationDetails($migrations, $databaseFiles);
-
-		return $databaseFiles;
-	}
 
     /**
      * @param $migrations
@@ -135,5 +119,4 @@ abstract class BaseServiceProvider extends ServiceProvider {
 
         return false;
     }
-
 }

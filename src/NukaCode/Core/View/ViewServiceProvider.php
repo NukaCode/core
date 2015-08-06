@@ -1,8 +1,11 @@
-<?php namespace NukaCode\Core\View;
+<?php
+
+namespace NukaCode\Core\View;
 
 use Illuminate\Support\ServiceProvider;
 
-class ViewServiceProvider extends ServiceProvider {
+class ViewServiceProvider extends ServiceProvider
+{
 
     /**
      * Register the HTML builder instance.
@@ -11,10 +14,8 @@ class ViewServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        $this->app->bindShared('viewcore', function($app)
-        {
+        $this->app->bindShared('viewcore', function ($app) {
             return $app->make('NukaCode\Core\View\ViewBuilder');
         });
     }
-
 }

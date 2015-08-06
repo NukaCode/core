@@ -1,8 +1,11 @@
-<?php namespace NukaCode\Core\Presenters;
+<?php
+
+namespace NukaCode\Core\Presenters;
 
 use Laracasts\Presenter\Presenter;
 
-abstract class BasePresenter extends Presenter {
+abstract class BasePresenter extends Presenter
+{
 
     /**
      * Make the last active date easier to read
@@ -34,24 +37,22 @@ abstract class BasePresenter extends Presenter {
         return $this->entity->{$activeField} == 1 ? 'Active' : null;
     }
 
-	/**
-	 * @param string $name
-	 * @param array  $arguments
-	 *
-	 * @throws \Exception
-	 * @return mixed
-	 */
+    /**
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @throws \Exception
+     * @return mixed
+     */
     public function __call($name, $arguments)
     {
-        if (method_exists($this, $name))
-        {
+        if (method_exists($this, $name)) {
             return call_user_func_array([$this, $name], $arguments);
         }
-        if (method_exists($this->entity, $name))
-        {
+        if (method_exists($this->entity, $name)) {
             return call_user_func_array([$this->entity, $name], $arguments);
         }
 
-        throw new \Exception('Method '. $name .' not found.');
+        throw new \Exception('Method ' . $name . ' not found.');
     }
 }

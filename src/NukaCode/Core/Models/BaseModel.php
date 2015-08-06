@@ -1,4 +1,6 @@
-<?php namespace NukaCode\Core\Models;
+<?php
+
+namespace NukaCode\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
@@ -8,7 +10,8 @@ use Illuminate\Support\Str;
 /**
  * @property string $uniqueId
  */
-abstract class BaseModel extends Model {
+abstract class BaseModel extends Model
+{
 
     use PresentableTrait;
 
@@ -151,22 +154,6 @@ abstract class BaseModel extends Model {
     /********************************************************************
      * Getters and Setters
      *******************************************************************/
-    /**
-     * Allow id to be called regardless of the primary key.\
-     *
-     * @param int|null $value The original value of id.
-     *
-     * @return int|string
-     */
-    public function getIdAttribute($value)
-    {
-
-        if (stripos($this->primaryKey, 'unique') !== false) {
-            return $this->{$this->primaryKey};
-        }
-
-        return $value;
-    }
 
     /********************************************************************
      * Extra Methods

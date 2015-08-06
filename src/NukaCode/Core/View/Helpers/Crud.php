@@ -1,9 +1,12 @@
-<?php namespace NukaCode\Core\View\Helpers;
+<?php
+
+namespace NukaCode\Core\View\Helpers;
 
 use ViewBuilder;
 use NukaCode\Core\Exceptions\View\ViewNotImplemented;
 
-class Crud {
+class Crud
+{
 
     /**
      * The title of the page
@@ -84,11 +87,11 @@ class Crud {
      */
     public function make()
     {
-		$helperView = 'helpers.crud';
+        $helperView = 'helpers.crud';
 
-		if (! ViewBuilder::exists($helperView)) {
-			throw new ViewNotImplemented($helperView);
-		}
+        if (! ViewBuilder::exists($helperView)) {
+            throw new ViewNotImplemented($helperView);
+        }
 
         ViewBuilder::setViewPath($helperView)->addData('settings', $this);
     }

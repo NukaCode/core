@@ -1,69 +1,72 @@
-<?php namespace NukaCode\Core\View;
+<?php
+
+namespace NukaCode\Core\View;
 
 use Illuminate\View\Factory;
 
-class ViewBuilder {
+class ViewBuilder
+{
 
-	public    $layout;
+    public $layout;
 
-	public    $view;
+    public $view;
 
-	protected $viewLayout;
+    protected $viewLayout;
 
-	protected $viewPath;
+    protected $viewPath;
 
-	public function __construct(Layout $viewLayout, Path $viewPath, Factory $view)
-	{
-		$this->viewLayout = $viewLayout;
-		$this->viewPath   = $viewPath;
-		$this->view       = $view;
-	}
+    public function __construct(Layout $viewLayout, Path $viewPath, Factory $view)
+    {
+        $this->viewLayout = $viewLayout;
+        $this->viewPath   = $viewPath;
+        $this->view       = $view;
+    }
 
-	public function setUp($layoutOptions)
-	{
-		$this->layout         = $this->viewLayout->setUp($layoutOptions);
-		$this->layout->layout = $this->viewPath->setUp($this->layout->layout);
-	}
+    public function setUp($layoutOptions)
+    {
+        $this->layout         = $this->viewLayout->setUp($layoutOptions);
+        $this->layout->layout = $this->viewPath->setUp($this->layout->layout);
+    }
 
-	public function exists($view)
-	{
-		return $this->view->exists($view);
-	}
+    public function exists($view)
+    {
+        return $this->view->exists($view);
+    }
 
-	public function getLayout()
-	{
-		return $this->layout->layout;
-	}
+    public function getLayout()
+    {
+        return $this->layout->layout;
+    }
 
-	public function missingMethod($parameters)
-	{
-		$this->viewPath->missingMethod($this->layout->layout, $parameters);
+    public function missingMethod($parameters)
+    {
+        $this->viewPath->missingMethod($this->layout->layout, $parameters);
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function setViewLayout($view)
-	{
-		$this->layout         = $this->viewLayout->change($view);
-		$this->layout->layout = $this->viewPath->setUp($this->layout->layout);
-	}
+    public function setViewLayout($view)
+    {
+        $this->layout         = $this->viewLayout->change($view);
+        $this->layout->layout = $this->viewPath->setUp($this->layout->layout);
+    }
 
-	public function setViewPath($view)
-	{
-		$this->layout->layout = $this->viewPath->setUp($this->layout->layout, $view);
+    public function setViewPath($view)
+    {
+        $this->layout->layout = $this->viewPath->setUp($this->layout->layout, $view);
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function addData($key, $value)
-	{
-		$this->view->share($key, $value);
+    public function addData($key, $value)
+    {
+        $this->view->share($key, $value);
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getPath()
-	{
-		return $this->viewPath->path;
-	}
+    public function getPath()
+    {
+        return $this->viewPath->path;
+    }
 }

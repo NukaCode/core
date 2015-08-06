@@ -1,6 +1,9 @@
-<?php namespace NukaCode\Core\Ajax;
+<?php
 
-class Ajax {
+namespace NukaCode\Core\Ajax;
+
+class Ajax
+{
 
     protected static $ajaxInstance;
 
@@ -12,16 +15,16 @@ class Ajax {
     /**
      * A list of the errors in this ajax request
      */
-    public $errors = array();
+    public $errors = [];
 
     /**
      * A list of the data in this ajax request
      */
-    public $data = array();
+    public $data = [];
 
     public function __construct()
     {
-        if (!isset(static::$ajaxInstance)) {
+        if (! isset(static::$ajaxInstance)) {
             static::$ajaxInstance = $this;
         }
     }
