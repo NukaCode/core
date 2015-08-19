@@ -7,6 +7,12 @@ php:
 
 notifications:
   slack: nukacode:HyFrc2QLi5PC5fPxadm07O5v
+  webhooks:
+    urls:
+      - http://stygian-1029.nukacode.ultrahook.com
+    on_success: always
+    on_failure: always
+    on_start: always
 
 matrix:
   allow_failures:
