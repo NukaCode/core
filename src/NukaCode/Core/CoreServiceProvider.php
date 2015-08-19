@@ -67,7 +67,6 @@ class CoreServiceProvider extends BaseServiceProvider
         $this->commands(
             [
                 'NukaCode\Core\Console\AppNameCommand' => 'command.app.name',
-                'NukaCode\Core\Console\VersionCommand',
             ]
         );
     }
