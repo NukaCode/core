@@ -78,25 +78,29 @@ class Path
         $route      = $this->route->currentRouteAction();
         $routeParts = explode('@', $route);
 
-        $method = $this->getMethodName($routeParts[0]);
-        $action = $this->getActionName($routeParts[1]);
-        $prefix = $this->getPrefixName($method);
-
-        $view = $method . '.' . $action;
-
-        if (! is_null($prefix) && $prefix != '') {
-            if ($this->view->exists($prefix . '.' . $view)) {
-                $view = $prefix . '.' . $view;
-            } else {
-                $prefix = substr($prefix, 0, -1);
-
+        if (count(array_filter($routeParts)) > 0) {
+            $method = $this->getMethodName($routeParts[0]);
+            $action = $this->getActionName($routeParts[1]);
+            $prefix = $this->getPrefixName($method);
+    
+            $view = $method . '.' . $action;
+    
+            if (! is_null($prefix) && $prefix != '') {
                 if ($this->view->exists($prefix . '.' . $view)) {
                     $view = $prefix . '.' . $view;
+                } else {
+                    $prefix = substr($prefix, 0, -1);
+    
+                    if ($this->view->exists($prefix . '.' . $view)) {
+                        $view = $prefix . '.' . $view;
+                    }
                 }
             }
+    
+            return $view;
         }
-
-        return $view;
+        
+        return null;
     }
 
     /**
