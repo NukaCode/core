@@ -91,7 +91,7 @@ abstract class BaseController extends Controller
      */
     public function setViewLayout($view)
     {
-        ViewBuilder::setViewLayout($view);
+        ViewBuilder::setViewLayout($view, $this->domainDesign);
 
         $this->layout = ViewBuilder::getLayout();
     }
