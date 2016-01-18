@@ -20,6 +20,8 @@ abstract class BaseController extends Controller
 
     protected $resetBlade = false;
 
+    protected $domainDesign = false;
+
     public function __construct()
     {
         if ($this->resetBlade === true) {
@@ -29,7 +31,7 @@ abstract class BaseController extends Controller
 
         if (! app()->runningInConsole()) {
             // Set up the default view resolution
-            ViewBuilder::setUp($this->layoutOptions);
+            ViewBuilder::setUp($this->layoutOptions, $this->domainDesign);
             $this->setupLayout();
         }
     }
