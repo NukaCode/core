@@ -22,10 +22,10 @@ class ViewBuilder
         $this->view       = $view;
     }
 
-    public function setUp($layoutOptions)
+    public function setUp($layoutOptions, $domainDesign)
     {
         $this->layout         = $this->viewLayout->setUp($layoutOptions);
-        $this->layout->layout = $this->viewPath->setUp($this->layout->layout);
+        $this->layout->layout = $this->viewPath->setUp($this->layout->layout, null, $domainDesign);
     }
 
     public function exists($view)
@@ -45,10 +45,10 @@ class ViewBuilder
         return $this;
     }
 
-    public function setViewLayout($view)
+    public function setViewLayout($view, $domainDesign)
     {
         $this->layout         = $this->viewLayout->change($view);
-        $this->layout->layout = $this->viewPath->setUp($this->layout->layout);
+        $this->layout->layout = $this->viewPath->setUp($this->layout->layout, null, $domainDesign);
     }
 
     public function setViewPath($view)
