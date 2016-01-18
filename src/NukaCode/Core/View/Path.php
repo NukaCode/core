@@ -24,19 +24,19 @@ class Path
         $this->view  = $view;
     }
 
-    public function setUp(View $layout, $view = null)
+    public function setUp(View $layout, $view = null, $domainDesign = false)
     {
         $this->layout = $layout;
-        $this->setPath($view);
+        $this->setPath($view, $domainDesign);
         $this->setContent();
 
         return $this->layout;
     }
 
-    protected function setPath($view)
+    protected function setPath($view, $domainDesign)
     {
         if ($view == null) {
-            $view = $this->findView();
+            $view = $this->findView($domainDesign);
         }
 
         $this->path = $view;
@@ -71,7 +71,7 @@ class Path
     /**
      * @return string
      */
-    protected function findView()
+    protected function findView($domainDesign)
     {
         // Get the overall route name (SomeController@someMethod)
         // Break it up into it's component parts
@@ -83,16 +83,19 @@ class Path
             $action = $this->getActionName($routeParts[1]);
             $prefix = $this->getPrefixName($method);
     
-            $view = $method . '.' . $action;
+            if ($domainDesign && ! is_null($prefix)) {
+                $view = $method . '.' . $action;
+            } else {
     
-            if (! is_null($prefix) && $prefix != '') {
-                if ($this->view->exists($prefix . '.' . $view)) {
-                    $view = $prefix . '.' . $view;
-                } else {
-                    $prefix = substr($prefix, 0, -1);
-    
+                if (! is_null($prefix) && $prefix != '') {
                     if ($this->view->exists($prefix . '.' . $view)) {
                         $view = $prefix . '.' . $view;
+                    } else {
+                        $prefix = substr($prefix, 0, -1);
+        
+                        if ($this->view->exists($prefix . '.' . $view)) {
+                            $view = $prefix . '.' . $view;
+                        }
                     }
                 }
             }
