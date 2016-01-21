@@ -84,9 +84,9 @@ class Path
             $prefix = $this->getPrefixName($method);
     
             if ($domainDesign && ! is_null($prefix)) {
-                $view = $prefix . '.' . $action;
+                $view = $prefix . '.' . $method . '.' . $action;
             } else {
-                $view = $method . '.' . $method . '.' . $action;
+                $view = $method . '.' . $action;
     
                 if (! is_null($prefix) && $prefix != '') {
                     if ($this->view->exists($prefix . '.' . $view)) {
