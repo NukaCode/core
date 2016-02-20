@@ -7,6 +7,15 @@ use Illuminate\Support\ServiceProvider;
 
 abstract class BaseServiceProvider extends ServiceProvider
 {
+    protected function loadAliases($aliases, $exclude)
+    {
+        $loader = AliasLoader::getInstance();
+        foreach ($aliases as $alias => $class) {
+            if (! in_array($alias, (array)$exclude)) {
+                $loader->alias($alias, $class);
+            }
+        }
+    }
 
     protected function getDatabaseFiles($path)
     {
