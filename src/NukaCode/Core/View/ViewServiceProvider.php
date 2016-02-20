@@ -14,7 +14,7 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bindShared('viewcore', function ($app) {
+        $this->app->singleton('viewcore', function ($app) {
             return $app->make('NukaCode\Core\View\ViewBuilder');
         });
     }
