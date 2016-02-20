@@ -2,8 +2,8 @@
 
 namespace NukaCode\Core;
 
-use Esensi\Loaders\Providers\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\ServiceProvider;
 
 abstract class BaseServiceProvider extends ServiceProvider
 {
