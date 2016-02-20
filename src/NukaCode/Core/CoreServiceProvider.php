@@ -1,9 +1,6 @@
-<?php
+<?php namespace NukaCode\Core;
 
-namespace NukaCode\Core;
-
-class CoreServiceProvider extends BaseServiceProvider
-{
+class CoreServiceProvider extends BaseServiceProvider {
 
     /**
      * Indicates if loading of the provider is deferred.
@@ -12,19 +9,11 @@ class CoreServiceProvider extends BaseServiceProvider
      */
     protected $defer = false;
 
-    protected $namespace = 'nukacode/core';
-
     const NAME = 'core';
 
-    const VERSION = '2.1.1';
+    const VERSION = '2.1.8';
 
     const DOCS = 'nukacode-core';
-
-    public function boot()
-    {
-        $this->loadConfigsFrom(__DIR__ . '/../../config', $this->namespace);
-        $this->loadAliasesFrom(config_path($this->namespace), $this->namespace);
-    }
 
     /**
      * Register the service provider.
@@ -34,7 +23,8 @@ class CoreServiceProvider extends BaseServiceProvider
     public function register()
     {
         $this->shareWithApp();
-        $this->publishDatabaseFiles();
+        $this->setPublishGroups();
+        $this->registerAliases();
         $this->registerArtisanCommands();
     }
 
@@ -55,11 +45,35 @@ class CoreServiceProvider extends BaseServiceProvider
      *
      * @return void
      */
-    protected function publishDatabaseFiles()
+    protected function setPublishGroups()
     {
+        $this->publishes(
+            [
+                __DIR__ . '/../../config/config.php' => config_path('nukacode-core.php')
+            ], 'config'
+        );
+
         $databaseFiles = $this->getDatabaseFiles('vendor/nukacode/core/src/database');
 
         $this->publishes($databaseFiles, 'database');
+    }
+
+    /**
+     * Register aliases
+     *
+     * @return void
+     */
+    protected function registerAliases()
+    {
+        $aliases = [
+            // Facades
+            'ViewBuilder' => 'NukaCode\Core\Support\Facades\View\ViewBuilder',
+            'Ajax'        => 'NukaCode\Core\Support\Facades\Requests\Ajax',
+        ];
+
+        $exclude = $this->app['config']->get('nukacode-core.excludeAliases');
+
+        $this->loadAliases($aliases, $exclude);
     }
 
     public function registerArtisanCommands()
