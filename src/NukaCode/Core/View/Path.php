@@ -55,7 +55,7 @@ class Path
 
     public function missingMethod($layout, $parameters)
     {
-        $view = $this->findView();
+        $view = $this->findView(false);
 
         if (count($parameters) == 1) {
             $view = str_ireplace('missingMethod', $parameters[0], $view);
