@@ -29,7 +29,7 @@ abstract class BaseController extends Controller
             $this->resetBladeSyntax();
         }
 
-        if (! app()->runningInConsole()) {
+        if (! app()->runningInConsole() || app()->environment() === 'testing') {
             // Set up the default view resolution
             ViewBuilder::setUp($this->layoutOptions, $this->domainDesign);
             $this->setupLayout();
