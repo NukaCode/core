@@ -92,10 +92,15 @@ class Path
                     if ($this->view->exists($prefix . '.' . $view)) {
                         $view = $prefix . '.' . $view;
                     } else {
-                        $prefix = substr($prefix, 0, -1);
-        
-                        if ($this->view->exists($prefix . '.' . $view)) {
-                            $view = $prefix . '.' . $view;
+                        $prefixParts = array_filter(explode('.', $prefix));
+
+                        while (count($prefixParts) > 0) {
+                            array_pop($prefixParts);
+                            $prefix = implode('.', $prefixParts);
+
+                            if ($this->view->exists($prefix . '.' . $view)) {
+                                $view = $prefix . '.' . $view;
+                            }
                         }
                     }
                 }
