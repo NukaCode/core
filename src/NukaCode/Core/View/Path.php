@@ -5,7 +5,7 @@ namespace NukaCode\Core\View;
 use Illuminate\Routing\Router;
 use Illuminate\View\Factory;
 use Illuminate\View\View;
-use ReflectionClass;
+use NukaCode\Core\View\Models\ViewModel;
 
 class Path
 {
