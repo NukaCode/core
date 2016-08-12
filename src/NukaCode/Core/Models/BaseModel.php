@@ -4,7 +4,7 @@ namespace NukaCode\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
-use NukaCode\Core\Database\Collection;
+use NukaCode\Database\Collection;
 use Illuminate\Support\Str;
 
 /**
@@ -12,7 +12,6 @@ use Illuminate\Support\Str;
  */
 abstract class BaseModel extends Model
 {
-
     use PresentableTrait;
 
     /**
@@ -30,6 +29,14 @@ abstract class BaseModel extends Model
      * @var boolean
      */
     protected $throwValidationExceptions = false;
+
+    /**
+     * Whether the model should return NukaCode\Database\Collection or
+     * Illuminate\Database\Eloquent\Collection.
+     *
+     * @var boolean
+     */
+    protected $nukaCollections = true;
 
     /**
      * Assign a presenter to use
@@ -64,11 +71,15 @@ abstract class BaseModel extends Model
      *
      * @param array $models An array of models to turn into a collection.
      *
-     * @return Utility_Collection[]
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function newCollection(array $models = [])
     {
-        return new Collection($models);
+        if ($this->nukaCollections) {
+            return new Collection($models);
+        }
+
+        return parent::newCollection($models);
     }
 
     /********************************************************************

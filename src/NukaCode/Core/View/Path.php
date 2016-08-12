@@ -9,6 +9,7 @@ use ReflectionClass;
 
 class Path
 {
+    public $viewModel;
 
     public $path;
 
@@ -24,19 +25,19 @@ class Path
         $this->view  = $view;
     }
 
-    public function setUp(View $layout, $view = null, $domainDesign = false)
+    public function setUp(View $layout, $view = null)
     {
         $this->layout = $layout;
-        $this->setPath($view, $domainDesign);
+        $this->setPath($view);
         $this->setContent();
 
         return $this->layout;
     }
 
-    protected function setPath($view, $domainDesign)
+    protected function setPath($view)
     {
         if ($view == null) {
-            $view = $this->findView($domainDesign);
+            $view = $this->findView();
         }
 
         $this->path = $view;
@@ -55,7 +56,7 @@ class Path
 
     public function missingMethod($layout, $parameters)
     {
-        $view = $this->findView(false);
+        $view = $this->findView();
 
         if (count($parameters) == 1) {
             $view = str_ireplace('missingMethod', $parameters[0], $view);
@@ -71,7 +72,7 @@ class Path
     /**
      * @return string
      */
-    protected function findView($domainDesign)
+    protected function findView()
     {
         // Get the overall route name (SomeController@someMethod)
         // Break it up into it's component parts
@@ -79,63 +80,12 @@ class Path
         $routeParts = explode('@', $route);
 
         if (count(array_filter($routeParts)) > 0) {
-            $method = $this->getMethodName($routeParts[0]);
-            $action = $this->getActionName($routeParts[1]);
-            $prefix = $this->getPrefixName($method);
-    
-            if ($domainDesign && ! is_null($prefix)) {
-                $view = $prefix . '.' . $method . '.' . $action;
-            } else {
-                $view = $method . '.' . $action;
-    
-                if (! is_null($prefix) && $prefix != '') {
-                    if ($this->view->exists($prefix . '.' . $view)) {
-                        $view = $prefix . '.' . $view;
-                    } else {
-                        $prefixParts = array_filter(explode('.', $prefix));
+            $this->viewModel = new ViewModel($routeParts);
 
-                        while (count($prefixParts) > 0) {
-                            array_pop($prefixParts);
-                            $prefix = implode('.', $prefixParts);
-
-                            if ($this->view->exists($prefix . '.' . $view)) {
-                                $view = $prefix . '.' . $view;
-                            }
-                        }
-                    }
-                }
-            }
-    
-            return $view;
+            return $this->viewModel->getView();
         }
-        
+
         return null;
-    }
-
-    /**
-     * @param string $class
-     *
-     * @return string
-     */
-    protected function getMethodName($class)
-    {
-        $class  = (new ReflectionClass($class))->getShortName();
-        $method = strtolower(str_replace('Controller', '', $class));
-
-        return $method;
-    }
-
-    /**
-     * @param string $action
-     *
-     * @return string
-     */
-    protected function getActionName($action)
-    {
-        $action = preg_replace(['/^get/', '/^post/', '/^put/', '/^patch/', '/^delete/'], '', $action);
-        $action = strtolower($action);
-
-        return $action;
     }
 
     /**

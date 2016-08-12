@@ -1,12 +1,11 @@
 <?php
 
-namespace NukaCode\Core\Controllers;
+namespace NukaCode\Core\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\View;
 use Laracasts\Utilities\JavaScript\JavaScriptFacade;
-use NukaCode\Core\Support\Facades\View\ViewBuilder;
+use NukaCode\Core\View\ViewBuilder;
 
 abstract class BaseController extends Controller
 {
@@ -20,8 +19,6 @@ abstract class BaseController extends Controller
 
     protected $resetBlade = false;
 
-    protected $domainDesign = false;
-
     public function __construct()
     {
         if ($this->resetBlade === true) {
@@ -31,7 +28,7 @@ abstract class BaseController extends Controller
 
         if (! app()->runningInConsole() || app()->environment() === 'testing') {
             // Set up the default view resolution
-            ViewBuilder::setUp($this->layoutOptions, $this->domainDesign);
+            viewBuilder()->setUp($this->layoutOptions);
             $this->setupLayout();
         }
     }
@@ -50,10 +47,10 @@ abstract class BaseController extends Controller
     {
         if (is_array($key)) {
             foreach ($key as $name => $data) {
-                View::share($name, $data);
+                view()->share($name, $data);
             }
         } else {
-            View::share($key, $value);
+            view()->share($key, $value);
         }
     }
 
@@ -81,7 +78,7 @@ abstract class BaseController extends Controller
      */
     public function setViewPath($view)
     {
-        ViewBuilder::setViewPath($view);
+        viewBuilder()->setViewPath($view);
     }
 
     /**
@@ -91,9 +88,9 @@ abstract class BaseController extends Controller
      */
     public function setViewLayout($view)
     {
-        ViewBuilder::setViewLayout($view, $this->domainDesign);
+        viewBuilder()->setViewLayout($view);
 
-        $this->layout = ViewBuilder::getLayout();
+        $this->layout = viewBuilder()->getLayout();
     }
 
     /**
@@ -112,7 +109,7 @@ abstract class BaseController extends Controller
      */
     public function setupLayout()
     {
-        $this->layout = ViewBuilder::getLayout();
+        $this->layout = viewBuilder()->getLayout();
     }
 
     /********************************************************************
@@ -151,7 +148,7 @@ abstract class BaseController extends Controller
      */
     public function missingMethod($parameters = [])
     {
-        ViewBuilder::missingMethod($parameters);
+        viewBuilder()->missingMethod($parameters);
     }
 
     /**
