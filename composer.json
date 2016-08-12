@@ -13,8 +13,8 @@
         }
     ],
     "require": {
-        "laravel/framework": "~5.1|~5.2",
-        "nukacode/database": "dev-master",
+        "laravel/framework": "^5.1",
+        "nukacode/database": "1.0.0",
         "laracasts/utilities": "~2.0",
         "doctrine/dbal": "2.4.2",
         "laracasts/presenter": "0.2.0"
