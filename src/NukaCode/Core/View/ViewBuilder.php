@@ -72,7 +72,9 @@ class ViewBuilder
      */
     public function missingMethod($parameters)
     {
-        $this->viewPath->missingMethod($this->layout->layout, $parameters);
+        if (! app()->runningInConsole()) {
+            $this->viewPath->missingMethod($this->layout->layout, $parameters);
+        }
 
         return $this;
     }
