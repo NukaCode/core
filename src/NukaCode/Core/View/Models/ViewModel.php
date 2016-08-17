@@ -162,7 +162,7 @@ class ViewModel
         );
 
         // Remove the last prefix if it matches the controller.
-        $this->prefixes = $this->removeControllerFromPrefixes($this->prefixes);
+        $this->prefixes = $this->removeControllerFromPrefixes($this->prefixes)->filter();
 
         if ($this->prefixes->count() > 0) {
             $this->prefix = $this->prefixes->implode('.');
