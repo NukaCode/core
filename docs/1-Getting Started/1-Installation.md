@@ -1,10 +1,10 @@
+# Installation
+
 - [Using the Installer](#using-installer)
 - [Composer](#composer)
     - [Create Project](#create-project)
     - [Just Core](#just-core)
 - [Cloning the Repository](#cloning-repository)
-
-# Installation
 
 <a name="using-installer"></a>
 ## Using the Installer
