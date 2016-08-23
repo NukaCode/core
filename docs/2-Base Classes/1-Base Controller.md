@@ -18,7 +18,8 @@ view.  This is done one of three ways.
 
 #### Manually
 You can specify your view (and your layout) in the method itself.  `$this->view('view.path', 'layout.path')`.  If you set 
-either it will use that and ignore the next steps.
+either it will use that and ignore any next steps pertaining to it.  So if you set the view, it will not try to find a view 
+in the config or automatically.  If you set the layout, it will not look to the `layoutOptions[]` array.
 
 #### Through configuration
 When you called `vendor:publish`, a `config/view-routing.php` file was created.  This file allows you to specify a specific 
