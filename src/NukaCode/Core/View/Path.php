@@ -82,6 +82,11 @@ class Path
         if (count(array_filter($routeParts)) > 0) {
             $this->viewModel = new ViewModel($routeParts);
 
+            // Check for a configured view route.
+            if (! is_null($configView = $this->viewModel->checkConfig())) {
+                return $configView;
+            }
+
             return $this->viewModel->getView();
         }
 

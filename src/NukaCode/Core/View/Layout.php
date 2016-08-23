@@ -66,23 +66,23 @@ class Layout
 
     protected function determineLayout($layout)
     {
-        if (is_null($layout)) {
-            if (is_null($this->layout)) {
-                if ($this->request->ajax()) {
-                    $layout = $this->view->make($this->layoutOptions['ajax']);
-                } else {
-                    $layout = $this->view->make($this->layoutOptions['default']);
-                }
-            } elseif (is_string($this->layout)) {
-                $layout = $this->view->make($this->layout);
-            } else {
-                $layout = $this->layout;
-            }
-        } else {
-            $layout = $this->view->make($layout);
+        if (! is_null($layout)) {
+            return $this->view->make($layout);
         }
 
-        return $layout;
+        if (is_string($this->layout)) {
+            return $this->view->make($this->layout);
+        }
+
+        if (is_null($this->layout) && $this->request->ajax()) {
+            return $this->view->make($this->layoutOptions['ajax']);
+        }
+
+        if (is_null($this->layout)) {
+            return $this->view->make($this->layoutOptions['default']);
+        }
+
+        return $this->layout;
     }
 
     private function verifyLayoutOptions($layoutOptions)

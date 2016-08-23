@@ -10,6 +10,10 @@ class ViewModel
     /**
      * @var null|string
      */
+    public $fullController = null;
+    /**
+     * @var null|string
+     */
     public $prefix = null;
 
     /**
@@ -130,8 +134,10 @@ class ViewModel
      */
     protected function parseController($class)
     {
-        $class            = (new ReflectionClass($class))->getShortName();
-        $this->controller = strtolower(str_replace('Controller', '', $class));
+        $controller           = new ReflectionClass($class);
+        $this->fullController = $controller->name;
+        $class                = $controller->getShortName();
+        $this->controller     = strtolower(str_replace('Controller', '', $class));
     }
 
     /**
@@ -162,7 +168,7 @@ class ViewModel
         );
 
         // Remove the last prefix if it matches the controller.
-        $this->prefixes = $this->removeControllerFromPrefixes($this->prefixes)->filter();
+        $this->prefixes = $this->removeControllerFromPrefixes($this->prefixes);
 
         if ($this->prefixes->count() > 0) {
             $this->prefix = $this->prefixes->implode('.');
@@ -203,5 +209,17 @@ class ViewModel
         $this->attempted($this->view);
 
         return view()->exists($this->view) ? $this->view : null;
+    }
+
+    /**
+     * Check the view routing config for the controller and method.
+     *
+     * @return null|string
+     */
+    public function checkConfig()
+    {
+        $index = $this->fullController .'.'. $this->action;
+
+        return array_get(config('view-routing'), $index);
     }
 }

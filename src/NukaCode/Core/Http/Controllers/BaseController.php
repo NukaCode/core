@@ -14,34 +14,42 @@ abstract class BaseController extends Controller
 
     protected $layoutOptions = [
         'default' => 'layouts.default',
-        'ajax'    => 'layouts.ajax'
+        'ajax'    => 'layouts.ajax',
     ];
-
-    protected $resetBlade = false;
-
-    public function __construct()
-    {
-        if ($this->resetBlade === true) {
-            // Resetting blade syntax to original
-            $this->resetBladeSyntax();
-        }
-
-        if (! app()->runningInConsole() || app()->environment() === 'testing') {
-            // Set up the default view resolution
-            viewBuilder()->setUp($this->layoutOptions);
-            $this->setupLayout();
-        }
-    }
 
     /********************************************************************
      * View helpers
-     *******************************************************************/
+     ******************************************************************
+
+    /**
+     * Find the view for the called method.
+     *
+     * @param null|string $view
+     * @param null|string $layout
+     *
+     * @return $this
+     */
+    public function view($view = null, $layout = null)
+    {
+        if (! is_null($layout)) {
+            $this->layoutOptions = [
+                'default' => $layout,
+                'ajax'    => $layout,
+            ];
+        }
+
+        // Set up the default view resolution
+        viewBuilder()->setUp($this->layoutOptions, $view);
+        $this->setupLayout();
+    }
 
     /**
      * Pass data to the view.
      *
      * @param mixed $key
      * @param mixed $value
+     *
+     * @return $this
      */
     public function setViewData($key, $value = null)
     {
@@ -61,6 +69,8 @@ abstract class BaseController extends Controller
      *
      * @param mixed $key
      * @param mixed $value
+     *
+     * @return $this
      */
     protected function setJavascriptData($key, $value = null)
     {
@@ -69,28 +79,6 @@ abstract class BaseController extends Controller
         } else {
             JavaScriptFacade::put([$key => $value]);
         }
-    }
-
-    /**
-     * Force the view path.
-     *
-     * @param $view
-     */
-    public function setViewPath($view)
-    {
-        viewBuilder()->setViewPath($view);
-    }
-
-    /**
-     * Force the layout for the view.
-     *
-     * @param $view
-     */
-    public function setViewLayout($view)
-    {
-        viewBuilder()->setViewLayout($view);
-
-        $this->layout = viewBuilder()->getLayout();
     }
 
     /**
@@ -170,7 +158,7 @@ abstract class BaseController extends Controller
     /**
      * Resets blade syntax to Laravel 4 style.
      */
-    private function resetBladeSyntax()
+    protected function resetBladeSyntax()
     {
         Blade::setEchoFormat('%s');
         Blade::setContentTags('{{', '}}');

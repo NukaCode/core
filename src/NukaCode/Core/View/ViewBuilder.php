@@ -33,12 +33,13 @@ class ViewBuilder
     }
 
     /**
-     * @param array $layoutOptions
+     * @param array       $layoutOptions
+     * @param null|string $view
      */
-    public function setUp($layoutOptions)
+    public function setUp($layoutOptions, $view = null)
     {
         $this->layout         = $this->viewLayout->setUp($layoutOptions);
-        $this->layout->layout = $this->viewPath->setUp($this->layout->layout, null);
+        $this->layout->layout = $this->viewPath->setUp($this->layout->layout, $view);
     }
 
     /**
