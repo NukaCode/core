@@ -82,6 +82,18 @@ abstract class BaseController extends Controller
     }
 
     /**
+     * Force the layout for the view.
+     *
+     * @param $view
+     */
+    public function setViewLayout($view)
+    {
+        viewBuilder()->setViewLayout($view);
+        
+        $this->layout = viewBuilder()->getLayout();
+    }
+
+    /**
      * Do not display a view for this request.
      */
     public function skipView()
