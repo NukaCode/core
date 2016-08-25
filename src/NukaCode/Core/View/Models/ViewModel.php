@@ -76,7 +76,7 @@ class ViewModel
         while (! view()->exists($view)) {
             // If we are out of prefixes and the view still isn't found, back out.
             if (is_null($this->prefix) && ! view()->exists($view)) {
-                $this->view = null;
+                $view = null;
                 break;
             }
 
@@ -94,6 +94,8 @@ class ViewModel
 
             $this->attempted($view);
         }
+
+        $this->view = $view;
 
         return $this->view;
     }
@@ -171,7 +173,7 @@ class ViewModel
         $this->prefixes = $this->removeControllerFromPrefixes($this->prefixes);
 
         if ($this->prefixes->count() > 0) {
-            $this->prefix = $this->prefixes->implode('.');
+            $this->prefix = $this->prefixes->filter()->implode('.');
         }
     }
 
