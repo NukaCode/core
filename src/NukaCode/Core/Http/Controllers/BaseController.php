@@ -88,9 +88,7 @@ abstract class BaseController extends Controller
      */
     public function setViewLayout($view)
     {
-        viewBuilder()->setViewLayout($view);
-
-        $this->layout = viewBuilder()->getLayout();
+        $this->layoutOptions['default'] = $view;
     }
 
     /**
