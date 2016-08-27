@@ -151,6 +151,10 @@ class ViewModel
      */
     protected function parseAction($action)
     {
+        if ($action === $this->fullController) {
+            return $this->action = null;
+        }
+
         $this->action = strtolower(
             preg_replace(['/^get/', '/^post/', '/^put/', '/^patch/', '/^delete/'], '', $action)
         );
@@ -198,7 +202,12 @@ class ViewModel
      */
     protected function setView()
     {
-        $this->view = $this->controller . '.' . $this->action;
+        $views = [
+            $this->controller,
+            $this->action
+        ];
+
+        $this->view = implode('.', array_filter($views));
     }
 
     /**
