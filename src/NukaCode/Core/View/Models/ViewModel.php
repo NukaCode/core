@@ -11,6 +11,7 @@ class ViewModel
      * @var null|string
      */
     public $fullController = null;
+
     /**
      * @var null|string
      */
@@ -204,7 +205,7 @@ class ViewModel
     {
         $views = [
             $this->controller,
-            $this->action
+            $this->action,
         ];
 
         $this->view = implode('.', array_filter($views));
@@ -229,7 +230,12 @@ class ViewModel
      */
     public function checkConfig()
     {
-        $index = $this->fullController .'.'. $this->action;
+        $views = [
+            $this->fullController,
+            $this->action,
+        ];
+
+        $index = implode('.', array_filter($views));
 
         return array_get(config('view-routing'), $index);
     }
