@@ -15,6 +15,11 @@ class ViewModel
     /**
      * @var null|string
      */
+    public $configIndex = null;
+
+    /**
+     * @var null|string
+     */
     public $prefix = null;
 
     /**
@@ -235,8 +240,8 @@ class ViewModel
             $this->action,
         ];
 
-        $index = implode('.', array_filter($views));
+        $this->configIndex = implode('.', array_filter($views));
 
-        return array_get(config('view-routing'), $index);
+        return array_get(config('view-routing'), $this->configIndex);
     }
 }
