@@ -147,10 +147,12 @@ class ViewBuilder
      */
     public function collectDetails($viewModel)
     {
-        $debugbar = app('debugbar');
+        if ($this->app->environment('local') || request('debug') == true) {
+            $debugbar = app('debugbar');
 
-        if ($debugbar->shouldCollect('auto_views')) {
-            $debugbar['auto_views']->addDetails($viewModel);
+            if ($debugbar->shouldCollect('auto_views')) {
+                $debugbar['auto_views']->addDetails($viewModel);
+            }
         }
     }
 }
