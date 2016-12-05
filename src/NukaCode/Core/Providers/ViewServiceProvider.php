@@ -19,11 +19,15 @@ class ViewServiceProvider extends ServiceProvider
         $this->app->singleton('viewBuilder', function ($app) {
             return $app->make(ViewBuilder::class);
         });
-        
-        $debugbar = $this->app['debugbar'];
 
-        if ($debugbar->shouldCollect('auto_views')) {
-            $debugbar->addCollector(new AutoViewCollector());
+        try {
+            $debugbar = $this->app['debugbar'];
+
+            if ($debugbar->shouldCollect('auto_views')) {
+                $debugbar->addCollector(new AutoViewCollector());
+            }
+        } catch (\Exception $exception) {
+            // No debug bar
         }
     }
 
