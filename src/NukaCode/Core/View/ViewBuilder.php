@@ -147,7 +147,7 @@ class ViewBuilder
      */
     public function collectDetails($viewModel)
     {
-        if ($this->app->environment('local') || request('debug') == true) {
+        if (app()->environment('local') || request('debug') == true) {
             $debugbar = app('debugbar');
 
             if ($debugbar->shouldCollect('auto_views')) {
