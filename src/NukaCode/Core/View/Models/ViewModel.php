@@ -38,6 +38,11 @@ class ViewModel
     public $view = null;
 
     /**
+     * @var string
+     */
+    public $type = 'manual';
+
+    /**
      * @var Collection
      */
     public $prefixes;
@@ -50,14 +55,16 @@ class ViewModel
     /**
      * @param array $routeParts
      */
-    public function __construct(array $routeParts)
+    public function __construct(array $routeParts = [])
     {
         $this->attemptedViews = collect();
 
-        $this->parseController(head($routeParts));
-        $this->parseAction(last($routeParts));
-        $this->getPrefixes();
-        $this->setView();
+        if (! empty($routeParts)) {
+            $this->parseController(head($routeParts));
+            $this->parseAction(last($routeParts));
+            $this->getPrefixes();
+            $this->setView();
+        }
     }
 
     /**
@@ -180,7 +187,7 @@ class ViewModel
         );
 
         // Remove the last prefix if it matches the controller.
-        $this->prefixes = $this->removeControllerFromPrefixes($this->prefixes);
+        $this->prefixes = $this->removeControllerFromPrefixes($this->prefixes)->filter();
 
         if ($this->prefixes->count() > 0) {
             $this->prefix = $this->prefixes->filter()->implode('.');
