@@ -36,9 +36,13 @@ class Path
 
     protected function setPath($view)
     {
+        $this->viewModel = new ViewModel();
+
         if ($view == null) {
             $view = $this->findView();
         }
+
+        viewBuilder()->collectDetails($this->viewModel);
 
         $this->path = $view;
     }
@@ -84,8 +88,12 @@ class Path
 
             // Check for a configured view route.
             if (! is_null($configView = $this->viewModel->checkConfig())) {
+                $this->viewModel->type = 'config';
+
                 return $configView;
             }
+
+            $this->viewModel->type = 'auto';
 
             return $this->viewModel->getView();
         }
