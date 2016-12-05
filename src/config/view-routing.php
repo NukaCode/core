@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '\App\Http\Controllers\HomeController' => [
+    'App\Http\Controllers\HomeController' => [
         'index' => 'auth.login'
     ]
 ];
