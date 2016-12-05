@@ -130,8 +130,27 @@ class ViewBuilder
         return $this->viewPath->path;
     }
 
+    /**
+     * Return the details of the view resolution for troubleshooting.
+     *
+     * @return mixed
+     */
     public function debug()
     {
         return $this->viewPath->viewModel;
+    }
+
+    /**
+     * Pass the view resolution details to the debugbar collector.
+     *
+     * @param \NukaCode\Core\View\Models\ViewModel $viewModel
+     */
+    public function collectDetails($viewModel)
+    {
+        $debugbar = app('debugbar');
+
+        if ($debugbar->shouldCollect('auto_views')) {
+            $debugbar['auto_views']->addDetails($viewModel);
+        }
     }
 }
