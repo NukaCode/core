@@ -20,14 +20,12 @@ class ViewServiceProvider extends ServiceProvider
             return $app->make(ViewBuilder::class);
         });
 
-        try {
+        if ($this->app->environment('local') || request('debug') == true) {
             $debugbar = $this->app['debugbar'];
 
             if ($debugbar->shouldCollect('auto_views')) {
                 $debugbar->addCollector(new AutoViewCollector());
             }
-        } catch (\Exception $exception) {
-            // No debug bar
         }
     }
 
