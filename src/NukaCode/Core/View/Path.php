@@ -40,6 +40,8 @@ class Path
 
         if ($view == null) {
             $view = $this->findView();
+        } else {
+            $this->viewModel->view = $view;
         }
 
         viewBuilder()->collectDetails($this->viewModel);
