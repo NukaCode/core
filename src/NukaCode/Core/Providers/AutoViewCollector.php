@@ -45,16 +45,19 @@ class AutoViewCollector extends TwigCollector implements Renderable
 
     public function collect()
     {
+        $attemptedViews = $this->viewModel->attemptedViews;
+        $prefixes       = $this->viewModel->prefixes;
+
         $data = [
             'resolved view'     => $this->viewModel->view,
             'resolution type'   => $this->viewModel->type,
             'attempted views'   => $this->getDataFormatter()
-                                        ->formatVar($this->viewModel->attemptedViews->toArray()),
+                                        ->formatVar($attemptedViews ? $attemptedViews->toArray() : $attemptedViews),
             'controller'        => $this->viewModel->controller,
             'action'            => is_null($this->viewModel->action) ? 'null (__invoke)' : $this->viewModel->action,
             'final prefix'      => $this->viewModel->prefix,
             'possible prefixes' => $this->getDataFormatter()
-                                        ->formatVar($this->viewModel->prefixes->toArray()),
+                                        ->formatVar($prefixes ? $prefixes->toArray() : $prefixes),
             'config index'      => $this->viewModel->configIndex,
         ];
 
